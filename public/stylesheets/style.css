@@ -25,3 +25,8 @@ a.danger {
 input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
+
+#map {
+  margin-top: 20px;
+  height: 800px;
+}

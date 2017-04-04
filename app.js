@@ -4,13 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var multer = require('multer');
-var fs = require('fs');
-
+var mongoose = require('mongoose');
 var appRoutes = require('./routes/app');
-var geo = require('./func/geo');
+var authRoutes = require('./routes/auth');
+var spatialRoutes = require('./routes/spatial');
 
 var app = express();
+
+mongoose.connect('localhost:27017/tableau-mapping');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,36 +32,9 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-var storage = multer.diskStorage({ //multers disk storage settings
-       destination: function (req, file, cb) {
-           cb(null, './uploads/');
-       },
-       filename: function (req, file, cb) {
-           var datetimestamp = Date.now();
-           cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
-       }
-   });
-
- var upload = multer({ //multer settings
-                  storage: storage
-              }).single('file');
-
+app.use('/auth', authRoutes);
+app.use('/spatial', spatialRoutes);
 app.use('/', appRoutes);
-
-app.post('/upload', function(req, res) {
-     upload(req,res,function(err){
-       console.log(req.file);
-       if(err){
-            res.json({error_code:1,err_desc:err});
-            return;
-       }
-       geo.geoJson(req.file.path, function(geojson) {
-         res.json({error_code:0,err_desc:null,data:geojson});
-         fs.unlink(req.file.path);
-       });
-     });
- });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
