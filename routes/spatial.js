@@ -62,4 +62,20 @@ router.post('/upload', function(req, res, next) {
    });
 });
 
+router.get('/', function(req, res, next) {
+  Spatial.find({}, function (err, spatials) {
+    if (err) {
+      res.status(500).json({
+        message: 'Error finding spatial objects',
+        error: err
+      });
+      return;
+    }
+    res.status(201).json({
+      message: 'Result',
+      spatials: spatials
+    });
+  });
+});
+
 module.exports = router;
