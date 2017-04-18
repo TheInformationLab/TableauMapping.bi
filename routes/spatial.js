@@ -51,35 +51,48 @@ router.post('/upload', function(req, res, next) {
              console.log("GeoJSON Flattened");
              geo.simplify(flattened, 0.01, function(simplified) {
                console.log("GeoJSON simplified");
-               wdc.geojson2Tableau(simplified, function(filename) {
-                 console.log(filename);
-                 var spatial = new Spatial ({
-                   owner: user._id,
-                   name: meta.name,
-                   sourceUrl: meta.sourceUrl,
-                   sourceDate: meta.sourceDate,
-                   type: meta.type,
-                   bbox: "",
-                   country: meta.country,
-                   continent: meta.contient,
-                   tableSchema: schema/*,
-                   tabData: createdFile._id*/
-                 });
-                  spatial.attach('attachment', {path: filename}, (error) => {
-                    spatial.save(function(err, result) {
-                      if (err) {
-                        res.status(500).json({
-                          message: 'Error creating new spatial object',
-                          error: err
+               wdc.geojson2Tableau(simplified, function(tabData) {
+                 console.log("Recieved Tableau Spatial Data");
+                 geo.chunkTabData(tabData, function(chunks) {
+                   var spatial = new Spatial ({
+                     owner: user._id,
+                     name: meta.name,
+                     sourceUrl: meta.sourceUrl,
+                     sourceDate: meta.sourceDate,
+                     type: meta.type,
+                     bbox: "",
+                     country: meta.country,
+                     continent: meta.contient,
+                     tableSchema: schema/*,
+                     tabData: createdFile._id*/
+                   });
+                   var chunkCount = 0;
+                   console.log("There are " + chunks.length + " attachements");
+                   for (chunk of chunks) {
+                     console.log("Adding attachment " + chunkCount + " to Mongo");
+                     if (chunkCount + 1 === chunks.length) {
+                       spatial.addAttachment(meta.name + "-" + chunkCount, new Buffer(JSON.stringify(chunk)))
+                        .then(function() {
+                          spatial.save(function(err, result) {
+                            //console.log(result);
+                            if (err) {
+                              res.status(500).json({
+                                message: 'Error creating new spatial object',
+                                error: err
+                              });
+                              return;
+                            }
+                            res.status(201).json({
+                              message: 'Spatial Object added to database'
+                            });
+                          });
                         });
-                        return;
-                      }
-                      res.status(201).json({
-                        message: 'Spatial Object added to database',
-                        spatial: spatial
-                      });
-                    });
-                  });
+                     } else {
+                       spatial.addAttachment(meta.name + "-" + chunkCount, new Buffer(JSON.stringify(chunk)));
+                       chunkCount = chunkCount + 1
+                     }
+                   }
+                 });
                });
              });
            });

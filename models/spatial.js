@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
-var crate = require('mongoose-crate');
-var LocalFS = require('mongoose-crate-localfs');
+var gridStore = require('mongoose-gridstore');
 
 var Schema = mongoose.Schema;
 
@@ -30,13 +29,6 @@ var schema = new Schema({
   tabData: {type: String}*/
 });
 
-schema.plugin(crate, {
-  storage: new LocalFS({
-    directory: './data'
-  }),
-  fields: {
-    attachment: {}
-  }
-})
+schema.plugin(gridStore);
 
 module.exports = mongoose.model('Spatial', schema);

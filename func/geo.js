@@ -51,4 +51,20 @@ geo.flatten = function(geojson, callback) {
   callback(flattened);
 }
 
+geo.chunkTabData = function(tabData, callback) {
+  var retArray = [];
+  console.log("TabData has " + tabData.length + " records");
+  var chunkSize = 50000;
+  while (tabData.length > 0) {
+    var chunk = [];
+    chunk = tabData.slice(0,chunkSize - 1);
+    retArray.push(chunk);
+    tabData = tabData.slice(chunkSize);
+    console.log("TabData has " + tabData.length + " records remaining");
+    if (tabData.length === 0) {
+      callback(retArray);
+    }
+  }
+}
+
 module.exports = geo;
