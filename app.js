@@ -5,13 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var appRoutes = require('./routes/app');
-var authRoutes = require('./routes/auth');
-var spatialRoutes = require('./routes/spatial');
+var compression = require('compression')
 
 var app = express();
 
+app.use(compression());
+
 mongoose.connect('localhost:27017/tableau-mapping');
+
+var appRoutes = require('./routes/app');
+var authRoutes = require('./routes/auth');
+var spatialRoutes = require('./routes/spatial');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

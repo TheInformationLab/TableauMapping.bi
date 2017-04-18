@@ -3,20 +3,23 @@ import { Http, Headers, Response } from "@angular/http";
 import 'rxjs/Rx';
 
 import { Observable } from "rxjs";
-import { Spatial } from './spatial.model';
+import { Spatial, Data } from './spatial.model';
 
 @Injectable()
 export class LayerService {
+  public metaLayers: Spatial[] = [];
+  public dataLayers: Data[] = [];
 
   constructor(private http: Http) {}
 
-  getAll() {
-    return this.http.get('/spatial/')
+  getAllMeta() {
+    return this.http.get('/spatial/meta')
       .map((response: Response) => {
         const spatials = response.json().spatials;
         let transformedSpatials: Spatial[] = [];
         for (let spatial of spatials) {
           transformedSpatials.push(new Spatial(
+            spatial._id,
             spatial.owner,
             spatial.name,
             spatial.dateCreated,
@@ -25,12 +28,25 @@ export class LayerService {
             spatial.type,
             spatial.bbox,
             spatial.country,
-            spatial.continent
+            spatial.continent,
+            spatial.tableSchema,
+            spatial.tabData
           ));
         }
+        this.metaLayers = transformedSpatials;
         return transformedSpatials;
       })
       .catch((error: Response) => Observable.throw(error.json()));
+  }
 
+  getData(id: Object) {
+    const body = JSON.stringify(id);
+    const headers = new Headers({'Content-Type': 'application/json'});
+    return this.http.post('/spatial/geojson',body,{headers: headers})
+      .map((response: Response) => {
+        const spatials = response.json().spatial;
+        return spatials;
+    })
+    .catch((error: Response) => Observable.throw(error))
   }
 }

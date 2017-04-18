@@ -1,5 +1,9 @@
-import { Component, AfterViewInit  } from '@angular/core';
-import { Router } from "@angular/router";
+import { Component } from '@angular/core';
+
+import { Spatial, Data, GeoJson } from "../layers/spatial.model";
+import { LayerService } from "../layers/layer.service";
+
+import { Table } from "./table.model";
 
 interface Tableau {
     makeConnector: Function;
@@ -10,6 +14,7 @@ interface Tableau {
     connectionData: Object;
     username: String;
     password: String;
+    connectionName: String;
 }
 declare var tableau: Tableau;
 
@@ -28,58 +33,58 @@ declare var myConnector: Connector;
   `
 })
 
-export class WdcComponent implements AfterViewInit {
+export class WdcComponent {
+  layers: Spatial[] = [];
 
-  constructor(private router: Router) {}
-
-  ngAfterViewInit() {
-    console.log("Testing for Tableau");
+  constructor(private layerService: LayerService) {
 
     var myConnector = tableau.makeConnector();
 
     myConnector.init = function(initCallback) {
-
-      var hasAuth = false;
-
-  		if (tableau.phase == tableau.phaseEnum.interactivePhase || tableau.phase == tableau.phaseEnum.authPhase) {
-  			console.log("Tableau WDC Detected");
-        if (this.router.url != '/wdc') {
-          this.router.navigateByUrl('/wdc');
-        }
-  			if (tableau.connectionData && tableau.username && tableau.password) {
-  				hasAuth = true;
-  				if (tableau.phase == tableau.phaseEnum.authPhase) {
-  					console.log("Entering Auth Phase");
-  					// Auto-submit here if we are in the auth phase
-  					tableau.submit()
-  				}
-  			}
-  		}
-
-  		if (tableau.phase == tableau.phaseEnum.interactivePhase) {
-  			console.log("Entering Interactive Phase");
-  			if (!hasAuth) {
-  				console.log("Waiting for auth");
-  			} else {
-  				tableau.submit();
-  			}
-  		}
+      tableau.submit();
   		initCallback();
   	};
 
     myConnector.getSchema = function(schemaCallback) {
-
+      console.log("Getting Schema");
+      layerService.getAllMeta()
+        .subscribe(
+          (layers: Spatial[]) => {
+            console.log(layers);
+              this.layers = layers;
+              let ret: Table[] = [];
+              for (let layer of layers) {
+                ret.push(new Table (
+                  layer._id,
+                  layer.tableSchema.alias,
+                  layer.tableSchema.columns
+                ));
+              }
+              console.log(ret);
+              schemaCallback(ret);
+          }
+        )
     };
 
     myConnector.getData = function(table, doneCallback) {
-
+      console.log("Getting table " + table.tableInfo.id);
+      layerService.getData({id: table.tableInfo.id})
+        .subscribe(
+          (layer) => {
+            table.appendRows(layer);
+            doneCallback();
+          }
+        )
     };
 
     myConnector.setConnection = function() {
-
+      tableau.connectionName = "TableauMapping.bi"
     };
 
     tableau.registerConnector(myConnector);
+
+
+
   }
 
 }

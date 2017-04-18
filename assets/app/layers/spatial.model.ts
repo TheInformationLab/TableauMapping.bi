@@ -1,4 +1,5 @@
 export class Spatial {
+  _id: string;
   owner: string;
   name: string;
   dateCreated: string;
@@ -8,8 +9,11 @@ export class Spatial {
   bbox: string;
   country: string;
   continent: string;
+  tableSchema: any;
+  tabData: string;
 
-  constructor(owner: string, name: string, dateCreated: string, sourceUrl: string, sourceDate: string, type: string, bbox: string, country: string, continent: string) {
+  constructor(id: string, owner: string, name: string, dateCreated: string, sourceUrl: string, sourceDate: string, type: string, bbox: string, country: string, continent: string, tableSchema: any, tabData?: string) {
+    this._id = id;
     this.owner = owner;
     this.name = name;
     this.dateCreated = dateCreated;
@@ -19,5 +23,27 @@ export class Spatial {
     this.bbox = bbox;
     this.country = country;
     this.continent = continent;
+    this.tableSchema = tableSchema;
+    this.tabData = tabData;
+  }
+}
+
+export class Data {
+  _id: string;
+  tabData: any;
+
+  constructor(id: string, tabData: any) {
+    this._id = id;
+    this.tabData = tabData;
+  }
+}
+
+export class GeoJson {
+  type: string;
+  features: any[];
+
+  constructor(type: string, features: any[]) {
+    this.type = type;
+    this.features = features;
   }
 }

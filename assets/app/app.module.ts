@@ -5,6 +5,7 @@ import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { HttpModule } from "@angular/http";
 
 import { AppComponent } from "./app.component";
+import { HeaderComponent } from "./header/header.component";
 import { LayerComponent } from "./layers/layer.component";
 import { LayersComponent } from "./layers/layers.component";
 import { LayerListComponent } from "./layers/layer-list.component";
@@ -21,6 +22,7 @@ import { LayerService } from "./layers/layer.service";
 @NgModule({
     declarations: [
         AppComponent,
+        HeaderComponent,
         LayerComponent,
         LayersComponent,
         LayerListComponent,

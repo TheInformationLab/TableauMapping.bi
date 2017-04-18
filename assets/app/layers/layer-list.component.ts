@@ -20,7 +20,7 @@ export class LayerListComponent  implements OnInit {
   constructor(private layerService: LayerService) {}
 
   ngOnInit() {
-    this.layerService.getAll()
+    this.layerService.getAllMeta()
       .subscribe(
         (layers: Spatial[]) => {
             this.layers = layers;
