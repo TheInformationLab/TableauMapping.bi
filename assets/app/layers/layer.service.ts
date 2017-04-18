@@ -39,12 +39,12 @@ export class LayerService {
       .catch((error: Response) => Observable.throw(error.json()));
   }
 
-  getData(id: Object) {
-    const body = JSON.stringify(id);
+  getData(options: Object) {
+    const body = JSON.stringify(options);
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('/spatial/geojson',body,{headers: headers})
       .map((response: Response) => {
-        const spatials = response.json().spatial;
+        const spatials = response.json();
         return spatials;
     })
     .catch((error: Response) => Observable.throw(error))

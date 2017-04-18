@@ -6,12 +6,7 @@ var geo = require('../func/geo');
 var wdc = require('../func/wdc');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
-const bfj = require('bfj');
 var compression = require('compression');
-var JSONStream = require('JSONStream');
-var es = require('event-stream');
-var oboe = require('oboe');
-var io = require('socket.io');
 
 var Spatial = require('../models/spatial');
 
@@ -49,7 +44,8 @@ router.post('/upload', function(req, res, next) {
            console.log("Table Schema Built");
            geo.flatten(geojson, function(flattened) {
              console.log("GeoJSON Flattened");
-             geo.simplify(flattened, 0.01, function(simplified) {
+             console.log("Array size: " + flattened.features.length);
+             geo.simplify(flattened, 0.001, function(simplified) {
                console.log("GeoJSON simplified");
                wdc.geojson2Tableau(simplified, function(tabData) {
                  console.log("Recieved Tableau Spatial Data");
@@ -71,7 +67,7 @@ router.post('/upload', function(req, res, next) {
                    for (chunk of chunks) {
                      console.log("Adding attachment " + chunkCount + " to Mongo");
                      if (chunkCount + 1 === chunks.length) {
-                       spatial.addAttachment(meta.name + "-" + chunkCount, new Buffer(JSON.stringify(chunk)))
+                       spatial.addAttachment(meta.name + "-" + chunkCount, new Buffer(JSON.stringify(chunk), "utf-8"), 'application/json')
                         .then(function() {
                           spatial.save(function(err, result) {
                             //console.log(result);
@@ -88,7 +84,7 @@ router.post('/upload', function(req, res, next) {
                           });
                         });
                      } else {
-                       spatial.addAttachment(meta.name + "-" + chunkCount, new Buffer(JSON.stringify(chunk)));
+                       spatial.addAttachment(meta.name + "-" + chunkCount, new Buffer(JSON.stringify(chunk), "utf-8"), 'application/json');
                        chunkCount = chunkCount + 1
                      }
                    }
@@ -121,23 +117,54 @@ router.get('/meta', function(req, res, next) {
 });
 
 router.post('/geojson', function(req, res, next) {
+  var chunkReq = 1;
+  if (req.body.page) {
+    chunkReq = req.body.page;
+  }
+  var moreData = false;
+  console.log("Page " + chunkReq);
   Spatial.findById(mongoose.Types.ObjectId(req.body.id), function (err, resp) {
+    var attachmentCount = resp.attachments.length;
+    if (chunkReq < attachmentCount) {
+      moreData = true;
+    }
+    var chunkName = resp.attachments[chunkReq - 1].filename;
+    /*resp.partialLoadAttachments()
+    .then(function(doc) {
+      console.log(doc);
+    })*/
+    resp.loadSingleAttachment(chunkName)
+    .then(function(doc) {
+      var buf = doc.attachments[chunkReq - 1].buffer
+      var b = new Buffer(buf.toString("utf-8"), 'base64')
+      var s = b.toString();;
+      res.status(201).json({
+        message: 'Attachment found',
+        moreData: moreData,
+        currentChunk: chunkReq,
+        chunksAvailable: attachmentCount,
+        data: JSON.parse(s)
+      });
+    })
+    .catch(function(err) {
+      res.status(500).json({
+        message: 'Error finding attachment ' + chunkName + ' for doc ' + req.body.id,
+        error: err
+      });
+      return;
+    });
+    /*
         if(err) {
-          res.status(500).json({
-            message: 'Error finding spatial object ' + req.body.id,
-            error: error
-          });
-          return;
+
         }
         if(!resp) {
           res.status(404).json({
             message: "Can't find spatial object " + req.body.id
           });
           return;
-        }
-        console.log('./data/'+resp.attachment.name);
-
+        }*/
     });
+
 });
 
 module.exports = router;

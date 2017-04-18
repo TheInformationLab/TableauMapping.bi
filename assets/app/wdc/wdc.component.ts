@@ -15,6 +15,7 @@ interface Tableau {
     username: String;
     password: String;
     connectionName: String;
+    reportProgress: Function;
 }
 declare var tableau: Tableau;
 
@@ -41,7 +42,7 @@ export class WdcComponent {
     var myConnector = tableau.makeConnector();
 
     myConnector.init = function(initCallback) {
-      tableau.submit();
+      myConnector.setConnection();
   		initCallback();
   	};
 
@@ -60,7 +61,7 @@ export class WdcComponent {
                   layer.tableSchema.columns
                 ));
               }
-              console.log(ret);
+              //console.log(ret);
               schemaCallback(ret);
           }
         )
@@ -68,22 +69,32 @@ export class WdcComponent {
 
     myConnector.getData = function(table, doneCallback) {
       console.log("Getting table " + table.tableInfo.id);
-      layerService.getData({id: table.tableInfo.id})
-        .subscribe(
-          (layer) => {
-            table.appendRows(layer);
-            doneCallback();
-          }
-        )
+      pageData(table, 1, table.tableInfo.id, function(table) {
+        doneCallback();
+      });
     };
 
     myConnector.setConnection = function() {
-      tableau.connectionName = "TableauMapping.bi"
+      tableau.connectionName = "TableauMapping.bi";
+      tableau.submit();
     };
 
     tableau.registerConnector(myConnector);
 
-
+    var pageData = function(table, page, id, callback) {
+      layerService.getData({id: id, page: page})
+        .subscribe(
+          (layer) => {
+            table.appendRows(layer.data);
+            if (layer.moreData) {
+              tableau.reportProgress("Getting row: " + layer.currentChunk * 10000 + " of " + layer.chunksAvailable * 10000);
+              pageData(table, page + 1, id, callback)
+            } else {
+              callback(table);
+            }
+          }
+        )
+    }
 
   }
 

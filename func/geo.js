@@ -54,7 +54,7 @@ geo.flatten = function(geojson, callback) {
 geo.chunkTabData = function(tabData, callback) {
   var retArray = [];
   console.log("TabData has " + tabData.length + " records");
-  var chunkSize = 50000;
+  var chunkSize = 10000;
   while (tabData.length > 0) {
     var chunk = [];
     chunk = tabData.slice(0,chunkSize - 1);
