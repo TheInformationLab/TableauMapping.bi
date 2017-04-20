@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  /*padding: 50px;*/
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -28,5 +28,5 @@ input.ng-invalid.ng-touched {
 
 #map {
   margin-top: 20px;
-  height: 800px;
+  /*height: 800px;*/
 }

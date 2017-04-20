@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Spatial, Data, GeoJson } from "../layers/spatial.model";
+import { Spatial } from "../layers/spatial.model";
 import { LayerService } from "../layers/layer.service";
 
 import { Table } from "./table.model";

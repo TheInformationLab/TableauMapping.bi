@@ -1,6 +1,4 @@
-var geojsonConvert = require('geojson2csv');
 var fs = require('fs');
-const bfj = require('bfj');
 
 var wdc = {};
 

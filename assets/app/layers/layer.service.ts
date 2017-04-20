@@ -42,10 +42,21 @@ export class LayerService {
   getData(options: Object) {
     const body = JSON.stringify(options);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/spatial/geojson',body,{headers: headers})
+    return this.http.post('/spatial/tabdata',body,{headers: headers})
       .map((response: Response) => {
         const spatials = response.json();
         return spatials;
+    })
+    .catch((error: Response) => Observable.throw(error))
+  }
+
+  getGeojson(options: Object) {
+    const body = JSON.stringify(options);
+    const headers = new Headers({'Content-Type': 'application/json'});
+    return this.http.post('/spatial/geojson',body,{headers: headers})
+      .map((response: Response) => {
+        const geojson = response.json().data;
+        return geojson;
     })
     .catch((error: Response) => Observable.throw(error))
   }

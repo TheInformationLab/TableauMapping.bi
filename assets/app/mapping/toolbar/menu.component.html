@@ -1,0 +1,17 @@
+<button md-icon-button [mdMenuTriggerFor]="menu" class="on-map menu">
+  <md-icon>more_vert</md-icon>
+</button>
+<md-menu #menu="mdMenu" class="on-map">
+  <button md-menu-item (click)="showPolygon('58f78153f0807123c0cede45')">
+    <md-icon>add_location</md-icon>
+    <span>Combined Authorities</span>
+  </button>
+  <button md-menu-item (click)="showPolygon('58f781b5f0807123c0cede69')" id="westminster">
+    <md-icon>add_location</md-icon>
+    <span>Westminster Parliamentary Constituencies</span>
+  </button>
+  <button md-menu-item (click)="showPolygon('58f7821cf0807123c0cee08c')" id="wards">
+    <md-icon>add_location</md-icon>
+    <span>Wards</span>
+  </button>
+</md-menu>

@@ -4,6 +4,7 @@ var Pbf = require('Pbf');
 var fs = require('fs');
 var simplify = require('simplify-geojson');
 var flatten = require('geojson-flatten');
+var turf = require('@turf/turf');
 
 var geo = {};
 
@@ -42,7 +43,7 @@ geo.decode = function(buffer, callback) {
 }
 
 geo.simplify = function(geojson, tolerance, callback) {
-  var simplified = simplify(geojson, tolerance);
+  var simplified = simplify(geojson, tolerance, true);
   callback(simplified);
 }
 
@@ -65,6 +66,11 @@ geo.chunkTabData = function(tabData, callback) {
       callback(retArray);
     }
   }
+}
+
+geo.bbox = function(geojson, callback) {
+  var bbox = turf.bbox(geojson);
+  callback(bbox);
 }
 
 module.exports = geo;
