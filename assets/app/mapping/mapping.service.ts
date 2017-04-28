@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Input,Output,EventEmitter} from "@angular/core";
 import {Http} from "@angular/http";
 import {Map} from "leaflet";
 import {Location} from "./location.class";
@@ -8,6 +8,7 @@ export class MapService {
     public map: Map;
     public baseMaps: any;
     private vtLayer: any;
+    isLoading = new EventEmitter<Boolean>();
 
     constructor(private http: Http) {
         this.baseMaps = {
@@ -31,17 +32,30 @@ export class MapService {
         L.DomEvent.disableScrollPropagation(element);
     }
 
-    toggleAirPortLayer() {
+    addPolygon(geojson) {
       if (this.vtLayer) {
           this.map.removeLayer(this.vtLayer);
-          delete this.vtLayer;
-      } else {
-          this.http.get("https://rawgit.com/haoliangyu/angular2-leaflet-starter/master/public/data/airports.geojson")
-              .map(res => res.json())
-              .subscribe(result => {
-                  this.vtLayer = L.vectorGrid.slicer(result);
-                  this.vtLayer.addTo(this.map);
-              });
       }
+      this.vtLayer = L.geoJSON(geojson, {
+        style: function (feature) {
+            return {color: "#337ab7", weight: 1};
+        }
+      });
+      this.vtLayer.bindPopup(function (layer) {
+        let rtnStr: String = "";
+
+        const properties = layer.feature.properties;
+        for (var prop in properties) {
+          if (properties.hasOwnProperty(prop)) {
+            rtnStr = rtnStr + "<strong>" + prop + "</strong>: " + properties[prop] + "<br>";
+          }
+        }
+        return rtnStr;
+      }).addTo(this.map);
+      this.showLoading(false);
+    }
+
+    showLoading(bool: Boolean) {
+      this.isLoading.emit(bool);
     }
 }

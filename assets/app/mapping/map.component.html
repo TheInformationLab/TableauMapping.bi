@@ -1,14 +1,4 @@
-<nav class="navbar nav-default navbar-fixed-top" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#" scroll-to="welcome" offset="50"><span>TableauMapping.bi</span></a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-left">
-            <li><a href="https://github.com/" target="_blank">GitHub</a></li>
-        </ul>
-    </div>
-</nav>
-
+<md-spinner style="on-map" *ngIf="isLoading"></md-spinner>
 <div id="map">
   <menu></menu>
   <navigator></navigator>

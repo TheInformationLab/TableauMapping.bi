@@ -11,7 +11,10 @@ var app = express();
 
 app.use(compression());
 
-mongoose.connect('localhost:27017/tableau-mapping');
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 60000,socketTimeoutMS : 60000 } },
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000,socketTimeoutMS : 60000  } } };
+
+mongoose.connect('mongodb://localhost:27017/tableau-mapping');
 
 var appRoutes = require('./routes/app');
 var authRoutes = require('./routes/auth');

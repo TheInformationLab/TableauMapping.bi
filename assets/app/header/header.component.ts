@@ -1,9 +1,18 @@
 import { Component, OnInit  } from '@angular/core';
-import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
+  styles: [`
+    .navbar {
+      background: #337ab7;
+      color: #fff;
+      margin: 0px;
+    }
+    a {
+      color: #fff;
+    }
+    `]
 })
 
 export class HeaderComponent implements OnInit {

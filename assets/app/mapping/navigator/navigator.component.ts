@@ -16,8 +16,8 @@ import {Map} from "leaflet";
         width: 35px;
         height: 35px;
         text-align: center;
+        padding: 5px;
     }
-
 
     .leaflet-clickable {
       cursor: crosshair !important;
@@ -27,7 +27,8 @@ import {Map} from "leaflet";
       cursor: help !important;
     }
     input {
-      margin: 20px 0 0 60px;
+      margin: 20px 0 0 80px;
+      padding: 5px;
       width: 300px;
       height: 35px;
       border: 2px solid rgba(77, 156, 237, 0.7);
@@ -36,7 +37,7 @@ import {Map} from "leaflet";
     }
 
     #goto {
-        margin: 20px 0 0 330px;
+        margin: 20px 0 0 380px;
         .map-button
     }`
     ],

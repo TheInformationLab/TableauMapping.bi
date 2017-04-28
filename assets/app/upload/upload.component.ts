@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
-const URL = '/spatial/upload';
+
+const URL = '/spatial/upload?'+localStorage.getItem('token');
 
 @Component({
   selector: 'shape-upload',
@@ -42,6 +43,10 @@ export class UploadComponent implements OnInit {
         sourceUrl: new FormControl(null, Validators.required),
         sourceDate: new FormControl(null, Validators.required)
     });
+  }
+
+  onSubmit() {
+
   }
 
 }
