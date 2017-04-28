@@ -1,4 +1,6 @@
 .idea
 /node_modules
 npm-debug.log
-/public/js
+/public/js/app
+/parseTemp
+/initial data

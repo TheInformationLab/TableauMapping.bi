@@ -1,0 +1,6 @@
+<md-menu #menu="mdMenu" class="on-map">
+  <menu-item
+         [menuItem]="menuItem"
+          *ngFor="let menuItem of menuItems"></menu-item>
+</md-menu>
+<button md-fab [mdMenuTriggerFor]="menu" class="on-map menu"><md-icon>add</md-icon></button>

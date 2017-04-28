@@ -3,12 +3,20 @@
 <head>
     <base href="/">
     <title>TableauMapping.bi</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+  integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+  crossorigin=""/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <script src="/js/tableauwdc-2.2.latest.min.js" type="text/javascript"></script> 
+    <script src="/js/tableauwdc-2.2.latest.min.js" type="text/javascript"></script>
 </head>
 <body>
-<my-app>Loading...</my-app>
+<tableau-mapping>
+  <span style="display: inline-block;height: 100%;vertical-align: middle;">
+    <img src="/img/loading.gif"/>
+  </span>
+</tableau-mapping>
 
 <script src="/js/app/bundle.js"></script>
 </body>

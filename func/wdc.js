@@ -1,6 +1,4 @@
-var geojsonConvert = require('geojson2csv');
 var fs = require('fs');
-const bfj = require('bfj');
 
 var wdc = {};
 
@@ -65,19 +63,19 @@ var getTableColumns = function(properties, callback) {
 }
 
 wdc.geojson2Tableau = function(geojson, callback) {
-  fs.writeFile('./parseTemp/geojson.json', JSON.stringify(geojson), function() {
+  //fs.writeFile('./parseTemp/geojson.json', JSON.stringify(geojson), function() {
     PolygonID(geojson, function(polygons) {
-      fs.writeFile('./parseTemp/polygons.json', JSON.stringify(polygons), function() {
+      //fs.writeFile('./parseTemp/polygons.json', JSON.stringify(polygons), function() {
         SubPolygonID(polygons, function(subPolygons) {
-          fs.writeFile('./parseTemp/subpolygons.json', JSON.stringify(subPolygons), function() {
+          //fs.writeFile('./parseTemp/subpolygons.json', JSON.stringify(subPolygons), function() {
             parseCoordinates(subPolygons, function(resp) {
               callback(resp);
             });
-          });
+          //});
         });
-      });
+      //});
     });
-  });
+  //});
 }
 
 var PolygonID = function(geojson, callback) {
@@ -126,12 +124,12 @@ var SubPolygonID = function(polygons, callback) {
 }
 
 var parseCoordinates = function(subPolygons, callback) {
-  var randStr = (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-  var wstream = fs.createWriteStream('./data/'+randStr+'.json');
-  wstream.write('[');
+  //var randStr = (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  //var wstream = fs.createWriteStream('./data/'+randStr+'.json');
+  //wstream.write('[');
   var coordinateCount = 0;
   var activeCount = 0;
-  //var retCoords = [];
+  var retCoords = [];
   for (subPolygon of subPolygons) {
     coordinateCount = coordinateCount + subPolygon.subPolygon.length;
   }
@@ -146,8 +144,12 @@ var parseCoordinates = function(subPolygons, callback) {
       obj.longitude = coordinate[0];
       obj.latitude = coordinate[1];
       obj = Object.assign(obj, subPolygon);
-      //retCoords.push(obj);
-      wstream.write(JSON.stringify(obj));
+      retCoords.push(obj);
+      activeCount = activeCount + 1;
+      if (activeCount === coordinateCount) {
+        callback(retCoords);
+      }
+    /*  wstream.write(JSON.stringify(obj));
       activeCount = activeCount + 1;
       if (activeCount === coordinateCount) {
         wstream.write(']');
@@ -158,7 +160,7 @@ var parseCoordinates = function(subPolygons, callback) {
         });
       } else {
         wstream.write(',\n');
-      }
+      } */
     }
   }
 }

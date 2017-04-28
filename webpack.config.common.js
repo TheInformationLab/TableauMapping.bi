@@ -6,35 +6,37 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.js', '.ts']
+        extensions: ['.js', '.ts', '.less']
     },
 
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.ts$/,
-                loaders: [
-                    'awesome-typescript-loader',
-                    'angular2-template-loader',
-                    'angular2-router-loader'
-                ]
+              test: /\.html$/,
+              use: [{ loader: 'html-loader' }]
             },
             {
-                test: /\.html$/,
-                loader: 'html-loader'
+              test: /\.scss$/,
+              use: [
+                { loader:  'to-string-loader'},
+                { loader: 'style-loader'},
+                { loader: 'css-loader'},
+                { loader: 'sass-loader'}
+              ]
             },
             {
-                test: /\.css$/,
-                loader: 'raw-loader'
+              test: /\.css$/,
+              use: [{ loader: 'raw-loader' }]
             }
-        ]
+        ],
+        exprContextCritical: false
     },
 
-    plugins: [
-        new webpack.ContextReplacementPlugin(
-            // The (\\|\/) piece accounts for path separators in *nix and Windows
-            /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-            './src' // location of your src
-        )
-    ]
+    // plugins: [
+    //     new webpack.ContextReplacementPlugin(
+    //         // The (\\|\/) piece accounts for path separators in *nix and Windows
+    //         /angular(\\|\/)core(\\|\/)@angular/,
+    //         './src' // location of your src
+    //     )
+    // ]
 };

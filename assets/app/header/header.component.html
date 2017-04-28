@@ -1,1 +1,16 @@
-<h1>Tableau Mapping</h1>
+<nav class="navbar nav-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#" scroll-to="welcome" offset="50"><span>TableauMapping.bi</span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ><a [routerLink]="['/map']">Map</a></li>
+          <li ><a [routerLink]="['/upload']">Upload</a></li>
+          <li ><a [routerLink]="['/wdc']">WDC</a></li>
+          <li ><a [routerLink]="['/auth']">Login</a></li>
+        </ul>
+    </div>
+</nav>
