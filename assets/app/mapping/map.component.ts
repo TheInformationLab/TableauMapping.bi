@@ -41,6 +41,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MapComponent implements OnInit  {
   public isLoading: Boolean = true;
+  sub: any;
 
     constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute) {
     }
@@ -50,7 +51,6 @@ export class MapComponent implements OnInit  {
           (loading: Boolean) => this.isLoading = loading
       );
       this.sub = this.route.params.subscribe(params => {
-          this.id = +params['id']; // (+) converts string 'id' to a number
           this.mapService.showLoading(true);
           // Some 'reload' coding
           // In a real app: dispatch action to load the details here.

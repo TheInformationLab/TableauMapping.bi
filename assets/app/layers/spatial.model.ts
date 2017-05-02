@@ -6,13 +6,13 @@ export class Spatial {
   sourceUrl: string;
   sourceDate: string;
   type: string;
-  bbox: string;
+  bbox: number[];
   country: string;
   continent: string;
   tableSchema: any;
   tabData: string;
 
-  constructor(id: string, owner: string, name: string, dateCreated: string, sourceUrl: string, sourceDate: string, type: string, bbox: string, country: string, continent: string, tableSchema: any, tabData?: string) {
+  constructor(id: string, owner: string, name: string, dateCreated: string, sourceUrl: string, sourceDate: string, type: string, bbox: number[], country: string, continent: string, tableSchema: any, tabData?: string) {
     this._id = id;
     this.owner = owner;
     this.name = name;

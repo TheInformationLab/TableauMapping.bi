@@ -9,11 +9,11 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outDir": "./public/js/app"
+    "outDir": "./public/js/app",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "typeRoots": [
-    "./node_modules/@types"
-  ],
   "angularCompilerOptions": {
     "skipMetadataEmit": true
   }

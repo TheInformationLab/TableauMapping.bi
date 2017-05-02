@@ -9,7 +9,7 @@ export class MapService {
     public baseMaps: any;
     private vtLayer: any;
     isLoading = new EventEmitter<Boolean>();
-    hasMoved = new EventEmitter<Any>();
+    hasMoved = new EventEmitter<Boolean>();
 
     constructor(private http: Http) {
         this.baseMaps = {

@@ -2,10 +2,10 @@ import {Component, OnInit } from '@angular/core';
 import {MdMenuModule, MdIconModule} from '@angular/material';
 import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
-import * as Turf "@turf/turf";
+import * as Turf from "@turf/turf";
 
 import { MenuItem } from "./menuItem.model";
-import { Spatial } from '../../layers/spatial.model';
+import { Spatial} from '../../layers/spatial.model';
 
 @Component({
   selector: 'menu',
@@ -28,9 +28,9 @@ import { Spatial } from '../../layers/spatial.model';
 `]
 })
 export class MenuComponent implements OnInit  {
-  menuItems: MenuItem[];
-  mapBounds: Polygon;
   turf = Turf;
+  menuItems: MenuItem[];
+  mapBounds: any;
   allMeta: Spatial[] = [];
 
   constructor(private layerService: LayerService, private mapService: MapService) {}
@@ -58,8 +58,11 @@ export class MenuComponent implements OnInit  {
     }
   }
 
-  filterItems(spatials) {
-    let viewBbox = this.mapService.map.getBounds();
+  filterItems() {
+    let leafletBounds: L.LatLngBounds;
+    let curBounds = this.mapService.map.getBounds();
+    let viewBbox: any = {...leafletBounds,...curBounds};
+    console.log(viewBbox);
     this.mapBounds = this.turf.bboxPolygon([viewBbox._southWest.lng, viewBbox._southWest.lat, viewBbox._northEast.lng, viewBbox._northEast.lat]);
     let transformedSpatials: MenuItem[] = [];
     for (let spatial of this.allMeta) {
@@ -68,11 +71,17 @@ export class MenuComponent implements OnInit  {
         spatial._id,
         spatial.bbox
       );
-      let bbox = {};
-      bbox.minX = item.bbox[0];
-      bbox.minY = item.bbox[1];
-      bbox.minX = item.bbox[2];
-      bbox.minY = item.bbox[3];
+      let bbox: {
+        minX: number;
+        minY: number;
+        maxX: number;
+        maxY: number;
+      } = {
+        minX: item.bbox[0],
+        minY: item.bbox[1],
+        maxX: item.bbox[2],
+        maxY: item.bbox[3]
+      };
       let itemBbox = this.turf.bboxPolygon([bbox.minX,bbox.minY,bbox.maxX,bbox.maxY]);
       if(this.turf.intersect(this.mapBounds, itemBbox)) {
         transformedSpatials.push(item);
