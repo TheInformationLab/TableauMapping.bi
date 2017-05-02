@@ -2,7 +2,7 @@ import {Component, OnInit } from '@angular/core';
 import {MdMenuModule, MdIconModule} from '@angular/material';
 import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
-import  "@turf/intersect";
+import * as Turf "@turf/turf";
 
 import { MenuItem } from "./menuItem.model";
 import { Spatial } from '../../layers/spatial.model';
@@ -29,24 +29,55 @@ import { Spatial } from '../../layers/spatial.model';
 })
 export class MenuComponent implements OnInit  {
   menuItems: MenuItem[];
+  mapBounds: Polygon;
+  turf = Turf;
+  allMeta: Spatial[] = [];
 
   constructor(private layerService: LayerService, private mapService: MapService) {}
 
   ngOnInit() {
-    this.layerService.getAllMeta()
-      .subscribe(
-        (spatials: Spatial[]) => {
-          let transformedSpatials: MenuItem[] = [];
-          for (let spatial of spatials) {
-            let item = new MenuItem(
-              spatial.name,
-              spatial._id,
-              spatial.bbox
-            );
-            transformedSpatials.push(item);
+    this.mapService.hasMoved.subscribe(
+        (moved: Boolean) => {
+          if(moved) {
+            this.refreshItems();
           }
-          this.menuItems = transformedSpatials;
         }
-      )
+    );
+  }
+
+  refreshItems() {
+    if (this.allMeta.length > 0) {
+      this.filterItems();
+    } else {
+      this.layerService.getAllMeta()
+        .subscribe(
+          (spatials: Spatial[]) => {
+            this.allMeta = spatials
+            this.filterItems();
+          });
+    }
+  }
+
+  filterItems(spatials) {
+    let viewBbox = this.mapService.map.getBounds();
+    this.mapBounds = this.turf.bboxPolygon([viewBbox._southWest.lng, viewBbox._southWest.lat, viewBbox._northEast.lng, viewBbox._northEast.lat]);
+    let transformedSpatials: MenuItem[] = [];
+    for (let spatial of this.allMeta) {
+      let item = new MenuItem(
+        spatial.name,
+        spatial._id,
+        spatial.bbox
+      );
+      let bbox = {};
+      bbox.minX = item.bbox[0];
+      bbox.minY = item.bbox[1];
+      bbox.minX = item.bbox[2];
+      bbox.minY = item.bbox[3];
+      let itemBbox = this.turf.bboxPolygon([bbox.minX,bbox.minY,bbox.maxX,bbox.maxY]);
+      if(this.turf.intersect(this.mapBounds, itemBbox)) {
+        transformedSpatials.push(item);
+      }
+    }
+    this.menuItems = transformedSpatials;
   }
 }

@@ -9,6 +9,7 @@ export class MapService {
     public baseMaps: any;
     private vtLayer: any;
     isLoading = new EventEmitter<Boolean>();
+    hasMoved = new EventEmitter<Any>();
 
     constructor(private http: Http) {
         this.baseMaps = {
@@ -57,5 +58,12 @@ export class MapService {
 
     showLoading(bool: Boolean) {
       this.isLoading.emit(bool);
+    }
+
+    mapMoved() {
+      console.log("sending true");
+      this.hasMoved.emit(true);
+      console.log("sending false");
+      this.hasMoved.emit(false);
     }
 }

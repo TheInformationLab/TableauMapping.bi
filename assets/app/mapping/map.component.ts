@@ -69,7 +69,10 @@ export class MapComponent implements OnInit  {
           L.control.zoom({ position: "topright" }).addTo(map);
           //L.control.layers(this.mapService.baseMaps).addTo(map);
           L.control.scale().addTo(map);
-
+          let mapServ = this.mapService;
+          map.on('moveend', function () {
+            mapServ.mapMoved();
+          });
           this.mapService.map = map;
           this.geocoder.getCurrentLocation()
               .subscribe(
