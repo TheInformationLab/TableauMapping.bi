@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Message } from 'primeng/primeng';
+// import { Router } from "@angular/router";
 
 @Component({
     selector: 'tableau-mapping',
@@ -9,8 +10,15 @@ import { Message } from 'primeng/primeng';
             app-header {
               margin-bottom: 100px;
             }
-            `],
+            `]
 })
 export class AppComponent {
+
+  // constructor(private router: Router) {
+  //   let userAgent = navigator.userAgent;
+  //   if (userAgent.includes("Tableau") || userAgent.includes("Qt")) {
+  //     router.navigateByUrl('/wdc');
+  //   }
+  // }
 
 }

@@ -8,6 +8,7 @@ import { Component, OnInit  } from '@angular/core';
       background: #337ab7;
       color: #fff;
       margin: 0px;
+      padding-right: 10px;
     }
     a {
       color: #fff;
@@ -18,7 +19,6 @@ import { Component, OnInit  } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   ngOnInit() {
-
   }
 
 }

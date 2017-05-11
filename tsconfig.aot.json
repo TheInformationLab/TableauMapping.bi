@@ -10,10 +10,11 @@
     "removeComments": false,
     "noImplicitAny": false,
     "outDir": "./public/js/app",
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "allowJs": true
   },
+  "typeRoots": [
+    "./node_modules/@types"
+  ],
   "angularCompilerOptions": {
     "skipMetadataEmit": true
   }

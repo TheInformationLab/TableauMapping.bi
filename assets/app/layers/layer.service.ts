@@ -44,8 +44,8 @@ export class LayerService {
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('/spatial/tabdata',body,{headers: headers})
       .map((response: Response) => {
-        const spatials = response.json();
-        return spatials;
+        const geojson = response.json().data;
+        return geojson;
     })
     .catch((error: Response) => Observable.throw(error))
   }
@@ -54,6 +54,7 @@ export class LayerService {
     const body = JSON.stringify(options);
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('/spatial/geojson',body,{headers: headers})
+      .timeout(600000)
       .map((response: Response) => {
         const geojson = response.json().data;
         return geojson;

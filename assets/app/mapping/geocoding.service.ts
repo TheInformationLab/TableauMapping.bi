@@ -15,27 +15,63 @@ export class GeocodingService {
 
     geocode(address: string) {
         return this.http
-            .get("http://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(address))
+            .get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURIComponent(address) + ".json?access_token=pk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiJjajJibjJmb2EwMDI1MzNwajJoN2R1bzliIn0.onogeMJemGAo605r8issHg&limit=1")
             .map(res => res.json())
             .map(result => {
-                if (result.status !== "OK") { throw new Error("unable to geocode address"); }
+                if (result.features.length === 0) { throw new Error("Can't find address"); }
 
                 let location = new Location();
-                location.address = result.results[0].formatted_address;
-                location.latitude = result.results[0].geometry.location.lat;
-                location.longitude = result.results[0].geometry.location.lng;
-
-                let viewPort = result.results[0].geometry.viewport;
-                location.viewBounds = L.latLngBounds(
-                  {
-                    lat: viewPort.southwest.lat,
-                    lng: viewPort.southwest.lng},
-                  {
-                    lat: viewPort.northeast.lat,
-                    lng: viewPort.northeast.lng
-                  });
+                location.address = result.features[0].place_name;
+                location.latitude = result.features[0].center[1];
+                location.longitude = result.features[0].center[0];
+                location.centroid = L.latLng(location.latitude, location.longitude);
+                if(result.features[0].bbox) {
+                  let viewPort = result.features[0].bbox;
+                  location.viewBounds = L.latLngBounds(
+                    {
+                      lat: viewPort[1],
+                      lng: viewPort[0]},
+                    {
+                      lat: viewPort[3],
+                      lng: viewPort[2]
+                    });
+                }
 
                 return location;
+            });
+    }
+
+    findLocation(address: string) {
+        return this.http
+            .get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURIComponent(address) + ".json?access_token=pk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiJjajJibjJmb2EwMDI1MzNwajJoN2R1bzliIn0.onogeMJemGAo605r8issHg&limit=10")
+            .map(res => res.json())
+            .map(result => {
+                if (result.features.length === 0) { throw new Error("Can't find address"); }
+
+                let results: Location[] = [];
+
+                for (let feature of result.features) {
+                  let location = new Location();
+                  location.address = feature.place_name;
+                  if(feature.center) {
+                    location.latitude = feature.center[1];
+                    location.longitude = feature.center[0];
+                  }
+
+                  if(feature.bbox) {
+                    let viewPort = feature.bbox;
+                    location.viewBounds = L.latLngBounds(
+                      {
+                        lat: viewPort[1],
+                        lng: viewPort[0]},
+                      {
+                        lat: viewPort[3],
+                        lng: viewPort[2]
+                      });
+                  }
+                  results.push(location);
+                }
+                return results;
             });
     }
 

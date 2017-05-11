@@ -7,6 +7,7 @@ import {MapService} from "./mapping.service";
 import {GeocodingService} from "./geocoding.service";
 import {Location} from "./location.class";
 import { ActivatedRoute } from '@angular/router';
+// import { Router } from "@angular/router";
 
 @Component({
     selector: "map",
@@ -36,14 +37,19 @@ import { ActivatedRoute } from '@angular/router';
     .on-map {
         position: absolute;
         z-index: 1000;
-    }`],
+    }
+    `],
     providers: []
 })
 export class MapComponent implements OnInit  {
   public isLoading: Boolean = true;
   sub: any;
 
-    constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute) {
+    constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute/*,private router: Router*/) {
+      // let userAgent = navigator.userAgent;
+      // if (userAgent.includes("Tableau") || userAgent.includes("Qt")) {
+      //   router.navigateByUrl('/wdc');
+      // }
     }
 
     ngOnInit() {
@@ -61,8 +67,8 @@ export class MapComponent implements OnInit  {
               zoomControl: false,
               center: L.latLng(53.959965, -1.087298),
               zoom: 6,
-              minZoom: 4,
-              maxZoom: 19,
+              minZoom: 0,
+              maxZoom: 9,
               layers: [this.mapService.baseMaps.MapBox]
           });
 

@@ -22,7 +22,7 @@ export class MapService {
             CartoDB: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
             }),
-            MapBox: L.tileLayer("https://api.mapbox.com/styles/v1/infolabuk-dev/cj1q51itr006n2rp87hvricm2/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiI2d2dEb2w0In0.gvFxiOLO9jxBMlFn-xeCZw", {attribution: ' &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
+            MapBox: L.tileLayer("https://api.mapbox.com/styles/v1/infolabuk-dev/cj1q51itr006n2rp87hvricm2/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiI2d2dEb2w0In0.gvFxiOLO9jxBMlFn-xeCZw", {attribution: ' &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
         };
     }
 
@@ -48,7 +48,9 @@ export class MapService {
         const properties = layer.feature.properties;
         for (var prop in properties) {
           if (properties.hasOwnProperty(prop)) {
-            rtnStr = rtnStr + "<strong>" + prop + "</strong>: " + properties[prop] + "<br>";
+            if(properties[prop]) {
+              rtnStr = rtnStr + "<strong>" + prop + "</strong>: " + properties[prop] + "<br>";
+            }
           }
         }
         return rtnStr;
@@ -61,9 +63,7 @@ export class MapService {
     }
 
     mapMoved() {
-      console.log("sending true");
       this.hasMoved.emit(true);
-      console.log("sending false");
       this.hasMoved.emit(false);
     }
 }

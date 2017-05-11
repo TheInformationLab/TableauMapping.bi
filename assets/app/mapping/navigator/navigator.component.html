@@ -1,5 +1,15 @@
-<input id="place-input" class="on-map" type="text" placeholder="Enter a place to go..."
- [(ngModel)]="address" (keyup.enter)="goto()">
-
+<div class="navContainer">
+  <div class="input-field col s12 on-map">
+    <input id="place-input" class="on-map" type="text" placeholder="Enter a place to go..."
+     [(ngModel)]="address" (keyup.enter)="goto()" (keyup)="find()">
+  </div>
+  <div class="suggestions on-map" *ngIf="foundList.length > 0">
+      <ul *ngFor="let item of foundList" >
+          <li >
+              <a (click)="select(item.address)">{{item.address}}</a>
+          </li>
+      </ul>
+  </div>
+</div>
  <button id="goto" class="btn btn-primary on-map map-button" href="#" title="Goto Place" (click)="goto()">
      <md-icon>navigation</md-icon></button>

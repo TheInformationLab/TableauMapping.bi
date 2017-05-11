@@ -3,7 +3,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 
-const URL = '/spatial/upload?'+localStorage.getItem('token');
+const URL = '/spatial/upload';
 
 @Component({
   selector: 'shape-upload',

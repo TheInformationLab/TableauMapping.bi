@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { routing } from './wdc.routing';
 import { WdcComponent } from "./wdc.component";
 
 @NgModule({
@@ -7,7 +8,8 @@ import { WdcComponent } from "./wdc.component";
     WdcComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    routing
   ]
 })
 

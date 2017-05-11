@@ -4,17 +4,52 @@ var Pbf = require('pbf');
 var fs = require('fs');
 var simplify = require('simplify-geojson');
 var flatten = require('geojson-flatten');
-var turf = require('@turf/turf');
 var Base64 = require('@ronomon/base64');
+const decompress = require('decompress');
+var shp = require('gtran-shapefile');
 var TextDecoder = require('text-encoding').TextDecoder;
 var TextEncoder = require('text-encoding').TextEncoder;
 var geo = {};
 
-geo.geoJson = function(path, callback) {
-  fs.readFile(path, function (err, data ) {
-    shp(data).then(function(geojson) {
-      callback(geojson)
+var deleteFolderRecursive = function(path, callback) {
+  if( fs.existsSync(path) ) {
+    fs.readdirSync(path).forEach(function(file,index){
+      var curPath = path + "/" + file;
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
     });
+    fs.rmdirSync(path);
+    callback();
+  }
+};
+
+geo.geoJson = function(file, callback) {
+  var folder = file.filename;
+  folder = "/tmp/" + folder.replace(".zip","");
+  decompress(file.path, folder).then(function (files)
+  {
+    var shpFile = "";
+    for (file of files) {
+      var filename = file.path;
+      var filename = filename.toUpperCase();
+      if (filename.substr(filename.length - 3) == "SHP") {
+        shpFile = folder + "/" + file.path;
+      }
+    }
+    shp.toGeoJson(shpFile).then(geojson => {
+      fs.unlink(file.path, function() {
+        deleteFolderRecursive(folder, function() {
+          callback(geojson);
+        });
+      });
+    }).catch(function () {
+       console.log("Error with shapefile conversion");
+    });
+  }).catch(function () {
+     console.log("Error with decompress");
   });
 }
 
@@ -64,7 +99,7 @@ geo.flatten = function(geojson, callback) {
 geo.chunkTabData = function(tabData, callback) {
   var retArray = [];
   console.log("TabData has " + tabData.length + " records");
-  var chunkSize = 10000;
+  var chunkSize = 5000;
   while (tabData.length > 0) {
     var chunk = [];
     chunk = tabData.slice(0,chunkSize - 1);
@@ -74,11 +109,6 @@ geo.chunkTabData = function(tabData, callback) {
       callback(retArray);
     }
   }
-}
-
-geo.bbox = function(geojson, callback) {
-  var bbox = turf.bbox(geojson);
-  callback(bbox);
 }
 
 module.exports = geo;

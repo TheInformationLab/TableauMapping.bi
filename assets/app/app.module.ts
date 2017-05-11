@@ -6,16 +6,17 @@ import "leaflet.vectorgrid";
 import 'hammerjs';
 
 import { GrowlModule } from 'primeng/primeng';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FileUploadModule } from 'ng2-file-upload';
 import { HttpModule } from "@angular/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
-import { WdcModule } from './wdc/wdc.module';
+//import { WdcModule } from './wdc/wdc.module';
 import { MappingModule } from './mapping/mapping.module';
 import { AuthModule } from './auth/auth.module';
+import { ResponsiveModule } from 'ng2-responsive';
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
@@ -50,9 +51,10 @@ import { LayerService } from "./layers/layer.service";
               ReactiveFormsModule,
               BrowserAnimationsModule,
               MaterialModule.forRoot(),
-              WdcModule,
+              //WdcModule,
               MappingModule,
-              AuthModule],
+              AuthModule,
+              ResponsiveModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {

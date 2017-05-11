@@ -1,11 +1,12 @@
-import {Component, OnInit } from '@angular/core';
-import {MdMenuModule, MdIconModule} from '@angular/material';
+import {Component, OnInit, ViewChild } from '@angular/core';
+import {MdMenuModule, MdIconModule,MdMenuTrigger, MdMenu} from '@angular/material';
 import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
 import * as Turf from "@turf/turf";
-
+import { MenuGroupsPipe } from './groups.pipe';
 import { MenuItem } from "./menuItem.model";
 import { Spatial} from '../../layers/spatial.model';
+import { MenuService } from "./menu.service";
 
 @Component({
   selector: 'menu',
@@ -25,15 +26,22 @@ import { Spatial} from '../../layers/spatial.model';
     font-size: 36px;
     margin: 0 0 0 -11px;
   }
+  h5 {
+    padding-left: 10px;
+    color: #999;
+  }
 `]
 })
-export class MenuComponent implements OnInit  {
+export class MenuComponent {
   turf = Turf;
-  menuItems: MenuItem[];
+  menuItems: MenuItem[] = [];
   mapBounds: any;
   allMeta: Spatial[] = [];
+  itemsAvailable: Boolean = false;
+  @ViewChild(MdMenu) menu: MdMenu;
+  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 
-  constructor(private layerService: LayerService, private mapService: MapService) {}
+  public constructor(private layerService: LayerService, private mapService: MapService, private menuService: MenuService) {}
 
   ngOnInit() {
     this.mapService.hasMoved.subscribe(
@@ -43,6 +51,15 @@ export class MenuComponent implements OnInit  {
           }
         }
     );
+    this.menuService.menuState.subscribe(
+      (open: Boolean) => {
+        if(open) {
+          this.trigger.openMenu();
+        } else {
+          this.trigger.closeMenu();
+        }
+      }
+    )
   }
 
   refreshItems() {
@@ -62,12 +79,12 @@ export class MenuComponent implements OnInit  {
     let leafletBounds: L.LatLngBounds;
     let curBounds = this.mapService.map.getBounds();
     let viewBbox: any = {...leafletBounds,...curBounds};
-    console.log(viewBbox);
     this.mapBounds = this.turf.bboxPolygon([viewBbox._southWest.lng, viewBbox._southWest.lat, viewBbox._northEast.lng, viewBbox._northEast.lat]);
     let transformedSpatials: MenuItem[] = [];
     for (let spatial of this.allMeta) {
       let item = new MenuItem(
         spatial.name,
+        spatial.country,
         spatial._id,
         spatial.bbox
       );
@@ -88,5 +105,15 @@ export class MenuComponent implements OnInit  {
       }
     }
     this.menuItems = transformedSpatials;
+    this.menuItems.sort((a, b) => {
+      if (a.name < b.name) return -1;
+      else if (a.name > b.name) return 1;
+      else return 0;
+    });
+    if (transformedSpatials.length > 0) {
+      this.itemsAvailable = true;
+    } else {
+      this.itemsAvailable = false;
+    }
   }
 }
