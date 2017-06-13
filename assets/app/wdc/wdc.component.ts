@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-
+import { MdCardModule } from '@angular/material';
 import { Spatial } from "../layers/spatial.model";
 import { LayerService } from "../layers/layer.service";
+import { MapService } from "../mapping/mapping.service";
+import { GeocodingService } from "../mapping/geocoding.service";
 
 import { Table } from "./table.model";
 
+declare var require: any;
 //import * as Tableau from "./tableauwdc-2.2.latest.min.js";
 require('./tableauwdc-2.2.latest.min.js');
 
@@ -14,7 +17,7 @@ interface Tableau {
     registerConnector: Function;
     phase: any;
     phaseEnum: any;
-    connectionData: Object;
+    connectionData: string;
     username: String;
     password: String;
     connectionName: String;
@@ -32,24 +35,50 @@ declare var myConnector: Connector;
 
 @Component({
   selector: 'wdc',
-  templateUrl: './wdc.component.html'
+  templateUrl: './wdc.component.html',
+  styles: [`
+    .demo-card-container {
+      display: flex;
+      flex-flow: column nowrap;
+      margin-top:30px;
+    }
+
+    .help-card {
+      margin: 0 100px 16px 100px;
+    }
+
+    .help-card-title {
+      font-size: 22px !important;
+    }
+    `]
 })
 
 export class WdcComponent {
   layers: Spatial[] = [];
 
-  constructor(private layerService: LayerService) {
+  constructor(private layerService: LayerService, private mapService: MapService, private geocoder: GeocodingService) {
 
     var myConnector = tableau.makeConnector();
 
     myConnector.init = function(initCallback) {
-      myConnector.setConnection();
-  		initCallback();
-      tableau.submit();
+      geocoder.getCurrentLocation()
+          .subscribe(
+              location => {
+                myConnector.setConnection(location);
+            		initCallback();
+                tableau.submit();
+              },
+              err => console.error(err)
+          );
   	};
 
     myConnector.getSchema = function(schemaCallback) {
       console.log("Getting Schema");
+      mapService.recordStats('getSchema',null,JSON.parse(tableau.connectionData))
+        .subscribe(
+          data => console.log(data),
+          error => console.error(error)
+        )
       layerService.getAllMeta()
         .subscribe(
           (layers: Spatial[]) => {
@@ -72,6 +101,11 @@ export class WdcComponent {
     myConnector.getData = function(table, doneCallback) {
       console.log("Getting table " + table.tableInfo.id);
       tableau.reportProgress("Requesting GeoJson");
+      mapService.recordStats('getData',table.tableInfo.id,JSON.parse(tableau.connectionData))
+        .subscribe(
+          data => console.log(data),
+          error => console.error(error)
+        );
       layerService.getData({id: table.tableInfo.id})
         .subscribe((geojson) => {
           tableau.reportProgress("Parsing data");
@@ -86,8 +120,9 @@ export class WdcComponent {
       // });
     };
 
-    myConnector.setConnection = function() {
+    myConnector.setConnection = function(userData) {
       tableau.connectionName = "TableauMapping.bi";
+      tableau.connectionData = JSON.stringify(userData);
       tableau.submit();
     };
 

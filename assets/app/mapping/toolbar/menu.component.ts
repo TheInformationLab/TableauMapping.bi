@@ -15,6 +15,9 @@ import { MenuService } from "./menu.service";
       position: absolute;
       z-index: 1000;
   }
+  .mat-menu-panel {
+    max-height: 80vh !important;
+  }
   .menu {
     right: 20px;
     bottom: 30px;
@@ -39,6 +42,7 @@ export class MenuComponent {
   allMeta: Spatial[] = [];
   itemsAvailable: Boolean = false;
   @ViewChild(MdMenu) menu: MdMenu;
+  @ViewChild(MdMenu) subMenu: MdMenu;
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 
   public constructor(private layerService: LayerService, private mapService: MapService, private menuService: MenuService) {}
@@ -86,7 +90,12 @@ export class MenuComponent {
         spatial.name,
         spatial.country,
         spatial._id,
-        spatial.bbox
+        spatial.bbox,
+        spatial.dateCreated,
+        spatial.sourceUrl,
+        spatial.sourceDate,
+        spatial.type,
+        spatial.continent
       );
       let bbox: {
         minX: number;

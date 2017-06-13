@@ -9,6 +9,7 @@ body {
   height: 100vh;
   margin: 0;
   width: 100%;
+  background: #fafafa;
 }
 
 a {
@@ -34,6 +35,7 @@ input.ng-invalid.ng-touched {
 
 .mat-menu-panel {
   max-width: none !important;
+  max-height: 80vh !important;
 }
 
 .leaflet-top {

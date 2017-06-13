@@ -1,0 +1,48 @@
+<div #introModal class="modal-dialog on-map" role="document" id="introModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" (click)="closeModal()"  data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="myModalLabel">Welcome to TableauMapping.bi</h4>
+    </div>
+    <div class="modal-body">
+      <p>Created by <a href="https://www.twitter.com/craigbloodworth" target="_blank">Craig Bloodworth</a></p>
+      <p><a href="http://www.theinformationlab.co.uk" target="_blank"><img [src]="logoPath" /></a></p>
+      <p>TableauMapping.bi is provided free of charge as a tool to benefit the Tableau community, no support is provided for its use other than associated online resources. If you wish to provide feedback, feature requests, or just to say a big "THANKS!" please email <a href="mailto:tableaumapping@theinformationlab.co.uk">tableaumapping@theinformationlab.co.uk</a></p>
+      <h3>Newsletter</h3>
+      <p>Want to keep up with the latest info from The Information Lab, including new dev projects and TabCommunicate news? Register for our newsletter:</p>
+      <!-- Begin MailChimp Signup Form -->
+      <link href="https://cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css">
+      <style type="text/css">
+      	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}
+      	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+      </style>
+      <div id="mc_embed_signup">
+      <form action="https://theinformationlab.us2.list-manage.com/subscribe/post?u=8954cfd70761b8c7fd5d8b528&amp;id=fc1dab699f" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <div id="mc_embed_signup_scroll">
+
+      	<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+          <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8954cfd70761b8c7fd5d8b528_fc1dab699f" tabindex="-1" value=""></div>
+          <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+          </div>
+      </form>
+      </div>
+
+      <!--End mc_embed_signup-->
+      <h3>Preview Map</h3>
+      <p>As you may notice the TableauMapping.bi blog format has been replaced by an interactive Mapbox map. This is intended to preview the boundary data available and help you choose what you want to download in to Tableau.</p>
+      <p>To start simply navigate to the location you're interested in by either panning the map or use the navigator in the top left. Then click the + button in the bottom right of the screen to see boundaries available in that location.</p>
+      <p>Selecting a boundary type will load it on the map. It's worth noting that the preview data is more generalised than the data that's passed to Tableau and so gaps may be visible between boundaries.</p>
+      <h3>Data to Tableau</h3>
+      <p>Of course playing with the preview map is great, but at some point you're probably going to want to bring the data down into Tableau. This is done via the Web Data Connector.</p>
+      <p>Simply create a new connection in Tableau Desktop, choose the Web Data Connector, then in the URL box enter <b>http://alpha.tableaumapping.bi/wdc</b></p>
+      <p>You should then be presented with a list of tables to choose from, each one representing a boundary from the preview map. For more info on building the map in Tableau please see our <a [routerLink]="['/help']">help section</a></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="closeModal()" >Close</button>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,11 @@
-<nav class="navbar nav-default navbar-fixed-top" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#" scroll-to="welcome" offset="50"><span>TableauMapping.bi</span></a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/" target="_blank">GitHub</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li ><a [routerLink]="['/map']">Map</a></li>
-          <li ><a [routerLink]="['/wdc']">WDC</a></li>
-        </ul>
-    </div>
-</nav>
+
+<md-toolbar color="primary">
+  <span>TableauMapping.bi</span>
+  <search></search>
+  <span class="example-spacer"></span>
+  <md-list class="menu-list">
+   <md-list-item><a [routerLink]="['/map']">Map</a></md-list-item>
+   <md-list-item><a [routerLink]="['/wdc']">WDC</a></md-list-item>
+   <md-list-item><a [routerLink]="['/help']"><md-icon>help</md-icon></a></md-list-item>
+  </md-list>
+</md-toolbar>

@@ -128,6 +128,9 @@ export class NavigatorComponent {
           this.map.on("zoomend", function(e) {
             setTimeout(function() {
               mapServ.openMenu();
+              this.map.off("zoomend", function(e) {
+
+              });
             }, 1000);
           });
         }, error => console.error(error));

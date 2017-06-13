@@ -82,13 +82,13 @@ export class GeocodingService {
             .flatMap(ip => this.http.get("//freegeoip.net/json/" + ip))
             .map((res: Response) => res.json())
             .map(result => {
-                let location = new Location();
+                // let location = new Location();
+                //
+                // location.address = result.city + ", " + result.region_code + " " + result.zip_code + ", " + result.country_code;
+                // location.latitude = result.latitude;
+                // location.longitude = result.longitude;
 
-                location.address = result.city + ", " + result.region_code + " " + result.zip_code + ", " + result.country_code;
-                location.latitude = result.latitude;
-                location.longitude = result.longitude;
-
-                return location;
+                return result;
             });
     }
 }

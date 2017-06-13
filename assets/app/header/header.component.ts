@@ -1,4 +1,5 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component } from '@angular/core';
+import { MdToolbarModule, MdSidenavModule } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -11,14 +12,17 @@ import { Component, OnInit  } from '@angular/core';
       padding-right: 10px;
     }
     a {
-      color: #fff;
+      color: rgba(255,255,255,.87);
+    }
+    .example-spacer {
+      flex: 1 1 auto;
+    }
+    .menu-list {
+      display: flex;
     }
     `]
 })
 
-export class HeaderComponent implements OnInit {
-
-  ngOnInit() {
-  }
+export class HeaderComponent  {
 
 }

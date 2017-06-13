@@ -3,12 +3,11 @@ import { Http, Headers, Response } from "@angular/http";
 import 'rxjs/Rx';
 
 import { Observable } from "rxjs";
-import { Spatial, Data } from './spatial.model';
+import { Spatial } from './spatial.model';
 
 @Injectable()
 export class LayerService {
   public metaLayers: Spatial[] = [];
-  public dataLayers: Data[] = [];
 
   constructor(private http: Http) {}
 
@@ -29,8 +28,7 @@ export class LayerService {
             spatial.bbox,
             spatial.country,
             spatial.continent,
-            spatial.tableSchema,
-            spatial.tabData
+            spatial.tableSchema
           ));
         }
         this.metaLayers = transformedSpatials;

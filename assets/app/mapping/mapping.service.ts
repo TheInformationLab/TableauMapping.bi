@@ -1,7 +1,9 @@
 import {Injectable, Input,Output,EventEmitter} from "@angular/core";
-import {Http} from "@angular/http";
+import { Http, Headers, Response } from "@angular/http";
+import { Observable } from "rxjs";
 import {Map} from "leaflet";
 import {Location} from "./location.class";
+import {GeocodingService} from "./geocoding.service";
 
 @Injectable()
 export class MapService {
@@ -10,8 +12,9 @@ export class MapService {
     private vtLayer: any;
     isLoading = new EventEmitter<Boolean>();
     hasMoved = new EventEmitter<Boolean>();
+    spatialInfo = new EventEmitter<any>();
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private geocoder: GeocodingService) {
         this.baseMaps = {
             OpenStreetMap: L.tileLayer("http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
@@ -33,7 +36,11 @@ export class MapService {
         L.DomEvent.disableScrollPropagation(element);
     }
 
-    addPolygon(geojson) {
+    populateInfo(info) {
+      this.spatialInfo.emit(info);
+    }
+
+    addPolygon(geojson, name, value) {
       if (this.vtLayer) {
           this.map.removeLayer(this.vtLayer);
       }
@@ -42,6 +49,15 @@ export class MapService {
             return {color: "#337ab7", weight: 1};
         }
       });
+      let layers = this.vtLayer;
+      if (name && value) {
+        Object.keys(layers._layers).forEach(function(key,index) {
+          if (layers._layers[key].feature.properties[name] == value) {
+            layers._layers[key].options.color = "#f2832f";
+          }
+        });
+        this.vtLayer = layers;
+      }
       this.vtLayer.bindPopup(function (layer) {
         let rtnStr: String = "";
 
@@ -65,5 +81,20 @@ export class MapService {
     mapMoved() {
       this.hasMoved.emit(true);
       this.hasMoved.emit(false);
+    }
+
+    recordStats(action, spatial, location) {
+      const body = {
+        action: action,
+        spatial: spatial,
+        location: location
+      };
+      const headers = new Headers({'Content-Type': 'application/json'});
+      return this.http.post('/stats/record',body,{headers: headers})
+        .map((response: Response) => {
+          const msg = response.json().message;
+          return msg;
+        })
+        .catch((error: Response) => Observable.throw(error))
     }
 }

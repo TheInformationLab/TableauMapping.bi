@@ -5,20 +5,29 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var compression = require('compression')
+var compression = require('compression');
+var timeout = require('connect-timeout');
 
 var app = express();
 
 app.use(compression());
 
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 60000,socketTimeoutMS : 60000 } },
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000,socketTimeoutMS : 60000  } } };
+app.use(timeout(600000));
+app.use(haltOnTimedout);
 
-mongoose.connect('mongodb://localhost:27017/tableau-mapping');
+function haltOnTimedout(req, res, next){
+  if (!req.timedout) next();
+}
+
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 600000,socketTimeoutMS : 600000 } },
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 600000,socketTimeoutMS : 600000  } } };
+
 
 var appRoutes = require('./routes/app');
 var authRoutes = require('./routes/auth');
 var spatialRoutes = require('./routes/spatial');
+var searchRoutes = require('./routes/search');
+var statsRoutes = require('./routes/stats');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,6 +50,8 @@ app.use(function (req, res, next) {
 
 app.use('/auth', authRoutes);
 app.use('/spatial', spatialRoutes);
+app.use('/search', searchRoutes);
+app.use('/stats', statsRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler

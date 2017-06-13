@@ -13,36 +13,37 @@ import { HttpModule } from "@angular/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
-//import { WdcModule } from './wdc/wdc.module';
 import { MappingModule } from './mapping/mapping.module';
 import { AuthModule } from './auth/auth.module';
 import { ResponsiveModule } from 'ng2-responsive';
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
-import { LayerComponent } from "./layers/layer.component";
-import { LayersComponent } from "./layers/layers.component";
-import { LayerListComponent } from "./layers/layer-list.component";
+import { SearchComponent } from "./header/search.component";
+import { SearchGroupsPipe } from './header/groups.pipe';
 import { UploadComponent } from "./upload/upload.component";
+import { HelpComponent } from "./help/help.component";
 import { AuthComponent } from "./auth/auth.component";
 
 import { routing } from "./app.routing";
 import { AuthService } from "./auth/auth.service";
 import { LayerService } from "./layers/layer.service";
+import { SearchService } from "./header/search.service";
 
 
 @NgModule({
     declarations: [
         AppComponent,
         HeaderComponent,
-        LayerComponent,
-        LayersComponent,
-        LayerListComponent,
+        SearchComponent,
+        SearchGroupsPipe,
         UploadComponent,
+        HelpComponent,
         AuthComponent
     ],
     providers: [AuthService,
-                LayerService],
+                LayerService,
+                SearchService],
     imports: [BrowserModule,
               routing,
               HttpModule,
@@ -51,7 +52,6 @@ import { LayerService } from "./layers/layer.service";
               ReactiveFormsModule,
               BrowserAnimationsModule,
               MaterialModule.forRoot(),
-              //WdcModule,
               MappingModule,
               AuthModule,
               ResponsiveModule],

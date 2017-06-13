@@ -1,12 +1,14 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
 import {HeaderComponent} from "../header/header.component";
 import {NavigatorComponent} from "./navigator/navigator.component";
 import {MdProgressSpinnerModule} from '@angular/material';
 import {MenuComponent} from "./toolbar/menu.component";
+import {IntroComponent} from "./intro/intro.component";
 import {MapService} from "./mapping.service";
 import {GeocodingService} from "./geocoding.service";
 import {Location} from "./location.class";
 import { ActivatedRoute } from '@angular/router';
+import { DialogService } from "ng2-bootstrap-modal";
 // import { Router } from "@angular/router";
 
 @Component({
@@ -19,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 
     #map {
         position:absolute;
-        top:30px;
+        top:64px;
         bottom:0;
         width:100%;
     }
@@ -45,7 +47,7 @@ export class MapComponent implements OnInit  {
   public isLoading: Boolean = true;
   sub: any;
 
-    constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute/*,private router: Router*/) {
+    constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute, private dialogService:DialogService /*,private router: Router*/) {
       // let userAgent = navigator.userAgent;
       // if (userAgent.includes("Tableau") || userAgent.includes("Qt")) {
       //   router.navigateByUrl('/wdc');
@@ -82,11 +84,18 @@ export class MapComponent implements OnInit  {
           this.mapService.map = map;
           this.geocoder.getCurrentLocation()
               .subscribe(
-                  location => map.panTo([location.latitude, location.longitude]),
+                  location => {
+                    map.panTo([location.latitude, location.longitude]);
+                    mapServ.recordStats('entry',null,location)
+                      .subscribe(
+                        data => console.log(data),
+                        error => console.error(error)
+                      );
+                    localStorage.setItem('userData', JSON.stringify(location));
+                  },
                   err => console.error(err)
               );
           this.mapService.showLoading(false);
        });
-
     }
 }

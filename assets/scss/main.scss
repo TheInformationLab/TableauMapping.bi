@@ -1,1 +1,9 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.mat-toolbar.mat-primary {
+    background: #337ab7;
+    color: rgba(255,255,255,.87);
+}
+.mat-progress-spinner path, .mat-spinner path {
+    stroke: #337ab7;
+  }

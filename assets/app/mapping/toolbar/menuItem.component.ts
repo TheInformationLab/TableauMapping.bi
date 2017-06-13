@@ -17,11 +17,17 @@ export class MenuItemComponent {
 
     showPolygon() {
       this.mapService.showLoading(true);
+      this.mapService.populateInfo(this.menuItem);
       var opt = { id: this.menuItem.id};
+      this.mapService.recordStats('showPolygon',this.menuItem.id,JSON.parse(localStorage.getItem('userData')))
+        .subscribe(
+          data => console.log(data),
+          error => console.error(error)
+        );
       this.layerService.getGeojson(opt)
         .subscribe(
           (geojson) => {
-            this.mapService.addPolygon(geojson);
+            this.mapService.addPolygon(geojson, null, null);
           });
     }
 

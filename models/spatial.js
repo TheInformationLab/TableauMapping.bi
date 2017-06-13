@@ -25,7 +25,8 @@ var schema = new Schema({
     id: {type: String},
     alias: {type: String},
     columns: [columnSchema]
-  }/*,
+  }
+  /*,
   tabData: {type: String}*/
 });
 
