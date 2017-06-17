@@ -1,4 +1,5 @@
 import {Component, ElementRef, ViewChild, Input} from "@angular/core";
+import {MdProgressSpinnerModule} from '@angular/material';
 import { MapService } from "../mapping/mapping.service";
 import { LayerService } from "../layers/layer.service";
 import { SearchService } from "./search.service";
@@ -21,6 +22,15 @@ import { SearchItem } from "./searchItem.model";
       position: relative;
       top: 7px;
       z-index: 5000;
+    }
+    md-spinner {
+      right: 40px;
+      top: 7px;
+      width: 25px;
+      height: 25px;
+      position: relative;
+      z-index: 2000;
+      display: inline-block;
     }
     input {
       color: rgba(255, 255, 255, 0.3);
@@ -115,6 +125,7 @@ export class SearchComponent {
     search: string;
     public foundList: SearchItem[] = [];
     public elementRef;
+    public isLoading: Boolean = false;
     @ViewChild('searchResults') results:ElementRef;
 
     constructor(private searchService: SearchService, myElement: ElementRef,private layerService: LayerService, private mapService: MapService) {
@@ -124,13 +135,19 @@ export class SearchComponent {
 
     find() {
       if (this.search !== ""){
+        this.isLoading = true;
         this.searchService.searchIndex(this.search)
         .subscribe(resp => {
           console.log(resp.items);
-            this.foundList = resp.items;
-        }, error => console.error(error));
+          this.foundList = resp.items;
+          this.isLoading = false;
+        }, error => {
+          console.error(error)
+          this.isLoading = false;
+        });
       } else {
           this.foundList = [];
+          this.isLoading = false;
       }
     }
 

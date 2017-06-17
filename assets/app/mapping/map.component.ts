@@ -69,7 +69,7 @@ export class MapComponent implements OnInit  {
               zoomControl: false,
               center: L.latLng(53.959965, -1.087298),
               zoom: 6,
-              minZoom: 0,
+              minZoom: 3,
               maxZoom: 9,
               layers: [this.mapService.baseMaps.MapBox]
           });

@@ -2,6 +2,7 @@
   <div class="input-field col s12 on-map">
     <md-icon id="iconSearch">search</md-icon><input id="search-input" class="searchBox on-map" type="search" placeholder="Search"
      [(ngModel)]="search" (keyup)="find()" (click)="showResults()">
+    <md-spinner style="on-map" *ngIf="isLoading"></md-spinner>
   </div>
   <div #searchResults class="suggestions on-map" *ngIf="foundList.length > 0">
     <div *ngFor = "let layer of foundList | groups">

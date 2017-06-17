@@ -13,7 +13,7 @@ var SearchIndex = require('../models/index');
 router.use(compression());
 
 router.get('/meta', function(req, res, next) {
-  var query = Spatial.find({}).select('bbox continent country dateCreated name owner sourceDate sourceUrl type tableSchema tabData');
+  var query = Spatial.find({"name": { $ne: "The Information Lab" }}).select('bbox continent country dateCreated name owner sourceDate sourceUrl type tableSchema');
 
   query.exec(function (err, spatials) {
     if (err) {
