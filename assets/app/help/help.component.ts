@@ -18,10 +18,21 @@ import { MdCardModule } from '@angular/material';
     .help-card-title {
       font-size: 22px !important;
     }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    ol {
+      padding-left: 24px;
+      line-height: 24px;
+    }
     `]
 })
 
 export class HelpComponent  {
+  public buildPolygon: string;
 
-
+  constructor() {
+    this.buildPolygon = "./img/buildPolygon.gif";
+  }
 }

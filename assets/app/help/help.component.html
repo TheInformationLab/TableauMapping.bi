@@ -17,7 +17,7 @@
     </md-card-header>
     <md-card-content>
       <p>Of course playing with the preview map is great, but at some point you're probably going to want to bring the data down into Tableau. This is done via the Web Data Connector.</p>
-      <p>Simply create a new connection in Tableau Desktop, choose the Web Data Connector, then in the URL box enter <b>http://alpha.tableaumapping.bi/wdc</b></p>
+      <p>Simply create a new connection in Tableau Desktop, choose the Web Data Connector, then in the URL box enter <b>https://beta.tableaumapping.bi/wdc</b></p>
     </md-card-content>
   </md-card>
   <md-card class="help-card">
@@ -26,9 +26,15 @@
       <md-card-title class="help-card-title">Building a Polygon</md-card-title>
     </md-card-header>
     <md-card-content>
-      <p>
-        [ Insert Polygon Build Gif ]
-      </p>
+      <p>While we wait for the Web Data Connector to work with spatial data you'll need to build your map using the polygon mark. Here's how:</p>
+      <p><img [src]="buildPolygon" /></p>
+      <ol>
+        <li>Change the mark type to <b>Polygon</b></li>
+        <li>Drag the dimenion <b>-> Path</b> to the Path drop zone</li>
+        <li>Drag both <b>-> Polygon ID</b> and <b>-> Sub Polygon ID</b> onto level of detail</li>
+        <li>Either double click <b>-> Latitude</b> or drag it to the Rows shelf</li>
+        <li>Either douple click <b>-> Longitude</b> or drag it to the Columns shelf</li>
+      </ol>
     </md-card-content>
   </md-card>
 </div>

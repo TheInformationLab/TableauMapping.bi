@@ -24,6 +24,7 @@ var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 
 
 
 var appRoutes = require('./routes/app');
+var errorRoutes = require('./routes/errors');
 var authRoutes = require('./routes/auth');
 var spatialRoutes = require('./routes/spatial');
 var searchRoutes = require('./routes/search');
@@ -48,6 +49,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use('/healthcheck', require('express-healthcheck')());
+app.use('/errors', errorRoutes);
 app.use('/auth', authRoutes);
 app.use('/spatial', spatialRoutes);
 app.use('/search', searchRoutes);

@@ -17,13 +17,12 @@ var location = new Schema({
 });
 
 var schema = new Schema({
-  action: {type: String, required: true},
-  spatial: {type: Schema.Types.ObjectId, ref: 'Spatial'},
+  message: {type: String},
+  stack: {type: String},
   location: location,
-  term: {type: String},
   timestamp: {type: Date, default: Date.now }
 });
 
 schema.plugin(mongooseUniqueValidator);
 
-module.exports = mongoose.model('Stat', schema);
+module.exports = mongoose.model('Error', schema);

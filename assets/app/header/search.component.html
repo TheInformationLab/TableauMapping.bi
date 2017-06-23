@@ -5,7 +5,7 @@
     <md-spinner style="on-map" *ngIf="isLoading"></md-spinner>
   </div>
   <div #searchResults class="suggestions on-map" *ngIf="foundList.length > 0">
-    <div *ngFor = "let layer of foundList | groups">
+    <div *ngFor = "let layer of foundList | groups | sort">
       <h5>{{ layer.name }}</h5>
       <div *ngFor="let searchItem of layer.groups">
         <a md-menu-item (click)="showPolygon(searchItem)"><span id="col">{{searchItem.name}}:</span> <span id="name">{{searchItem.value}}</span></a>

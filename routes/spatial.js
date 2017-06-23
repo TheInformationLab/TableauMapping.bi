@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var path = require("path");
 var fs = require('fs');
 var geo = require('../func/geo');
 var wdc = require('../func/wdc');
@@ -32,50 +33,16 @@ router.get('/meta', function(req, res, next) {
   });
 });
 
-router.post('/tabdata', function(req, res, next) {
-  console.log("Getting TabData "+req.body.id);
-  Spatial.findById(mongoose.Types.ObjectId(req.body.id), function (err, resp) {
-    for (var i = 0; i < resp.attachments.length; i++) {
-      var rec = i;
-      var attachment = resp.attachments[rec];
-      var fileName = attachment.filename;
-      console.log(fileName);
-      console.log(fileName.substring(0, 7));
-      if (fileName.substring(0, 7) === "TabData") {
-        var foundId = rec;
-        resp.loadSingleAttachment(fileName)
-          .then(function(doc) {
-            var buf = doc.attachments[foundId].buffer
-            var b = new Buffer(buf.toString("utf-8"), 'base64')
-            var s = b.toString();
-            //mongoose.connection.close();
-            res.status(201).json({
-              message: 'GeoJSON found',
-              data: JSON.parse(s)
-            });
-          })
-          .catch(function(err) {
-            //mongoose.connection.close();
-            res.status(500).json({
-              message: 'Error finding attachment ' + chunkName + ' for doc ' + req.body.id,
-              error: err
-            });
-          });
-      }
-    }
-  });
-});
-
-var getGeojson = function(id, callback) {
-  console.log("Getting GeoJSON "+id);
+var getData = function(id, type, callback) {
+  console.log("Getting " + type + " " +id);
   Spatial.findById(mongoose.Types.ObjectId(id), function (err, resp) {
     for (var i = 0; i < resp.attachments.length; i++) {
       var rec = i;
       var attachment = resp.attachments[rec];
       var fileName = attachment.filename;
-      if (fileName.substring(0, 7) === "GeoJSON") {
+      if (fileName.substring(0, 7) === type) {
         var foundId = rec;
-        console.log("Geojson found");
+        console.log(type +" found");
         resp.loadSingleAttachment(fileName)
           .then(function(doc) {
             console.log(doc.attachments[foundId]);
@@ -97,10 +64,10 @@ var getGeojson = function(id, callback) {
 }
 
 router.post('/geojson', function(req, res, next) {
-  fs.readFile('/tmp/' + req.body.id, 'utf8', function (fileErr, geojson) {
+  fs.readFile('/tmp/GeoJSON/' + req.body.id, 'utf8', function (fileErr, geojson) {
     console.log(fileErr);
     if(fileErr) {
-      getGeojson(req.body.id, function(err, resp) {
+      getData(req.body.id, 'GeoJSON', function(err, resp) {
         console.log(err);
         if (err != null && err!= {}) {
           //mongoose.connection.close()
@@ -110,7 +77,7 @@ router.post('/geojson', function(req, res, next) {
           });
         }
         //mongoose.connection.close();
-        fs.writeFile('/tmp/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
+        fs.writeFile('/tmp/GeoJSON/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
           res.status(201).json({
             message: 'GeoJSON found',
             data: resp
@@ -120,6 +87,36 @@ router.post('/geojson', function(req, res, next) {
     } else {
       res.status(201).json({
         message: 'GeoJSON found',
+        data: JSON.parse(geojson)
+      });
+    }
+  });
+});
+
+router.post('/tabdata', function(req, res, next) {
+  fs.readFile('/tmp/TabData/' + req.body.id, 'utf8', function (fileErr, geojson) {
+    console.log(fileErr);
+    if(fileErr) {
+      getData(req.body.id, 'TabData', function(err, resp) {
+        console.log(err);
+        if (err != null && err!= {}) {
+          //mongoose.connection.close()
+          res.status(500).json({
+            message: 'Error finding attachment for doc ' + req.body.id,
+            error: err
+          });
+        }
+        //mongoose.connection.close();
+        fs.writeFile('/tmp/TabData/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
+          res.status(201).json({
+            message: 'TabData found',
+            data: resp
+          });
+        });
+      });
+    } else {
+      res.status(201).json({
+        message: 'TabData found',
         data: JSON.parse(geojson)
       });
     }
@@ -221,8 +218,18 @@ router.post('/delete', function(req, res, next) {
           if (rec == resp.attachments.length - 1) {
             resp.remove();
             //mongoose.connection.close();
-            res.status(201).json({
-              message: 'Doc ' + req.body.id + ' deleted'
+            var myID = req.body.id;
+            SearchIndex.remove({spatial: mongoose.Types.ObjectId(myID.trim())}, function(err) {
+              if (err) {
+                res.status(500).json({
+                  message: 'Error deleting cache for doc ' + req.body.id,
+                  error: err
+                });
+                return;
+              }
+              res.status(201).json({
+                message: 'Doc ' + req.body.id + ' deleted'
+              });
             });
           }
         })
@@ -240,6 +247,30 @@ router.post('/delete', function(req, res, next) {
         message: "Can't locate doc " + req.body.id
       });
     }
+  });
+});
+
+router.post('/cache/create', function (req, res, next) {
+  const { spawn } = require('child_process');
+  const ls = spawn('node', [path.join(__dirname, '../func/', 'cache.js')]);
+  res.status(201).json({
+    message: 'Cache started. Check status for updates'
+  });
+});
+
+router.get('/cache/status', function (req, res, next) {
+  fs.readFile('/tmp/caching.txt', 'utf8', function (fileErr, cache) {
+    if(fileErr) {
+      res.status(500).json({
+        message: 'Error finding cache status',
+        error: fileErr
+      });
+      return;
+    }
+    res.status(201).json({
+      message: 'Cache status',
+      status: JSON.parse('['+cache+']')
+    });
   });
 });
 

@@ -12,6 +12,7 @@ import { InfoContentComponent } from "./info/infoContent.component";
 import { MaterialModule } from '@angular/material';
 import { MdMenuModule, MdIconModule, MdProgressSpinnerModule } from '@angular/material';
 import { MenuGroupsPipe } from './toolbar/groups.pipe';
+import { MenuSortPipe } from './toolbar/sort.pipe';
 import { routing } from "../app.routing";
 
 import { MapService } from "./mapping.service";
@@ -29,6 +30,7 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
     InfoComponent,
     InfoContentComponent,
     MenuGroupsPipe,
+    MenuSortPipe,
     IntroComponent
   ],
   entryComponents: [

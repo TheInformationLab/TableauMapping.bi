@@ -1,0 +1,9 @@
+<h3>{{ titleCase(data.severity) }}</h3>
+<md-list>
+  <h3 md-subheader class="header">Summary</h3>
+  <p>Really sorry to interupt, but there's something you should know:</p>
+  <p>{{ data.summary }}</p>
+  <p *ngIf="data.severity=='error'">No need to email, we've been alerted to the issue. Simply refresh your browser and give it another go</p>
+  <h3 md-subheader class="header">Detail</h3>
+  <p>{{ data.detail }}</p>
+</md-list>

@@ -4,12 +4,13 @@ import 'rxjs/Rx';
 
 import { Observable } from "rxjs";
 import { Spatial } from './spatial.model';
+import { ErrorService } from "../errors/error.service";
 
 @Injectable()
 export class LayerService {
   public metaLayers: Spatial[] = [];
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private errorService: ErrorService) {}
 
   getAllMeta() {
     return this.http.get('/spatial/meta')
@@ -34,7 +35,14 @@ export class LayerService {
         this.metaLayers = transformedSpatials;
         return transformedSpatials;
       })
-      .catch((error: Response) => Observable.throw(error.json()));
+      .catch((error: Response) => {
+        if(error.status == 0) {
+          this.errorService.error("GET /spatial/meta net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+          return Observable.throw(error.json());
+        } else {
+          return Observable.throw(error.json());
+        }
+      });
   }
 
   getData(options: Object) {
@@ -45,7 +53,14 @@ export class LayerService {
         const geojson = response.json().data;
         return geojson;
     })
-    .catch((error: Response) => Observable.throw(error))
+    .catch((error: Response) => {
+      if(error.status == 0) {
+        this.errorService.error("POST /spatial/tabdata net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+        return Observable.throw(error.json());
+      } else {
+        return Observable.throw(error.json());
+      }
+    })
   }
 
   getGeojson(options: Object) {
@@ -57,6 +72,13 @@ export class LayerService {
         const geojson = response.json().data;
         return geojson;
     })
-    .catch((error: Response) => Observable.throw(error))
+    .catch((error: Response) => {
+      if(error.status == 0) {
+        this.errorService.error("POST /spatial/geojson net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+        return Observable.throw(error.json());
+      } else {
+        return Observable.throw(error.json());
+      }
+    })
   }
 }

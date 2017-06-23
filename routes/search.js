@@ -10,7 +10,6 @@ router.post('/index', function(req, res, next) {
   var searchTerm = req.body.term;
   SearchIndex.find({value: new RegExp(searchTerm, "ig")})
    .skip(0)
-   .limit(16)
    .populate('spatial')
    .exec(function(err, docs) {
      if (err) {

@@ -1,6 +1,7 @@
 import {Http, Headers, Response} from "@angular/http";
 import {Location} from "./location.class";
 import {Injectable} from "@angular/core";
+import {ErrorService} from "../errors/error.service";
 
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
@@ -9,7 +10,7 @@ import "rxjs/add/operator/mergeMap";
 export class GeocodingService {
     http: Http;
 
-    constructor(http: Http) {
+    constructor(http: Http, private errorService: ErrorService) {
         this.http = http;
     }
 
@@ -18,7 +19,9 @@ export class GeocodingService {
             .get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURIComponent(address) + ".json?access_token=pk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiJjajJibjJmb2EwMDI1MzNwajJoN2R1bzliIn0.onogeMJemGAo605r8issHg&limit=1")
             .map(res => res.json())
             .map(result => {
-                if (result.features.length === 0) { throw new Error("Can't find address"); }
+                if (result.features.length === 0) {
+                  this.errorService.info("Mapbox isn't aware of '"+ address +"'. Please try an alternative","Unable to locate '" + address + "'");
+                }
 
                 let location = new Location();
                 location.address = result.features[0].place_name;
@@ -46,7 +49,9 @@ export class GeocodingService {
             .get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURIComponent(address) + ".json?access_token=pk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiJjajJibjJmb2EwMDI1MzNwajJoN2R1bzliIn0.onogeMJemGAo605r8issHg&limit=10")
             .map(res => res.json())
             .map(result => {
-                if (result.features.length === 0) { throw new Error("Can't find address"); }
+                if (result.features.length === 0) {
+                  this.errorService.info("Mapbox isn't aware of '"+ address +"'. Please try an alternative","Unable to locate '" + address + "'");
+                 }
 
                 let results: Location[] = [];
 

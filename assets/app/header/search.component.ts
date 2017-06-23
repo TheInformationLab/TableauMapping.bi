@@ -4,9 +4,11 @@ import { MapService } from "../mapping/mapping.service";
 import { LayerService } from "../layers/layer.service";
 import { SearchService } from "./search.service";
 import { SearchGroupsPipe } from './groups.pipe';
+import { SearchSortPipe } from './sort.pipe';
 import { MdInputModule } from '@angular/material';
 import { Spatial } from "../layers/spatial.model";
 import { SearchItem } from "./searchItem.model";
+import { ErrorService } from "../errors/error.service";
 
 @Component({
     selector: "search",
@@ -88,6 +90,8 @@ import { SearchItem } from "./searchItem.model";
       cursor: default;
       font-size: 13px;
       outline: none;
+      max-height: 75%;
+      overflow-x: auto;
     }
 
     .navContainer{
@@ -128,35 +132,40 @@ export class SearchComponent {
     public isLoading: Boolean = false;
     @ViewChild('searchResults') results:ElementRef;
 
-    constructor(private searchService: SearchService, myElement: ElementRef,private layerService: LayerService, private mapService: MapService) {
+    constructor(private searchService: SearchService, myElement: ElementRef,private layerService: LayerService, private mapService: MapService, private errorService: ErrorService) {
         this.search = "";
         this.elementRef = myElement;
     }
 
     find() {
-      if (this.search !== ""){
+      if (this.search !== "" && this.search.length > 2){
         this.isLoading = true;
         this.searchService.searchIndex(this.search)
         .subscribe(resp => {
-          console.log(resp.items);
+          console.log(resp);
+          if (resp.items.length === 0) {
+            this.errorService.info("We don't have any spatial data for '"+ this.search +"'. Know where we can find some? Send a quick email to tableaumapping@theinformationlab.co.uk and we'll try to include it","Unable to find '" + this.search + "'");
+           }
           this.foundList = resp.items;
           this.isLoading = false;
-        }, error => {
-          console.error(error)
+        },
+        error => {
+          console.error(error);
           this.isLoading = false;
         });
       } else {
-          this.foundList = [];
-          this.isLoading = false;
+        this.foundList = [];
+        this.isLoading = false;
       }
     }
 
     showResults() {
       if (this.foundList.length > 0 && this.search !== "") {
-        this.results.nativeElement.style.visibility = "visible";
+       if (this.results) {
+          this.results.nativeElement.style.visibility = "visible";
+       }
       }
     }
-
 
     handleClick(event){
        var clickedComponent = event.target;
@@ -168,7 +177,9 @@ export class SearchComponent {
           clickedComponent = clickedComponent.parentNode;
        } while (clickedComponent);
         if(!inside){
-            this.foundList = [];
+         if (this.results) {
+            this.results.nativeElement.style.visibility = "visible";
+          }
         }
     }
 
@@ -176,15 +187,24 @@ export class SearchComponent {
       this.results.nativeElement.style.visibility = "hidden";
       this.mapService.showLoading(true);
       this.mapService.populateInfo(layer.spatial);
+      this.mapService.recordStats('showPolygon',layer.spatial._id,JSON.parse(localStorage.getItem('userData')))
+        .subscribe(
+          data => console.log(data),
+          //error => this.errorService.error(error)
+          error => console.error(error)
+        );
       var opt = { id: layer.spatial._id};
       let key = layer.name;
       let value = layer.value;
       let centroid = JSON.parse(layer.centroid);
       this.layerService.getGeojson(opt)
         .subscribe(
-          (geojson) => {
+          geojson => {
             this.mapService.addPolygon(geojson, key, value);
             this.mapService.map.flyTo(centroid, 9);
-          });
+          },
+          //error => this.errorService.error(error)
+          error => console.error(error)
+        );
     }
 }

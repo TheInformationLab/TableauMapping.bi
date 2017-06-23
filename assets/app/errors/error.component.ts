@@ -1,25 +1,34 @@
-import { ErrorHandler, Inject } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {MdDialog} from '@angular/material';
 import { ErrorService } from './error.service';
+import { Message } from 'primeng/primeng';
 
+import { ErrorMsgComponent } from './errorMsg.component';
 
-export class CustomErrorHandler implements ErrorHandler {
+@Component({
+  selector: 'errorMsg',
+  template: ``
+})
+export class ErrorComponent implements OnInit {
+  previousMessage: Message;
 
-    constructor(@Inject(ErrorService) private errorService: ErrorService) {
-    }
+  constructor(public dialog: MdDialog, private errorService: ErrorService) {
+  }
 
-    handleError(error: any): void {
-        this.showErrorInConsole(error);
-        setTimeout(() =>
-            this.errorService.error(error.json().Message), 1);
-    }
-
-    private showErrorInConsole(error: any) :void {
-        if (console && console.group && console.error) {
-            console.group("Error Log");
-            console.error(error);
-            console.error(error.message);
-            console.error(error.stack);
-            console.groupEnd();
+  ngOnInit() {
+    console.log("Error Component Init");
+    this.errorService.latestMessage.subscribe(
+        (newMsg: Message) => {
+          if (!this.previousMessage || newMsg.summary != this.previousMessage.summary) {
+            let dialogRef = this.dialog.open(ErrorMsgComponent, {
+              data: newMsg,
+              height: '500px',
+              width: '800px',
+            });
+            this.previousMessage = newMsg;
+          }
         }
-    }
+    );
+  }
+
 }

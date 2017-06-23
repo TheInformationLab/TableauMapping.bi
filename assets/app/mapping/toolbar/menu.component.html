@@ -1,5 +1,5 @@
 <md-menu #menu="mdMenu" class="on-map">
-  <div *ngFor = "let country of menuItems | groups">
+  <div *ngFor = "let country of menuItems | groups | sort">
     <h5>{{ country.name }}</h5>
   <menu-item
          [menuItem]="menuItem"

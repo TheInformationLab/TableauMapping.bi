@@ -4,6 +4,7 @@ import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
 import * as Turf from "@turf/turf";
 import { MenuGroupsPipe } from './groups.pipe';
+import { MenuSortPipe } from './sort.pipe';
 import { MenuItem } from "./menuItem.model";
 import { Spatial} from '../../layers/spatial.model';
 import { MenuService } from "./menu.service";

@@ -4,6 +4,8 @@
 import "leaflet";
 import "leaflet.vectorgrid";
 import 'hammerjs';
+//import  CustomErrorHandler from "./errors/error.class";
+import  {CustomErrorHandler} from "./errors/error.class";
 
 import { GrowlModule } from 'primeng/primeng';
 import { NgModule, ErrorHandler} from '@angular/core';
@@ -21,14 +23,18 @@ import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
 import { SearchComponent } from "./header/search.component";
 import { SearchGroupsPipe } from './header/groups.pipe';
+import { SearchSortPipe } from './header/sort.pipe';
 import { UploadComponent } from "./upload/upload.component";
 import { HelpComponent } from "./help/help.component";
 import { AuthComponent } from "./auth/auth.component";
+import { ErrorComponent } from "./errors/error.component";
+import { ErrorMsgComponent } from "./errors/errorMsg.component";
 
 import { routing } from "./app.routing";
 import { AuthService } from "./auth/auth.service";
 import { LayerService } from "./layers/layer.service";
 import { SearchService } from "./header/search.service";
+import { ErrorService } from './errors/error.service';
 
 
 @NgModule({
@@ -37,13 +43,21 @@ import { SearchService } from "./header/search.service";
         HeaderComponent,
         SearchComponent,
         SearchGroupsPipe,
+        SearchSortPipe,
         UploadComponent,
         HelpComponent,
-        AuthComponent
+        AuthComponent,
+        ErrorComponent,
+        ErrorMsgComponent
     ],
-    providers: [AuthService,
+    entryComponents: [
+        ErrorMsgComponent
+    ],
+    providers: [{ provide: ErrorHandler, useClass: CustomErrorHandler },
+                AuthService,
                 LayerService,
-                SearchService],
+                SearchService,
+                ErrorService],
     imports: [BrowserModule,
               routing,
               HttpModule,
