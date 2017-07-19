@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MapComponent } from "./map.component";
 import { NavigatorComponent } from "./navigator/navigator.component";
@@ -18,6 +18,7 @@ import { routing } from "../app.routing";
 import { MapService } from "./mapping.service";
 import { GeocodingService } from "./geocoding.service";
 import { MenuService } from "./toolbar/menu.service";
+import { IntroService } from "./intro/intro.service";
 
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 
@@ -40,12 +41,14 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
   providers: [
     MapService,
     GeocodingService,
-    MenuService
+    MenuService,
+    IntroService
   ],
   imports: [
     CommonModule,
     routing,
     FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
     MdMenuModule,
     MdIconModule,

@@ -17,6 +17,7 @@ var location = new Schema({
 });
 
 var schema = new Schema({
+  severity: {type: String},
   message: {type: String},
   stack: {type: String},
   location: location,

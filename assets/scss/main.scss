@@ -7,3 +7,6 @@
 .mat-progress-spinner path, .mat-spinner path {
     stroke: #337ab7;
   }
+.cdk-overlay-pane {
+  z-index: 1002;
+}

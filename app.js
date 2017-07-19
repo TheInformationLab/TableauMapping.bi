@@ -29,6 +29,7 @@ var authRoutes = require('./routes/auth');
 var spatialRoutes = require('./routes/spatial');
 var searchRoutes = require('./routes/search');
 var statsRoutes = require('./routes/stats');
+var apiRoutes = require('./routes/api');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -54,6 +55,7 @@ app.use('/errors', errorRoutes);
 app.use('/auth', authRoutes);
 app.use('/spatial', spatialRoutes);
 app.use('/search', searchRoutes);
+app.use('/api', apiRoutes);
 app.use('/stats', statsRoutes);
 app.use('/', appRoutes);
 
