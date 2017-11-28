@@ -16,6 +16,6 @@ import { WdcComponent } from "./wdc.component";
   ]
 })
 
-export class WdcModule {
+export class WdcLegacyModule {
 
 }

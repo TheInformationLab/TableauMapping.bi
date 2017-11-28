@@ -1,33 +1,35 @@
 <div class="demo-card-container" layout="row" layout-align="center">
-  <md-card class="help-card">
-    <md-card-header>
-      <md-icon md-card-avatar>map</md-icon>
-      <md-card-title class="help-card-title">Using the Map Preview</md-card-title>
-    </md-card-header>
-    <md-card-content>
+  <mat-card class="help-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>map</mat-icon>
+      <mat-card-title class="help-card-title">Using the Map Preview</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
       <p>As you may notice the TableauMapping.bi blog format has been replaced by an interactive Mapbox map. This is intended to preview the boundary data available and help you choose what you want to download in to Tableau.</p>
       <p>To start simply navigate to the location you're interested in by either panning the map or use the navigator in the top left. Then click the + button in the bottom right of the screen to see boundaries available in that location.</p>
       <p>Selecting a boundary type will load it on the map. It's worth noting that the preview data is more generalised than the data that's passed to Tableau and so gaps may be visible between boundaries.</p>
-    </md-card-content>
-  </md-card>
-  <md-card class="help-card">
-    <md-card-header>
-      <md-icon md-card-avatar>cloud_download</md-icon>
-      <md-card-title class="help-card-title">Connecting with Web Data Connector</md-card-title>
-    </md-card-header>
-    <md-card-content>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="help-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_download</mat-icon>
+      <mat-card-title class="help-card-title">Connecting with Web Data Connector</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
       <p>Of course playing with the preview map is great, but at some point you're probably going to want to bring the data down into Tableau. This is done via the Web Data Connector.</p>
       <p>Simply create a new connection in Tableau Desktop, choose the Web Data Connector, then in the URL box enter <b>https://beta.tableaumapping.bi/wdc</b></p>
-    </md-card-content>
-  </md-card>
-  <md-card class="help-card">
-    <md-card-header>
-      <md-icon md-card-avatar>layers</md-icon>
-      <md-card-title class="help-card-title">Building a Polygon</md-card-title>
-    </md-card-header>
-    <md-card-content>
-      <p>While we wait for the Web Data Connector to work with spatial data you'll need to build your map using the polygon mark. Here's how:</p>
-      <p><img [src]="buildPolygon" /></p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="help-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>layers</mat-icon>
+      <mat-card-title class="help-card-title">Building Your Map</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>If you're using Tableau Desktop 10.4 or greater, you're in luck! All this mapping is just a grouple of clicks away. Simply double click 'Geometry' and then put the relevant dimension onto detail:</p>
+      <p><img [src]="useGeometry" width="600px" /></p>
+      <p>If you're using an older version of Tableau, don't worry we've got you covered! You'll just need to build your map using the polygon mark. Here's how:</p>
+      <p><img [src]="buildPolygon" width="600px" /></p>
       <ol>
         <li>Change the mark type to <b>Polygon</b></li>
         <li>Drag the dimenion <b>-> Path</b> to the Path drop zone</li>
@@ -35,6 +37,6 @@
         <li>Either double click <b>-> Latitude</b> or drag it to the Rows shelf</li>
         <li>Either douple click <b>-> Longitude</b> or drag it to the Columns shelf</li>
       </ol>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 </div>

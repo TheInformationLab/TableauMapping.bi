@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MdDialog} from '@angular/material';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ErrorService } from './error.service';
 import { Message } from 'primeng/primeng';
 
@@ -12,7 +12,7 @@ import { ErrorMsgComponent } from './errorMsg.component';
 export class ErrorComponent implements OnInit {
   previousMessage: Message;
 
-  constructor(public dialog: MdDialog, private errorService: ErrorService) {
+  constructor(public dialog: MatDialog, private errorService: ErrorService) {
   }
 
   ngOnInit() {

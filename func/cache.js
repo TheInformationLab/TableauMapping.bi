@@ -23,8 +23,7 @@ var writeLog = function(message) {
   logger.write(","+JSON.stringify(log));
 }
 
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 600000,socketTimeoutMS : 600000 } },
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 600000,socketTimeoutMS : 600000  } } };
+var options = { useMongoClient : true };
 
 mongoose.connect('mongodb://tableaumapping:6WcrEB^wx3lBahygNKvC7vcKX2ssBD94@ds129491-a0.mlab.com:29491,ds129491-a1.mlab.com:29491/tableaumappingprod?replicaSet=rs-ds129491', options);
 
@@ -67,13 +66,14 @@ query.exec(function (err, spatials) {
     process.exit();
   };
 
-  q.push(taskList, function(err) {
-    if(err) {
-      writeLog(JSON.stringify(err));
-      mongoose.connection.close();
-      process.exit(1);
-    }
-  });
+  for (var i = 0; i < taskList.length; i++) {
+    q.push(taskList[i], function(err) {
+      if(err) {
+        writeLog(JSON.stringify(err));
+      }
+    });
+  }
+
 });
 
 var getData = function(id, type, callback) {

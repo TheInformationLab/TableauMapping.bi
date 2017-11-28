@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdToolbarModule, MdSidenavModule } from '@angular/material';
+import { MatToolbarModule, MatSidenavModule } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +19,12 @@ import { MdToolbarModule, MdSidenavModule } from '@angular/material';
     }
     .menu-list {
       display: flex;
+    }
+    .mat-toolbar {
+      background: #337ab7;
+    }
+    .mat-icon {
+      padding-top: 10px;
     }
     `]
 })

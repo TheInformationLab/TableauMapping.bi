@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
+import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 
@@ -14,7 +16,7 @@ export class UploadComponent implements OnInit {
   myForm: FormGroup;
   public uploader:FileUploader;
 
-  constructor() {
+  constructor(private router: Router) {
     this.uploader = new FileUploader({
       url: URL,
       authToken: localStorage.getItem('token')
@@ -35,6 +37,9 @@ export class UploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('token') == null) {
+      this.router.navigateByUrl('/map');
+    }
     this.myForm = new FormGroup({
         name: new FormControl(null, Validators.required),
         type: new FormControl(null, Validators.required),

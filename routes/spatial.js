@@ -70,19 +70,18 @@ router.post('/geojson', function(req, res, next) {
       getData(req.body.id, 'GeoJSON', function(err, resp) {
         console.log(err);
         if (err != null && err!= {}) {
-          //mongoose.connection.close()
           res.status(500).json({
             message: 'Error finding attachment for doc ' + req.body.id,
             error: err
           });
-        }
-        //mongoose.connection.close();
-        fs.writeFile('/tmp/GeoJSON/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
-          res.status(201).json({
-            message: 'GeoJSON found',
-            data: resp
+        } else {
+          fs.writeFile('/tmp/GeoJSON/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
+            res.status(201).json({
+              message: 'GeoJSON found',
+              data: resp
+            });
           });
-        });
+        }
       });
     } else {
       res.status(201).json({
@@ -162,6 +161,7 @@ router.post('/upload', function(req, res, next) {
      geo.geoJson(req.file, function(geojson) {
        console.log("Converted to GeoJSON");
        var bbox = geojson.bbox;
+       console.log(geojson.features.length);
        wdc.getTableSchema(geojson, meta, function(schema) {
          console.log("Table Schema Built");
          geo.simplify(geojson, 0.005, function(simplified) {

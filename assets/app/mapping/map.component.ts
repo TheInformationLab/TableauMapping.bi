@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
 import {HeaderComponent} from "../header/header.component";
 import {NavigatorComponent} from "./navigator/navigator.component";
-import {MdProgressSpinnerModule} from '@angular/material';
+import {MatProgressSpinnerModule} from '@angular/material';
 import {MenuComponent} from "./toolbar/menu.component";
 import {IntroComponent} from "./intro/intro.component";
 import {MapService} from "./mapping.service";
@@ -10,6 +10,7 @@ import {Location} from "./location.class";
 import { ActivatedRoute } from '@angular/router';
 import { DialogService } from "ng2-bootstrap-modal";
 // import { Router } from "@angular/router";
+import * as L from 'leaflet';
 
 @Component({
     selector: "map",
@@ -26,7 +27,7 @@ import { DialogService } from "ng2-bootstrap-modal";
         width:100%;
     }
 
-    md-spinner {
+    mat-spinner {
       left:50%;
       top:50%;
       width: 100px;

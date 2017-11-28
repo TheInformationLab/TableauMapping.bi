@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material';
 
 @Component({
   selector: 'help-page',
@@ -31,8 +31,10 @@ import { MdCardModule } from '@angular/material';
 
 export class HelpComponent  {
   public buildPolygon: string;
+  public useGeometry: string;
 
   constructor() {
     this.buildPolygon = "./img/buildPolygon.gif";
+    this.useGeometry = "./img/useGeometry.gif";
   }
 }

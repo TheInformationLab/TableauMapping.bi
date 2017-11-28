@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MD_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'infoContent',
@@ -17,7 +17,7 @@ import {MD_DIALOG_DATA} from '@angular/material';
     .header {
       padding-bottom: 5px !important;
     }
-    md-list-item.mat-list-item-content {
+    mat-list-item.mat-list-item-content {
       height: 48px !important;
     }
     .divider {
@@ -26,7 +26,7 @@ import {MD_DIALOG_DATA} from '@angular/material';
   `]
 })
 export class InfoContentComponent {
-  constructor(@Inject(MD_DIALOG_DATA) public data: any) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
   strftime(sFormat, date) {
     if (!(date instanceof Date)) date = new Date();
     var nDay = date.getDay(),

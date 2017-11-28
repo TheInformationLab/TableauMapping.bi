@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MD_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'errorMgsDialogue',
@@ -17,7 +17,7 @@ import {MD_DIALOG_DATA} from '@angular/material';
     .header {
       padding-bottom: 5px !important;
     }
-    md-list-item.mat-list-item-content {
+    mat-list-item.mat-list-item-content {
       height: 48px !important;
     }
     .divider {
@@ -26,8 +26,8 @@ import {MD_DIALOG_DATA} from '@angular/material';
   `]
 })
 export class ErrorMsgComponent {
-  constructor(@Inject(MD_DIALOG_DATA) public data: any) { }
-  
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
+
   titleCase(str) {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   }

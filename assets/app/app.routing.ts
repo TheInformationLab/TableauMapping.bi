@@ -9,6 +9,7 @@ import { AUTH_ROUTES } from "./auth/auth.routing";
 const APP_ROUTES : Routes = [
   {path: '', redirectTo: '/map', pathMatch: 'full'},
   {path: 'wdc', loadChildren: './wdc/wdc.module#WdcModule' },
+  {path: 'wdc-legacy', loadChildren: './wdc-legacy/wdc.module#WdcLegacyModule' },
   {path: 'help', component: HelpComponent},
   {path: 'upload', component: UploadComponent},
   {path: 'map', component: MapComponent},

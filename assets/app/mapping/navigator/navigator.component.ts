@@ -119,18 +119,17 @@ export class NavigatorComponent {
         .subscribe(location => {
           if (location.viewBounds)
           {
-            this.map.fitBounds(location.viewBounds, {});
+            this.map.flyToBounds(location.viewBounds, {});
           } else {
             this.map.flyTo(location.centroid, 6);
           }
           this.address = location.address;
           let mapServ = this.menuService;
-          this.map.on("zoomend", function(e) {
+          let map = this.map;
+          map.on("zoomend", function(e) {
             setTimeout(function() {
               mapServ.openMenu();
-              this.map.off("zoomend", function(e) {
-
-              });
+              map.off("zoomend");
             }, 1000);
           });
         }, error => console.error(error));

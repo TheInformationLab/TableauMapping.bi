@@ -1,11 +1,11 @@
 import {Component, ElementRef, ViewChild, Input} from "@angular/core";
-import {MdProgressSpinnerModule} from '@angular/material';
+import {MatProgressSpinnerModule} from '@angular/material';
 import { MapService } from "../mapping/mapping.service";
 import { LayerService } from "../layers/layer.service";
 import { SearchService } from "./search.service";
 import { SearchGroupsPipe } from './groups.pipe';
 import { SearchSortPipe } from './sort.pipe';
-import { MdInputModule } from '@angular/material';
+import { MatInputModule } from '@angular/material';
 import { Spatial } from "../layers/spatial.model";
 import { SearchItem } from "./searchItem.model";
 import { ErrorService } from "../errors/error.service";
@@ -25,14 +25,15 @@ import { ErrorService } from "../errors/error.service";
       top: 7px;
       z-index: 5000;
     }
-    md-spinner {
+    mat-spinner {
       right: 40px;
       top: 7px;
-      width: 25px;
-      height: 25px;
       position: relative;
       z-index: 2000;
       display: inline-block;
+    }
+    .mat-progress-spinner circle, .mat-spinner circle {
+      stroke: rgba(255,255,255,.87);
     }
     input {
       color: rgba(255, 255, 255, 0.3);
@@ -103,14 +104,14 @@ import { ErrorService } from "../errors/error.service";
       display: block;
       text-decoration: none;
       color:#7E7E7E;
-      padding-top: 5px;
-      padding-bottom: 5px;
+      padding: 5px 10px;
       line-height: 20px;
       height: 30px;
     }
     h5 {
       color:#7E7E7E;
       padding-left: 10px;
+      font-size: 14px;
     }
     #col {
       font-weight: 300;
@@ -197,11 +198,19 @@ export class SearchComponent {
       let key = layer.name;
       let value = layer.value;
       let centroid = JSON.parse(layer.centroid);
+      let zoom = 9;
+      switch (key) {
+        case "Country":
+          zoom = 5;
+          break;
+        default:
+          zoom = 9;
+      }
       this.layerService.getGeojson(opt)
         .subscribe(
           geojson => {
             this.mapService.addPolygon(geojson, key, value);
-            this.mapService.map.flyTo(centroid, 9);
+            this.mapService.map.flyTo(centroid, zoom);
           },
           //error => this.errorService.error(error)
           error => console.error(error)

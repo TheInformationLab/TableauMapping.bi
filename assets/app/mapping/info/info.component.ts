@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {MdDialog, MdIconModule} from '@angular/material';
+import {MatIconModule} from '@angular/material';
+import {MatDialogModule, MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 import { InfoContentComponent } from './infoContent.component';
 
@@ -18,9 +19,12 @@ import { MapService } from "../mapping.service";
     min-width: 0;
     padding: 0;
   }
-  md-button {
+  .mat-button {
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
   }
-  md-icon {
+  mat-icon {
     font-size: 32px;
     width: 32px;
     height: 32px;
@@ -31,7 +35,7 @@ export class InfoComponent {
   infoAvailable: Boolean = false;
   private spatialInfo: any = {};
 
-  constructor(public dialog: MdDialog, private mapService: MapService) {
+  constructor(public dialog: MatDialog, private mapService: MapService) {
     this.mapService.spatialInfo.subscribe(
         (info) => {
           console.log(info);

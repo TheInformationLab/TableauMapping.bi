@@ -7,6 +7,7 @@ var flatten = require('geojson-flatten');
 var Base64 = require('@ronomon/base64');
 const decompress = require('decompress');
 var shp = require('gtran-shapefile');
+var gtran = require('gtran');
 var TextDecoder = require('text-encoding').TextDecoder;
 var TextEncoder = require('text-encoding').TextEncoder;
 var geo = {};
@@ -27,30 +28,41 @@ var deleteFolderRecursive = function(path, callback) {
 };
 
 geo.geoJson = function(file, callback) {
-  var folder = file.filename;
-  folder = "/tmp/" + folder.replace(".zip","");
-  decompress(file.path, folder).then(function (files)
-  {
-    var shpFile = "";
-    for (file of files) {
-      var filename = file.path;
-      var filename = filename.toUpperCase();
-      if (filename.substr(filename.length - 3) == "SHP") {
-        shpFile = folder + "/" + file.path;
+  var filenm = file.filename;
+  if(filenm.substr(filenm.length - 3) == "zip") {
+    var folder = file.filename;
+    folder = "/tmp/" + folder.replace(".zip","");
+    decompress(file.path, folder).then(function (files)
+    {
+      var shpFile = "";
+      for (file of files) {
+        var filename = file.path;
+        var filename = filename.toLowerCase();
+        if (filename.substr(filename.length - 3) == "shp") {
+          shpFile = folder + "/" + file.path;
+        }
       }
-    }
-    shp.toGeoJson(shpFile).then(geojson => {
-      fs.unlink(file.path, function() {
-        deleteFolderRecursive(folder, function() {
-          callback(geojson);
+      console.log(shpFile);
+      gtran.fromShp(shpFile).then(geojson => {
+        fs.unlink(file.path, function() {
+          deleteFolderRecursive(folder, function() {
+            callback(geojson);
+          });
         });
+      }).catch(function (err) {
+         console.log("Error with shapefile conversion", JSON.stringify(err));
       });
     }).catch(function () {
-       console.log("Error with shapefile conversion");
+       console.log("Error with decompress");
     });
-  }).catch(function () {
-     console.log("Error with decompress");
-  });
+  } else if (filenm.substr(filenm.length - 7) == "geojson") {
+    fs.readFile('/tmp/' + filenm, 'utf8', function (fileErr, geojson) {
+      if (fileErr) { console.log(fileErr) }
+      else {
+        callback(JSON.parse(geojson));
+      }
+    });
+  }
 }
 
 geo.encode = function(geojson, callback) {

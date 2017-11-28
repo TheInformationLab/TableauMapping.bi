@@ -1,111 +1,119 @@
 <div class="container" style="margin-top:100px;">
-  <div class="col-md-8 col-md-offset-2">
-    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-          <label for="name">Name</label>
-          <input
-                  type="text"
-                  id="name"
-                  class="form-control"
-                  formControlName="name"
-                  value="Wesminster Parliamentary Constituencies">
-      </div>
-      <div class="form-group">
-          <label for="type">Type</label>
-          <input
-                  type="text"
-                  id="type"
-                  class="form-control"
-                  formControlName="type"
-                  value="Government">
-      </div>
-      <div class="form-group">
-          <label for="country">Country</label>
-          <input
-                  type="text"
-                  id="country"
-                  class="form-control"
-                  formControlName="country"
-                  value="UK">
-      </div>
-      <div class="form-group">
-          <label for="country">Continent</label>
-          <input
-                  type="text"
-                  id="continent"
-                  class="form-control"
-                  formControlName="continent"
-                  value="Europe">
-      </div>
-      <div class="form-group">
-          <label for="sourceUrl">Source Url</label>
-          <input
-                  type="text"
-                  id="sourceUrl"
-                  class="form-control"
-                  formControlName="sourceUrl"
-                  value="http://www.example.com">
-      </div>
-      <div class="form-group">
-          <label for="sourceDate">Source Date</label>
-          <input
-                  type="text"
-                  id="sourceDate"
-                  class="form-control"
-                  formControlName="sourceDate"
-                  value="2017-04-07">
-      </div>
-    </form>
-    <input type="file" ng2FileSelect [uploader]="uploader" />
-    <table class="table">
-        <thead>
-        <tr>
-            <th width="50%">Name</th>
-            <th>Size</th>
-            <th>Progress</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of uploader.queue">
-            <td><strong>{{ item?.file?.name }}</strong></td>
-            <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-            <td *ngIf="uploader.isHTML5">
-                <div class="progress" style="margin-bottom: 0;">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                </div>
-            </td>
-            <td class="text-center">
-                <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-            </td>
-            <td nowrap>
-                <button type="button" class="btn btn-success btn-xs"
-                        (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                    <span class="glyphicon glyphicon-upload"></span> Upload
-                </button>
-                <button type="button" class="btn btn-warning btn-xs"
-                        (click)="item.cancel()" [disabled]="!item.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                </button>
-                <button type="button" class="btn btn-danger btn-xs"
-                        (click)="item.remove()">
-                    <span class="glyphicon glyphicon-trash"></span> Remove
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+  <div class="col-mat-8 col-mat-offset-2">
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar>file_upload</mat-icon>
+        <mat-card-title class="help-card-title">Upload Data</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                      type="text"
+                      id="name"
+                      class="form-control"
+                      formControlName="name"
+                      value="Wesminster Parliamentary Constituencies">
+          </div>
+          <div class="form-group">
+              <label for="type">Type</label>
+              <input
+                      type="text"
+                      id="type"
+                      class="form-control"
+                      formControlName="type"
+                      value="Government">
+          </div>
+          <div class="form-group">
+              <label for="country">Country</label>
+              <input
+                      type="text"
+                      id="country"
+                      class="form-control"
+                      formControlName="country"
+                      value="UK">
+          </div>
+          <div class="form-group">
+              <label for="country">Continent</label>
+              <input
+                      type="text"
+                      id="continent"
+                      class="form-control"
+                      formControlName="continent"
+                      value="Europe">
+          </div>
+          <div class="form-group">
+              <label for="sourceUrl">Source Url</label>
+              <input
+                      type="text"
+                      id="sourceUrl"
+                      class="form-control"
+                      formControlName="sourceUrl"
+                      value="http://www.example.com">
+          </div>
+          <div class="form-group">
+              <label for="sourceDate">Source Date</label>
+              <input
+                      type="text"
+                      id="sourceDate"
+                      class="form-control"
+                      formControlName="sourceDate"
+                      value="2017-04-07">
+          </div>
+        </form>
+        <input type="file" ng2FileSelect [uploader]="uploader" />
+        <table class="table">
+            <thead>
+            <tr>
+                <th width="50%">Name</th>
+                <th>Size</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of uploader.queue">
+                <td><strong>{{ item?.file?.name }}</strong></td>
+                <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                <td *ngIf="uploader.isHTML5">
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                    <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                    <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                </td>
+                <td nowrap>
+                    <button type="button" class="btn btn-success btn-xs"
+                            (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                        <span class="glyphicon glyphicon-upload"></span> Upload
+                    </button>
+                    <button type="button" class="btn btn-warning btn-xs"
+                            (click)="item.cancel()" [disabled]="!item.isUploading">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger btn-xs"
+                            (click)="item.remove()">
+                        <span class="glyphicon glyphicon-trash"></span> Remove
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-    <div>
         <div>
-            Progress:
-            <div class="progress" style="">
-                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+            <div>
+                Progress:
+                <div class="progress" style="">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
             </div>
         </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

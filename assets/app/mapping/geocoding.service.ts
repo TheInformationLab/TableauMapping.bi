@@ -3,6 +3,8 @@ import {Location} from "./location.class";
 import {Injectable} from "@angular/core";
 import {ErrorService} from "../errors/error.service";
 
+import * as L from 'leaflet';
+
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 

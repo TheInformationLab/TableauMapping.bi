@@ -1,26 +1,26 @@
 <h3>{{ data.name }}</h3>
-<md-list>
-  <h3 md-subheader class="header">Boundary</h3>
-  <md-list-item class="item">
-    <md-icon md-list-icon>layers</md-icon>
-    <p md-line class="subheader">Type</p>
-    <h4 md-line class="infoValue">{{ data.type }}</h4>
-  </md-list-item>
-  <md-list-item class="item">
-    <md-icon md-list-icon>file_upload</md-icon>
-    <p md-line class="subheader">Date Uploaded</p>
-    <h4 md-line class="infoValue">{{ strftime('%d %B %Y', data.dateCreated) }}</h4>
-  </md-list-item>
-  <md-divider class="divider"></md-divider>
-  <h3 md-subheader class="header">Source</h3>
-  <md-list-item class="item">
-    <md-icon md-list-icon>file_download</md-icon>
-    <p md-line class="subheader">URL</p>
-    <h4 md-line class="infoValue"><a href="{{ data.sourceUrl }}" target="_blank">{{ data.sourceText }}</a></h4>
-  </md-list-item>
-  <md-list-item class="item">
-    <md-icon md-list-icon>update</md-icon>
-    <p md-line class="subheader">Source Date</p>
-    <h4 md-line class="infoValue">{{ strftime('%d %B %Y', data.sourceDate) }}</h4>
-  </md-list-item>
-</md-list>
+<mat-list>
+  <h3 mat-subheader class="header">Boundary</h3>
+  <mat-list-item class="item">
+    <mat-icon mat-list-icon>layers</mat-icon>
+    <p mat-line class="subheader">Type</p>
+    <h4 mat-line class="infoValue">{{ data.type }}</h4>
+  </mat-list-item>
+  <mat-list-item class="item">
+    <mat-icon mat-list-icon>file_upload</mat-icon>
+    <p mat-line class="subheader">Date Uploaded</p>
+    <h4 mat-line class="infoValue">{{ strftime('%d %B %Y', data.dateCreated) }}</h4>
+  </mat-list-item>
+  <mat-divider class="divider"></mat-divider>
+  <h3 mat-subheader class="header">Source</h3>
+  <mat-list-item class="item">
+    <mat-icon mat-list-icon>file_download</mat-icon>
+    <p mat-line class="subheader">URL</p>
+    <h4 mat-line class="infoValue"><a href="{{ data.sourceUrl }}" target="_blank">{{ data.sourceText }}</a></h4>
+  </mat-list-item>
+  <mat-list-item class="item">
+    <mat-icon mat-list-icon>update</mat-icon>
+    <p mat-line class="subheader">Source Date</p>
+    <h4 mat-line class="infoValue">{{ strftime('%d %B %Y', data.sourceDate) }}</h4>
+  </mat-list-item>
+</mat-list>

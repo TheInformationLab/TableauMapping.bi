@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild } from '@angular/core';
-import {MdMenuModule, MdIconModule,MdMenuTrigger, MdMenu} from '@angular/material';
+import {MatMenuModule, MatIconModule,MatMenuTrigger, MatMenu, MatButtonModule,MatButton} from '@angular/material';
 import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
 import * as Turf from "@turf/turf";
@@ -8,6 +8,8 @@ import { MenuSortPipe } from './sort.pipe';
 import { MenuItem } from "./menuItem.model";
 import { Spatial} from '../../layers/spatial.model';
 import { MenuService } from "./menu.service";
+
+import * as L from 'leaflet';
 
 @Component({
   selector: 'menu',
@@ -23,12 +25,16 @@ import { MenuService } from "./menu.service";
     right: 20px;
     bottom: 30px;
     background: #337ab7;
-    border: none;
     outline: none;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    color: #fff;
   }
-  md-icon {
+  mat-icon {
     font-size: 36px;
-    margin: 0 0 0 -11px;
+    margin: 5px 0 0 -10px;
   }
   h5 {
     padding-left: 10px;
@@ -42,9 +48,9 @@ export class MenuComponent {
   mapBounds: any;
   allMeta: Spatial[] = [];
   itemsAvailable: Boolean = false;
-  @ViewChild(MdMenu) menu: MdMenu;
-  @ViewChild(MdMenu) subMenu: MdMenu;
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  @ViewChild(MatMenu) menu: MatMenu;
+  @ViewChild(MatMenu) subMenu: MatMenu;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   public constructor(private layerService: LayerService, private mapService: MapService, private menuService: MenuService) {}
 

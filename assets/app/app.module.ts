@@ -1,6 +1,3 @@
-
-/// <reference path="./typings/leaflet.vectorgrid.d.ts"/>
-
 import "leaflet";
 import "leaflet.vectorgrid";
 import 'hammerjs';
@@ -14,10 +11,11 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { HttpModule } from "@angular/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { MappingModule } from './mapping/mapping.module';
 import { AuthModule } from './auth/auth.module';
 import { ResponsiveModule } from 'ng2-responsive';
+import { MatListModule, MatIconModule, MatToolbarModule, MatProgressSpinnerModule, MatCardModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./header/header.component";
@@ -35,7 +33,6 @@ import { AuthService } from "./auth/auth.service";
 import { LayerService } from "./layers/layer.service";
 import { SearchService } from "./header/search.service";
 import { ErrorService } from './errors/error.service';
-
 
 @NgModule({
     declarations: [
@@ -65,10 +62,15 @@ import { ErrorService } from './errors/error.service';
               FileUploadModule,
               ReactiveFormsModule,
               BrowserAnimationsModule,
-              MaterialModule.forRoot(),
               MappingModule,
               AuthModule,
-              ResponsiveModule],
+              ResponsiveModule,
+              MatListModule,
+              MatIconModule,
+              MatToolbarModule,
+              MatProgressSpinnerModule,
+              MatCardModule,
+              MatDialogModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {

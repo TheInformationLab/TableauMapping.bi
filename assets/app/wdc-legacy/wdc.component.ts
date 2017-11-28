@@ -10,7 +10,7 @@ import { Table } from "./table.model";
 
 declare var require: any;
 
-require('./tableauwdc-2.3.latest.min.jjs');
+require('./tableauwdc-2.1.latest.min.jjs');
 
 interface Tableau {
     makeConnector: Function;
@@ -59,11 +59,11 @@ declare var myConnector: Connector;
 export class WdcComponent {
   layers: Spatial[] = [];
 
-  public useGeometry: string;
+  public buildPolygon: string;
 
   constructor(private layerService: LayerService, private mapService: MapService, private geocoder: GeocodingService, private router: Router) {
 
-    this.useGeometry = "./img/useGeometry.gif";
+    this.buildPolygon = "./img/buildPolygon.gif";
 
     var myConnector = tableau.makeConnector();
 
@@ -72,8 +72,8 @@ export class WdcComponent {
       var inx = version.lastIndexOf(".");
       var testVersion =  Number(version.substring(0,inx));
       tableau.log(testVersion);
-      if (testVersion < 10.4) {
-        router.navigateByUrl('/wdc-legacy');
+      if (testVersion > 10.3) {
+        router.navigateByUrl('/wdc');
       }
       geocoder.getCurrentLocation()
           .subscribe(
@@ -96,10 +96,10 @@ export class WdcComponent {
       layerService.getAllMeta()
         .subscribe(
           (layers: Spatial[]) => {
-            this.layers = layers;
-            let ret: Table[] = [];
-            removeLegacyMeta(layers, function(newLayers) {
-              for (let layer of newLayers) {
+            tableau.log(layers);
+              this.layers = layers;
+              let ret: Table[] = [];
+              for (let layer of layers) {
                 ret.push(new Table (
                   layer._id,
                   layer.tableSchema.alias,
@@ -108,8 +108,6 @@ export class WdcComponent {
               }
               //tableau.log(ret);
               schemaCallback(ret);
-            });
-
           }
         )
     };
@@ -125,15 +123,12 @@ export class WdcComponent {
       layerService.getData({id: table.tableInfo.id})
         .subscribe((geojson) => {
           tableau.reportProgress("Parsing data");
-          featureCol2PolygonArr(geojson, function(data) {
+          geojson2Tableau(geojson, function(data) {
             tableau.reportProgress("Returning data to Tableau");
             table.appendRows(data);
             doneCallback();
           });
         });
-      // pageData(table, 1, table.tableInfo.id, function(table) {
-      //   doneCallback();
-      // });
     };
 
     myConnector.setConnection = function(userData) {
@@ -144,43 +139,100 @@ export class WdcComponent {
 
     tableau.registerConnector(myConnector);
 
-    function findWithAttr(array, attr, value) {
-      for(var i = 0; i < array.length; i += 1) {
-          if(array[i][attr] === value) {
-              return i;
-          }
-      }
-      return -1;
-    }
-
-    var removeLegacyMeta = function(metaArr, callback) {
-      for (var i = 0; i < metaArr.length; i++) {
-        var cols = metaArr[i].tableSchema.columns;
-        cols.splice(findWithAttr(cols, 'id', 'latitude'),1);
-        cols.splice(findWithAttr(cols, 'id', 'longitude'),1);
-        cols.splice(findWithAttr(cols, 'id', 'polygonId'),1);
-        cols.splice(findWithAttr(cols, 'id', 'subPolygonId'),1);
-        cols.splice(findWithAttr(cols, 'id', 'path'),1);
-        tableau.log(cols);
-        cols.push({
-          id: "geometry",
-          dataType: "geometry",
-          alias: "Geometry"
+    var geojson2Tableau = function(geojson, callback) {
+        PolygonID(geojson, function(polygons) {
+            SubPolygonID(polygons, function(subPolygons) {
+                parseCoordinates(subPolygons, function(resp) {
+                  callback(resp);
+                });
+            });
         });
-        metaArr[i].tableSchema.columns = cols;
-      }
-      callback(metaArr);
     }
 
-    var featureCol2PolygonArr = function(geojson, callback) {
+    var PolygonID = function(geojson, callback) {
+      var retProps = [];
       var features = geojson.features;
-      var ret = [];
-      for (var i = 0; i < features.length; i++) {
-        var obj = features[i].properties;
-        obj.geometry = features[i].geometry;
-        ret.push(obj);
+      for (var i = 0.; i < features.length; i++) {
+        var feature = features[i];
+        var obj = {};
+        var headers = Object.keys(feature.properties);
+        for (let header of headers) {
+          obj[header] = feature.properties[header];
+        }
+        obj["coordinates"] = feature.geometry.coordinates;
+        obj["polygonId"] = i;
+        retProps.push(obj);
+        if (retProps.length === geojson.features.length) {
+          callback(retProps);
+        }
       }
-      callback(ret);
+    }
+
+    var SubPolygonID = function(polygons, callback) {
+      var subPolygonCount = 0;
+      var activeCount = 0;
+      var subPolyRet = [];
+      for (let polygon of polygons) {
+        subPolygonCount = subPolygonCount + polygon.coordinates.length;
+      }
+      for (let polygon of polygons) {
+        var subPolygons = polygon.coordinates;
+        var subPolygonId = 0;
+        delete polygon.coordinates;
+        for (let subPolygon of subPolygons) {
+          var obj: {
+            subPolygon: any;
+            subPolygonId: number;
+          } = {
+            subPolygon: null,
+            subPolygonId: null
+          };
+          subPolygonId = subPolygonId + 1;
+          obj.subPolygon = subPolygon;
+          obj.subPolygonId = subPolygonId;
+          obj = Object.assign(obj, polygon);
+          subPolyRet.push(obj);
+          activeCount = activeCount + 1;
+          if (activeCount === subPolygonCount) {
+            callback(subPolyRet);
+          }
+        }
+      }
+    }
+
+    var parseCoordinates = function(subPolygons, callback) {
+      var coordinateCount = 0;
+      var activeCount = 0;
+      var retCoords = [];
+      for (let subPolygon of subPolygons) {
+        coordinateCount = coordinateCount + subPolygon.subPolygon.length;
+      }
+      for (let subPolygon of subPolygons) {
+        var coordinates = subPolygon.subPolygon;
+        var path = 0;
+        delete subPolygon.subPolygon;
+        for (let coordinate of coordinates) {
+          var obj: {
+            path: number;
+            longitude: number;
+            latitude: number;
+          } = {
+            path: null,
+            longitude: null,
+            latitude: null
+          };
+          path = path + 1;
+          obj.path = path;
+          obj.longitude = coordinate[0];
+          obj.latitude = coordinate[1];
+          obj = Object.assign(obj, subPolygon);
+          retCoords.push(obj);
+          activeCount = activeCount + 1;
+          if (activeCount === coordinateCount) {
+            callback(retCoords);
+          }
+        }
+      }
     }
 
   }

@@ -19,9 +19,10 @@ function haltOnTimedout(req, res, next){
   if (!req.timedout) next();
 }
 
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 600000,socketTimeoutMS : 600000 } },
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 600000,socketTimeoutMS : 600000  } } };
+var options = { useMongoClient : true };
 
+mongoose.connect('mongodb://tableaumapping:6WcrEB^wx3lBahygNKvC7vcKX2ssBD94@ds129491-a0.mlab.com:29491,ds129491-a1.mlab.com:29491/tableaumappingprod?replicaSet=rs-ds129491', options);
+//mongoose.connect('mongodb://localhost:27017/tableau-mapping');
 
 var appRoutes = require('./routes/app');
 var errorRoutes = require('./routes/errors');

@@ -1,14 +1,14 @@
 import {ErrorHandler, Injectable} from '@angular/core'
 import { ErrorService } from './error.service';
 
-//@Injectable()
+@Injectable()
 //export default class CustomErrorHandler extends ErrorHandler {
 export class CustomErrorHandler extends ErrorHandler {
 
   constructor(private errorService: ErrorService) {
     // We rethrow exceptions, so operations like 'bootstrap' will result in an error
     // when an error happens. If we do not rethrow, bootstrap will always succeed.
-    super(true);
+    super();
   }
 
   handleError(error: any): void {

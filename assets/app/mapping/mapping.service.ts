@@ -5,6 +5,8 @@ import {Map} from "leaflet";
 import {Location} from "./location.class";
 import {GeocodingService} from "./geocoding.service";
 
+import * as L from 'leaflet';
+
 @Injectable()
 export class MapService {
     public map: Map;

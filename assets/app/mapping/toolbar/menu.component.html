@@ -1,9 +1,9 @@
-<md-menu #menu="mdMenu" class="on-map">
+<mat-menu #menu="matMenu" class="on-map">
   <div *ngFor = "let country of menuItems | groups | sort">
     <h5>{{ country.name }}</h5>
   <menu-item
          [menuItem]="menuItem"
           *ngFor="let menuItem of country.layers"></menu-item>
     </div>
-</md-menu>
-<button md-fab [mdMenuTriggerFor]="menu" class="on-map menu" [disabled]="!itemsAvailable"><md-icon>add</md-icon></button>
+</mat-menu>
+<button mat-fab [matMenuTriggerFor]="menu" class="on-map menu mat-fab" [disabled]="!itemsAvailable"><mat-icon>add</mat-icon></button>

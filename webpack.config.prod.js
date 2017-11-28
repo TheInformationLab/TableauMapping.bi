@@ -3,6 +3,7 @@ var path = require('path');
 var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var commonConfig = require('./webpack.config.common.js');
+var ngw = require('@ngtools/webpack');
 
 module.exports = webpackMerge.smart(commonConfig, {
     entry: {
@@ -19,19 +20,27 @@ module.exports = webpackMerge.smart(commonConfig, {
     module: {
         rules: [
             {
+                test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+                loader: '@ngtools/webpack'
+            },
+            {
                 test: /\.ts$/,
                 use: [
                     'awesome-typescript-loader',
                     'angular2-template-loader',
-                    'angular-router-loader?aot=true'
+                    // 'angular-router-loader?aot=true'
                 ]
             }
         ]
     },
 
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: false
-        })
-    ]
+      new ngw.AngularCompilerPlugin({
+        tsConfigPath: './tsconfig.aot.json',
+        entryModule: './assets/app/app.module#AppModule'
+      }),
+          new webpack.optimize.UglifyJsPlugin({
+              sourceMap: false
+          })
+      ]
 });

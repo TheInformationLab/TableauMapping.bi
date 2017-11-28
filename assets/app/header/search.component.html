@@ -1,14 +1,14 @@
 <div class="navContainer">
   <div class="input-field col s12 on-map">
-    <md-icon id="iconSearch">search</md-icon><input id="search-input" class="searchBox on-map" type="search" placeholder="Search"
+    <mat-icon id="iconSearch">search</mat-icon><input id="search-input" class="searchBox on-map" type="search" placeholder="Search"
      [(ngModel)]="search" (keyup)="find()" (click)="showResults()">
-    <md-spinner style="on-map" *ngIf="isLoading"></md-spinner>
+    <mat-spinner [diameter]="24" style="on-map" *ngIf="isLoading"></mat-spinner>
   </div>
   <div #searchResults class="suggestions on-map" *ngIf="foundList.length > 0">
     <div *ngFor = "let layer of foundList | groups | sort">
       <h5>{{ layer.name }}</h5>
       <div *ngFor="let searchItem of layer.groups">
-        <a md-menu-item (click)="showPolygon(searchItem)"><span id="col">{{searchItem.name}}:</span> <span id="name">{{searchItem.value}}</span></a>
+        <a mat-menu-item (click)="showPolygon(searchItem)"><span id="col">{{searchItem.name}}:</span> <span id="name">{{searchItem.value}}</span></a>
       </div>
     </div>
   </div>
