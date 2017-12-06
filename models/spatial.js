@@ -21,6 +21,7 @@ var schema = new Schema({
   bbox: {type: Array},
   country: {type: String},
   continent: {type: String},
+  mapboxid: {type: String},
   tableSchema: {
     id: {type: String},
     alias: {type: String},

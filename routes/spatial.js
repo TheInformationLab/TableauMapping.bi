@@ -5,6 +5,7 @@ var path = require("path");
 var fs = require('fs');
 var geo = require('../func/geo');
 var wdc = require('../func/wdc');
+var mapbox = require('../func/mapbox');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
 var compression = require('compression');
@@ -15,17 +16,14 @@ router.use(compression());
 
 router.get('/meta', function(req, res, next) {
   var query = Spatial.find({"name": { $ne: "The Information Lab" }}).select('bbox continent country dateCreated name owner sourceDate sourceUrl type tableSchema');
-
   query.exec(function (err, spatials) {
     if (err) {
       res.status(500).json({
         message: 'Error finding spatial objects',
         error: err
       });
-      //mongoose.connection.close();
       return;
     }
-    //mongoose.connection.close();
     res.status(201).json({
       message: 'Result',
       spatials: spatials
@@ -33,89 +31,33 @@ router.get('/meta', function(req, res, next) {
   });
 });
 
-var getData = function(id, type, callback) {
-  console.log("Getting " + type + " " +id);
+var getData = function(id, callback) {
+  console.log("Getting " +id);
   Spatial.findById(mongoose.Types.ObjectId(id), function (err, resp) {
-    for (var i = 0; i < resp.attachments.length; i++) {
-      var rec = i;
-      var attachment = resp.attachments[rec];
-      var fileName = attachment.filename;
-      if (fileName.substring(0, 7) === type) {
-        var foundId = rec;
-        console.log(type +" found");
-        resp.loadSingleAttachment(fileName)
-          .then(function(doc) {
-            console.log(doc.attachments[foundId]);
-            var buf = doc.attachments[foundId].buffer
-            console.log(buf);
-            var b = new Buffer(buf.toString("utf-8"), 'base64')
-            console.log(b);
-            var s = b.toString();
-            console.log("Sending response");
-            callback(null, JSON.parse(s));
-          })
-          .catch(function(err) {
-            //mongoose.connection.close();
-            callback(err, null);
-          });
-      }
-    }
+
+    mapbox.getDataset(resp.mapboxid, function(geojson) {
+      callback(null, geojson);
+    });
+
   });
 }
 
-router.post('/geojson', function(req, res, next) {
-  fs.readFile('/tmp/GeoJSON/' + req.body.id, 'utf8', function (fileErr, geojson) {
+router.post('/data', function(req, res, next) {
+  fs.readFile('/tmp/data/' + req.body.id, 'utf8', function (fileErr, geojson) {
     console.log(fileErr);
     if(fileErr) {
-      getData(req.body.id, 'GeoJSON', function(err, resp) {
+      getData(req.body.id, function(err, resp) {
         console.log(err);
-        if (err != null && err!= {}) {
-          res.status(500).json({
-            message: 'Error finding attachment for doc ' + req.body.id,
-            error: err
-          });
-        } else {
-          fs.writeFile('/tmp/GeoJSON/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
-            res.status(201).json({
-              message: 'GeoJSON found',
-              data: resp
-            });
-          });
-        }
-      });
-    } else {
-      res.status(201).json({
-        message: 'GeoJSON found',
-        data: JSON.parse(geojson)
-      });
-    }
-  });
-});
-
-router.post('/tabdata', function(req, res, next) {
-  fs.readFile('/tmp/TabData/' + req.body.id, 'utf8', function (fileErr, geojson) {
-    console.log(fileErr);
-    if(fileErr) {
-      getData(req.body.id, 'TabData', function(err, resp) {
-        console.log(err);
-        if (err != null && err!= {}) {
-          //mongoose.connection.close()
-          res.status(500).json({
-            message: 'Error finding attachment for doc ' + req.body.id,
-            error: err
-          });
-        }
-        //mongoose.connection.close();
-        fs.writeFile('/tmp/TabData/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
+        fs.writeFile('/tmp/data/' + req.body.id, JSON.stringify(resp), 'utf8', function(err) {
           res.status(201).json({
-            message: 'TabData found',
+            message: 'Data found',
             data: resp
           });
         });
       });
     } else {
       res.status(201).json({
-        message: 'TabData found',
+        message: 'Data found',
         data: JSON.parse(geojson)
       });
     }
@@ -123,7 +65,8 @@ router.post('/tabdata', function(req, res, next) {
 });
 
 router.use('/', function(req, res, next) {
-  jwt.verify(req.headers.authorization, '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}', function(err, decoded) {
+  var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
+  jwt.verify(req.headers.authorization, secret, function(err, decoded) {
     if (err) {
       return res.status(401).json({
         message: "Not Authenticated",
@@ -148,58 +91,45 @@ var upload = multer({ //multer settings
                 storage: storage
             }).single('file');
 
-router.post('/upload', function(req, res, next) {
-   upload(req,res,function(err){
-     if(err){
-       //mongoose.connection.close();
-      res.json({error_code:1,err_desc:err});
-      return;
+router.post('/save', function(req, res, next) {
+   var meta = req.body;
+   var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
+   var user = jwt.verify(req.headers.authorization, secret);
+   user = user.user;
+   mapbox.getMeta(meta.mapboxId, function(geoMeta) {
+     console.log(geoMeta);
+     if (geoMeta.message) {
+       res.status(404).json({
+         message: 'No Dataset'
+       });
+       return;
      }
-     var meta = req.body;
-     var user = jwt.verify(req.headers.authorization, '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}');
-     user = user.user;
-     geo.geoJson(req.file, function(geojson) {
+     mapbox.getDataset(meta.mapboxId, function(geojson) {
        console.log("Converted to GeoJSON");
-       var bbox = geojson.bbox;
-       console.log(geojson.features.length);
-       wdc.getTableSchema(geojson, meta, function(schema) {
-         console.log("Table Schema Built");
-         geo.simplify(geojson, 0.005, function(simplified) {
-           geo.simplify(geojson, 0.0001, function(tabSimplified) {
-        // console.log("GeoJSON simplified");
-           geo.flatten(tabSimplified, function(flattened) {
-             console.log("GeoJSON Flattened");
-             //wdc.geojson2Tableau(flattened, function(tabData) {
-              // console.log("Recieved Tableau Spatial Data");
-              // geo.chunkTabData(tabData, function(chunks) {
-                 var spatial = new Spatial ({
-                   owner: user._id,
-                   name: meta.name,
-                   sourceUrl: meta.sourceUrl,
-                   sourceDate: meta.sourceDate,
-                   type: meta.type,
-                   bbox: bbox,
-                   country: meta.country,
-                   continent: meta.contient,
-                   tableSchema: schema/*,
-                   tabData: createdFile._id*/
-                 });
-                 spatial.addAttachment('GeoJSON-' + meta.name, new Buffer(JSON.stringify(simplified), "utf-8"), 'application/json')
-                  .then(function() {
-                     spatial.addAttachment('TabData-' + meta.name, new Buffer(JSON.stringify(flattened), "utf-8"), 'application/json')
-                      .then(function() {
-                        spatial.save(function(err, result) {
-                          //mongoose.connection.close();
-                          res.status(201).json({
-                            message: 'Spatial Object added to database'
-                          });
-                        });
-                      });
-                   });
+       geo.flatten(geojson, function(flattened) {
+         console.log("Geojson flattened");
+         wdc.getTableSchema(flattened, meta, function(schema) {
+           console.log("Table Schema Built");
+           var spatial = new Spatial ({
+             owner: user._id,
+             name: meta.name,
+             sourceUrl: meta.sourceUrl,
+             sourceDate: meta.sourceDate,
+             type: meta.type,
+             bbox: geoMeta.bounds,
+             country: meta.country,
+             continent: meta.contient,
+             mapboxid: meta.mapboxId,
+             tableSchema: schema
+           });
+           spatial.save(function(err, result) {
+             fs.writeFile('/tmp/data/' + result._id, JSON.stringify(geojson), 'utf8', function(err) {
+               res.status(201).json({
+                 message: 'Spatial Object added to database'
                });
              });
            });
-        // });
+         });
        });
      });
    });

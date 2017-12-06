@@ -42,16 +42,15 @@ geo.geoJson = function(file, callback) {
           shpFile = folder + "/" + file.path;
         }
       }
-      console.log(shpFile);
       gtran.fromShp(shpFile).then(geojson => {
-        fs.unlink(file.path, function() {
-          deleteFolderRecursive(folder, function() {
-            callback(geojson);
-          });
-        });
-      }).catch(function (err) {
-         console.log("Error with shapefile conversion", JSON.stringify(err));
-      });
+              fs.unlink(file.path, function() {
+                deleteFolderRecursive(folder, function() {
+                  callback(geojson);
+                });
+              });
+            }).catch(function (err) {
+               console.log("Error with shapefile conversion", JSON.stringify(err));
+            });
     }).catch(function () {
        console.log("Error with decompress");
     });

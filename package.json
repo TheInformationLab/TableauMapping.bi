@@ -5,7 +5,13 @@
   "now": {
     "public": false,
     "name": "tableaumapping",
-    "alias": "tableaumapping.bi"
+    "alias": "tableaumapping.bi",
+    "env": {
+      "HOST": "@tableaumapping_dbhost",
+      "DBUSER": "@tableaumapping_dbuser",
+      "DBPASS": "@tableaumapping_dbpass",
+      "JWTSECRET": "@tableaumapping_jwtsecret"
+    }
   },
   "scripts": {
     "start": "node ./bin/www",

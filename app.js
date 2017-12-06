@@ -21,8 +21,17 @@ function haltOnTimedout(req, res, next){
 
 var options = { useMongoClient : true };
 
-mongoose.connect('mongodb://tableaumapping:6WcrEB^wx3lBahygNKvC7vcKX2ssBD94@ds129491-a0.mlab.com:29491,ds129491-a1.mlab.com:29491/tableaumappingprod?replicaSet=rs-ds129491', options);
-//mongoose.connect('mongodb://localhost:27017/tableau-mapping');
+var dbhost = process.env.HOST || 'localhost:27017/tableau-mapping2';
+var dbuser = process.env.DBUSER || null;
+var dbpass = process.env.DBPASS || null;
+var dburi = 'mongodb://';
+
+if (dbuser && dbpass) {
+  dburi = dburi + dbuser + ":" + dbpass + '@' + dbhost;
+} else {
+  dburi = dburi + dbhost;
+}
+mongoose.connect(dburi, options);
 
 var appRoutes = require('./routes/app');
 var errorRoutes = require('./routes/errors');
@@ -52,7 +61,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/healthcheck', require('express-healthcheck')());
-app.use('/errors', errorRoutes);
+app.use('/err', errorRoutes);
 app.use('/auth', authRoutes);
 app.use('/spatial', spatialRoutes);
 app.use('/search', searchRoutes);
@@ -65,5 +74,7 @@ app.use(function (req, res, next) {
     return res.render('index');
 });
 
-
 module.exports = app;
+
+const { spawn } = require('child_process');
+const ls = spawn('node', [path.join(__dirname, './func/', 'cache.js')]);

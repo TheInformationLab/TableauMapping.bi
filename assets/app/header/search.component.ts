@@ -179,7 +179,7 @@ export class SearchComponent {
        } while (clickedComponent);
         if(!inside){
          if (this.results) {
-            this.results.nativeElement.style.visibility = "visible";
+            this.results.nativeElement.style.visibility = "hidden";
           }
         }
     }
@@ -206,7 +206,7 @@ export class SearchComponent {
         default:
           zoom = 9;
       }
-      this.layerService.getGeojson(opt)
+      this.layerService.getData(opt)
         .subscribe(
           geojson => {
             this.mapService.addPolygon(geojson, key, value);

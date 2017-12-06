@@ -31,6 +31,7 @@ import { ErrorMsgComponent } from "./errors/errorMsg.component";
 import { routing } from "./app.routing";
 import { AuthService } from "./auth/auth.service";
 import { LayerService } from "./layers/layer.service";
+import { UploadService } from "./upload/upload.service";
 import { SearchService } from "./header/search.service";
 import { ErrorService } from './errors/error.service';
 
@@ -53,6 +54,7 @@ import { ErrorService } from './errors/error.service';
     providers: [{ provide: ErrorHandler, useClass: CustomErrorHandler },
                 AuthService,
                 LayerService,
+                UploadService,
                 SearchService,
                 ErrorService],
     imports: [BrowserModule,

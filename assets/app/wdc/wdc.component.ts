@@ -59,11 +59,7 @@ declare var myConnector: Connector;
 export class WdcComponent {
   layers: Spatial[] = [];
 
-  public useGeometry: string;
-
   constructor(private layerService: LayerService, private mapService: MapService, private geocoder: GeocodingService, private router: Router) {
-
-    this.useGeometry = "./img/useGeometry.gif";
 
     var myConnector = tableau.makeConnector();
 

@@ -24,7 +24,7 @@ export class MenuItemComponent {
           data => console.log(data),
           error => console.error(error)
         );
-      this.layerService.getGeojson(opt)
+      this.layerService.getData(opt)
         .subscribe(
           (geojson) => {
             this.mapService.addPolygon(geojson, null, null);

@@ -89,6 +89,6 @@ function onListening() {
   debug('Listening on ' + bind);
   if (process.env.NOW) {
     var instance = process.env.NOW_URL
-    console.log("Push to live: now alias " + instance.replace("https://","") + " beta.theinformationlab.bi");
+    console.log("Push to live: now alias " + instance.replace("https://","") + " www.tableaumapping.bi");
   }
 }

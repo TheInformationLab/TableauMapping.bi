@@ -28,7 +28,8 @@ router.post('/index', function(req, res, next) {
 });
 
 router.use('/', function(req, res, next) {
-  jwt.verify(req.headers.authorization, '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}', function(err, decoded) {
+  var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
+  jwt.verify(req.headers.authorization, secret, function(err, decoded) {
     if (err) {
       return res.status(401).json({
         message: "Not Authenticated",

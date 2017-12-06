@@ -48,14 +48,14 @@ export class LayerService {
   getData(options: Object) {
     const body = JSON.stringify(options);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/spatial/tabdata',body,{headers: headers})
+    return this.http.post('/spatial/data',body,{headers: headers})
       .map((response: Response) => {
         const geojson = response.json().data;
         return geojson;
     })
     .catch((error: Response) => {
       if(error.status == 0) {
-        this.errorService.error("POST /spatial/tabdata net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+        this.errorService.error("POST /spatial/data net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
         return Observable.throw(error.json());
       } else {
         return Observable.throw(error.json());
@@ -63,22 +63,4 @@ export class LayerService {
     })
   }
 
-  getGeojson(options: Object) {
-    const body = JSON.stringify(options);
-    const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/spatial/geojson',body,{headers: headers})
-      .timeout(600000)
-      .map((response: Response) => {
-        const geojson = response.json().data;
-        return geojson;
-    })
-    .catch((error: Response) => {
-      if(error.status == 0) {
-        this.errorService.error("POST /spatial/geojson net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
-        return Observable.throw(error.json());
-      } else {
-        return Observable.throw(error.json());
-      }
-    })
-  }
 }

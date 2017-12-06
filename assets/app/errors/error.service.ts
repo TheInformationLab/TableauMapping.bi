@@ -68,7 +68,7 @@ export class ErrorService {
         location: location
       };
       const headers = new Headers({'Content-Type': 'application/json'});
-      return this.http.post('/errors/record',body,{headers: headers})
+      return this.http.post('/err/record',body,{headers: headers})
         .map((response: Response) => {
           const msg = response.json().message;
           return msg;

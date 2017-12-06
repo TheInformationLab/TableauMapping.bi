@@ -3,9 +3,8 @@ import { FileUploader } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-
-
-const URL = '/spatial/upload';
+import { UploadService } from "./upload.service";
+import { Upload } from "./upload.model";
 
 @Component({
   selector: 'shape-upload',
@@ -14,26 +13,8 @@ const URL = '/spatial/upload';
 
 export class UploadComponent implements OnInit {
   myForm: FormGroup;
-  public uploader:FileUploader;
 
-  constructor(private router: Router) {
-    this.uploader = new FileUploader({
-      url: URL,
-      authToken: localStorage.getItem('token')
-    });
-    this.uploader.onBeforeUploadItem = (fileItem: any) => {
-      this.uploader.options.additionalParameter = {
-        name: this.myForm.value.name,
-        type: this.myForm.value.type,
-        country: this.myForm.value.country,
-        continent: this.myForm.value.continent,
-        sourceUrl: this.myForm.value.sourceUrl,
-        sourceDate: this.myForm.value.sourceDate
-      };
-    };
-    this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-      //console.log(response);
-    };
+  constructor(private router: Router, private uploadService: UploadService) {
   }
 
   ngOnInit() {
@@ -46,12 +27,26 @@ export class UploadComponent implements OnInit {
         country: new FormControl(null, Validators.required),
         continent: new FormControl(null, Validators.required),
         sourceUrl: new FormControl(null, Validators.required),
-        sourceDate: new FormControl(null, Validators.required)
+        sourceDate: new FormControl(null, Validators.required),
+        mapboxId: new FormControl(null, Validators.required)
     });
   }
 
   onSubmit() {
-
+    const upload = new Upload (
+      this.myForm.value.name,
+      this.myForm.value.type,
+      this.myForm.value.country,
+      this.myForm.value.continent,
+      this.myForm.value.sourceUrl,
+      this.myForm.value.sourceDate,
+      this.myForm.value.mapboxId
+    );
+    this.uploadService.save(upload)
+      .subscribe(
+        data => console.log(data),
+        error => console.error(error)
+      )
   }
 
 }
