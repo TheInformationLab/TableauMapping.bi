@@ -4,6 +4,9 @@ var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var commonConfig = require('./webpack.config.common.js');
 var ngw = require('@ngtools/webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = webpackMerge.smart(commonConfig, {
     entry: {
@@ -17,6 +20,8 @@ module.exports = webpackMerge.smart(commonConfig, {
         chunkFilename: '[id].[hash].chunk.js'
     },
 
+    devtool : "cheap-module-source-map",
+
     module: {
         rules: [
             {
@@ -27,7 +32,8 @@ module.exports = webpackMerge.smart(commonConfig, {
                 test: /\.ts$/,
                 use: [
                     'awesome-typescript-loader',
-                    'angular2-template-loader',
+                    'angular2-template-loader'
+                    //'babel-loader?presets[]=es2015'
                     // 'angular-router-loader?aot=true'
                 ]
             }
@@ -38,6 +44,18 @@ module.exports = webpackMerge.smart(commonConfig, {
         new ngw.AngularCompilerPlugin({
           tsConfigPath: './tsconfig.aot.json',
           entryModule: './assets/app/app.module#AppModule'
+        }),
+        new UglifyJsPlugin(),
+        //new BundleAnalyzerPlugin(),
+        new webpack.DefinePlugin({
+             'process.env.NODE_ENV': '"production"'
+        }),
+        new CompressionPlugin({
+          asset: "[path].gz[query]",
+          algorithm: "gzip",
+          test: /\.js$|\.css$|\.html$/,
+          threshold: 10240,
+          minRatio: 0
         })
       ]
 });

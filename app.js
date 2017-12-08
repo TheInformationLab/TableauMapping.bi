@@ -59,6 +59,16 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
     next();
 });
+// 
+// const encodeResToGzip = contentType => (req, res, next) => {
+//     req.url = req.url + '.gz';
+//     res.set('Content-Encoding', 'gzip');
+//     res.set('Content-Type', contentType);
+//
+//     next();
+// };
+//
+// app.get("*.js", encodeResToGzip('text/javascript'));
 
 app.use('/healthcheck', require('express-healthcheck')());
 app.use('/err', errorRoutes);
