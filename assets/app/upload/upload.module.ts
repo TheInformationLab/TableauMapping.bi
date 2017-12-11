@@ -3,27 +3,23 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule, MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { authRoutes } from "./auth.routing";
-import { LogoutComponent } from "./logout.component";
-import { SigninComponent } from "./signin.component";
-import { SignupComponent } from "./signup.component";
+import { uploadRoutes } from "./upload.routing";
+import { UploadComponent } from "./upload.component";
 
 @NgModule({
   declarations: [
-    LogoutComponent,
-    SigninComponent,
-    SignupComponent
+    UploadComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    authRoutes,
+    uploadRoutes,
     MatCardModule,
     MatIconModule
   ]
 })
 
-export class AuthModule {
+export class UploadModule {
 
 }

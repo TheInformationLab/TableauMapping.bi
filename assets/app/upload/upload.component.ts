@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material';
 import { FormGroup, FormControl, Validators } from "@angular/forms";

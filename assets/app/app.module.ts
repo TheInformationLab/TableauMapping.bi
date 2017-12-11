@@ -7,7 +7,6 @@ import  {CustomErrorHandler} from "./errors/error.class";
 import { GrowlModule } from 'primeng/primeng';
 import { NgModule, ErrorHandler} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FileUploadModule } from 'ng2-file-upload';
 import { HttpModule } from "@angular/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +21,6 @@ import { HeaderComponent } from "./header/header.component";
 import { SearchComponent } from "./header/search.component";
 import { SearchGroupsPipe } from './header/groups.pipe';
 import { SearchSortPipe } from './header/sort.pipe';
-import { UploadComponent } from "./upload/upload.component";
 import { HelpComponent } from "./help/help.component";
 import { AuthComponent } from "./auth/auth.component";
 import { ErrorComponent } from "./errors/error.component";
@@ -42,7 +40,6 @@ import { ErrorService } from './errors/error.service';
         SearchComponent,
         SearchGroupsPipe,
         SearchSortPipe,
-        UploadComponent,
         HelpComponent,
         AuthComponent,
         ErrorComponent,
@@ -61,7 +58,6 @@ import { ErrorService } from './errors/error.service';
               routing,
               HttpModule,
               FormsModule,
-              FileUploadModule,
               ReactiveFormsModule,
               BrowserAnimationsModule,
               MappingModule,
