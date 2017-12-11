@@ -8,7 +8,8 @@ var schema = new Schema({
   company: {type: String},
   password: {type: String, required: true},
   email: {type: String, required: true, unique: true},
-  spatials: [{type: Schema.Types.ObjectId, ref: 'Spatial'}]
+  spatials: [{type: Schema.Types.ObjectId, ref: 'Spatial'}],
+  mapboxAccessToken: {type: String}
 });
 
 schema.plugin(mongooseUniqueValidator);
