@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatCardModule, MatIconModule } from '@angular/material';
 import { Spatial } from "../layers/spatial.model";
 import { LayerService } from "../layers/layer.service";
 import { MapService } from "../mapping/mapping.service";
 import { GeocodingService } from "../mapping/geocoding.service";
-import { Router } from '@angular/router';
 
 import { Table } from "./table.model";
 

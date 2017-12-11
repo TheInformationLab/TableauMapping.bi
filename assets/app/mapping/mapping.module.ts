@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule} from '@angular/router';
 
 import { MapComponent } from "./map.component";
 import { NavigatorComponent } from "./navigator/navigator.component";
@@ -13,7 +14,6 @@ import { MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatListModule }
 import { MatDialogModule } from '@angular/material/dialog';
 import { MenuGroupsPipe } from './toolbar/groups.pipe';
 import { MenuSortPipe } from './toolbar/sort.pipe';
-import { routing } from "./mapping.routing";
 
 import { MapService } from "./mapping.service";
 import { GeocodingService } from "./geocoding.service";
@@ -46,9 +46,9 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
   ],
   imports: [
     CommonModule,
-    routing,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     MatMenuModule,
     MatIconModule,
     MatProgressSpinnerModule,
