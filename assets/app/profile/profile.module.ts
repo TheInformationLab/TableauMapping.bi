@@ -3,29 +3,25 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule, MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { authRoutes } from "./auth.routing";
-import { AuthComponent } from "./auth.component";
-import { LogoutComponent } from "./logout.component";
-import { SigninComponent } from "./signin.component";
-import { SignupComponent } from "./signup.component";
+import { profileRoutes } from "./profile.routing";
+import { ProfileComponent } from "./profile.component";
+import { ModifyComponent } from "./modify.component";
 
 @NgModule({
   declarations: [
-    AuthComponent,
-    LogoutComponent,
-    SigninComponent,
-    SignupComponent
+    ProfileComponent,
+    ModifyComponent
   ],
   imports: [
     CommonModule,
+    profileRoutes,
     FormsModule,
     ReactiveFormsModule,
-    authRoutes,
     MatCardModule,
     MatIconModule
   ]
 })
 
-export class AuthModule {
+export class ProfileModule {
 
 }

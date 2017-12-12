@@ -22,7 +22,6 @@ import { SearchComponent } from "./header/search.component";
 import { SearchGroupsPipe } from './header/groups.pipe';
 import { SearchSortPipe } from './header/sort.pipe';
 import { HelpComponent } from "./help/help.component";
-import { AuthComponent } from "./auth/auth.component";
 import { ErrorComponent } from "./errors/error.component";
 import { ErrorMsgComponent } from "./errors/errorMsg.component";
 
@@ -30,6 +29,7 @@ import { routing } from "./app.routing";
 import { AuthService } from "./auth/auth.service";
 import { LayerService } from "./layers/layer.service";
 import { UploadService } from "./upload/upload.service";
+import { ProfileService } from "./profile/profile.service";
 import { SearchService } from "./header/search.service";
 import { ErrorService } from './errors/error.service';
 
@@ -41,7 +41,6 @@ import { ErrorService } from './errors/error.service';
         SearchGroupsPipe,
         SearchSortPipe,
         HelpComponent,
-        AuthComponent,
         ErrorComponent,
         ErrorMsgComponent
     ],
@@ -52,6 +51,7 @@ import { ErrorService } from './errors/error.service';
                 AuthService,
                 LayerService,
                 UploadService,
+                ProfileService,
                 SearchService,
                 ErrorService],
     imports: [BrowserModule,
