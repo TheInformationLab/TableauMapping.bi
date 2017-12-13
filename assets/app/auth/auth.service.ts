@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
 import 'rxjs/Rx';
-
+import { JwtHelper } from 'angular2-jwt';
 import { User } from './user.model';
 import { Observable } from "rxjs";
 import { ErrorService } from "../errors/error.service";
@@ -45,7 +45,8 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return localStorage.getItem('token') !== null;
+    var token = localStorage.getItem('token');
+    return token !== null && !this.jwtHelper.isTokenExpired(token);
   }
 
 }

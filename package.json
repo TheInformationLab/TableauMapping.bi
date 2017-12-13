@@ -35,6 +35,7 @@
     "@angular/router": "^5.1.0",
     "@angular/upgrade": "^5.1.0",
     "@turf/turf": "^5.0.4",
+    "angular2-jwt": "^0.2.3",
     "async": "^2.6.0",
     "bcryptjs": "^2.4.3",
     "blueimp-md5": "^2.10.0",
