@@ -1,32 +1,36 @@
-<div class="demo-card-container" layout="row" layout-align="center">
-  <mat-card>
-    <mat-card-header>
-      <mat-icon mat-card-avatar>fingerprint</mat-icon>
-      <mat-card-title class="help-card-title">Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-              <label for="email">Email</label>
-              <input
-                      type="email"
-                      id="email"
-                      class="form-control"
-                      formControlName="email">
-          </div>
-          <div class="form-group">
-              <label for="password">Password</label>
-              <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      formControlName="password">
-          </div>
-          <button
-                  class="btn btn-primary"
-                  type="submit"
-                  [disabled]="!myForm.valid">Submit</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+<div class="container" style="margin-top:100px;">
+  <div class="col-mat-8 col-mat-offset-2">
+    <div class="demo-card-container" layout="row" layout-align="center">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>fingerprint</mat-icon>
+          <mat-card-title class="help-card-title">Login</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input
+                          type="email"
+                          id="email"
+                          class="form-control"
+                          formControlName="email">
+              </div>
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input
+                          type="password"
+                          id="password"
+                          class="form-control"
+                          formControlName="password">
+              </div>
+              <button
+                      class="btn btn-primary"
+                      type="submit"
+                      [disabled]="!myForm.valid">Submit</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>
