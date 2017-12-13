@@ -11,7 +11,6 @@ import { HttpModule } from "@angular/http";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MappingModule } from './mapping/mapping.module';
-import { AuthModule } from './auth/auth.module';
 import { ResponsiveModule } from 'ng2-responsive';
 import { MatListModule, MatIconModule, MatToolbarModule, MatProgressSpinnerModule, MatCardModule } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -61,7 +60,6 @@ import { ErrorService } from './errors/error.service';
               ReactiveFormsModule,
               BrowserAnimationsModule,
               MappingModule,
-              AuthModule,
               ResponsiveModule,
               MatListModule,
               MatIconModule,
