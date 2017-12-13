@@ -11,7 +11,8 @@ const APP_ROUTES : Routes = [
   {path: 'upload', loadChildren: './upload/upload.module#UploadModule'},
   {path: 'map', component: MapComponent},
   {path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
-  {path: 'profile', loadChildren: './profile/profile.module#ProfileModule' }
+  {path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
+  {path: '**', redirectTo: '/map'}
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES);
+export const routing = RouterModule.forRoot(APP_ROUTES, { enableTracing: false });
