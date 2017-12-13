@@ -4,9 +4,7 @@ import { ProfileService } from './profile.service';
 @Component({
   selector: 'app-profile',
   template: `
-  <div class="container" style="margin-top:100px;">
     <router-outlet></router-outlet>
-  </div>
   `
 })
 
