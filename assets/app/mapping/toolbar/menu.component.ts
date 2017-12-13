@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild } from '@angular/core';
-import {MatMenuModule, MatIconModule,MatMenuTrigger, MatMenu, MatButtonModule,MatButton} from '@angular/material';
+import {MatMenuModule, MatIconModule,MatMenuTrigger, MatMenu, MatButtonModule} from '@angular/material';
 import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
 import * as Turf from "@turf/turf";
@@ -24,17 +24,6 @@ import * as L from 'leaflet';
   .menu {
     right: 20px;
     bottom: 30px;
-    background: #337ab7;
-    outline: none;
-    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
-    border-radius: 50%;
-    width: 56px;
-    height: 56px;
-    color: #fff;
-  }
-  mat-icon {
-    font-size: 36px;
-    margin: 5px 0 0 -10px;
   }
   h5 {
     padding-left: 10px;

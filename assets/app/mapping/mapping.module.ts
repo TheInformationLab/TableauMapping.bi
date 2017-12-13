@@ -10,7 +10,7 @@ import { IntroComponent } from "./intro/intro.component";
 import { MenuItemComponent } from "./toolbar/menuItem.component";
 import { InfoComponent } from "./info/info.component";
 import { InfoContentComponent } from "./info/infoContent.component";
-import { MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatListModule } from '@angular/material';
+import { MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatListModule, MatButtonModule } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MenuGroupsPipe } from './toolbar/groups.pipe';
 import { MenuSortPipe } from './toolbar/sort.pipe';
@@ -54,6 +54,7 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
     MatProgressSpinnerModule,
     MatListModule,
     MatDialogModule,
+    MatButtonModule,
     BootstrapModalModule
   ]
 })
