@@ -25,17 +25,20 @@ module.exports = webpackMerge.smart(commonConfig, {
     module: {
         rules: [
             {
-                test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-                loader: '@ngtools/webpack'
+              test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+              loader: '@ngtools/webpack'
             },
             {
-                test: /\.ts$/,
-                use: [
-                    'awesome-typescript-loader',
-                    'angular2-template-loader'
-                    //'babel-loader?presets[]=es2015'
-                    // 'angular-router-loader?aot=true'
-                ]
+              test: /\.ts$/,
+              loaders: [
+                  'awesome-typescript-loader'
+              ]
+            },
+            {
+              test: /\.(ts|js)$/,
+              loaders: [
+                'angular-router-loader'
+              ]
             }
         ]
     },
