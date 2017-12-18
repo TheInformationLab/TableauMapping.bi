@@ -92,7 +92,7 @@ export class MapService {
         location: location
       };
       const headers = new Headers({'Content-Type': 'application/json'});
-      return this.http.post('/stats/record',body,{headers: headers})
+      return this.http.post('/api/stats/record',body,{headers: headers})
         .map((response: Response) => {
           const msg = response.json().message;
           return msg;

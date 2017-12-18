@@ -13,11 +13,11 @@ export class AuthService {
   signup(user: User) {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/auth/create', body, {headers: headers})
+    return this.http.post('/api/auth/create', body, {headers: headers})
       .map((response: Response) => response.json())
       .catch((error: Response) => {
         if(error.status == 0) {
-          this.errorService.error("POST /auth/create net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+          this.errorService.error("POST /api/auth/create net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
           return Observable.throw(error.json());
         } else {
           return Observable.throw(error.json());
@@ -28,11 +28,11 @@ export class AuthService {
   signin(user: User) {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/auth/signin', body, {headers: headers})
+    return this.http.post('/api/auth/signin', body, {headers: headers})
       .map((response: Response) => response.json())
       .catch((error: Response) => {
         if(error.status == 0) {
-          this.errorService.error("POST /auth/signin net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+          this.errorService.error("POST /api/auth/signin net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
           return Observable.throw(error.json());
         } else {
           return Observable.throw(error.json());

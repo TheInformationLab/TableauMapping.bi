@@ -36,6 +36,7 @@ mongoose.connect(dburi, options);
 var appRoutes = require('./routes/app');
 var errorRoutes = require('./routes/errors');
 var authRoutes = require('./routes/auth');
+var profileRoutes = require('./routes/profile');
 var spatialRoutes = require('./routes/spatial');
 var searchRoutes = require('./routes/search');
 var statsRoutes = require('./routes/stats');
@@ -59,7 +60,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
     next();
 });
-// 
+//
 // const encodeResToGzip = contentType => (req, res, next) => {
 //     req.url = req.url + '.gz';
 //     res.set('Content-Encoding', 'gzip');
@@ -71,12 +72,13 @@ app.use(function (req, res, next) {
 // app.get("*.js", encodeResToGzip('text/javascript'));
 
 app.use('/healthcheck', require('express-healthcheck')());
-app.use('/err', errorRoutes);
-app.use('/auth', authRoutes);
-app.use('/spatial', spatialRoutes);
-app.use('/search', searchRoutes);
+app.use('/api/err', errorRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/spatial', spatialRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/stats', statsRoutes);
 app.use('/api', apiRoutes);
-app.use('/stats', statsRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler
