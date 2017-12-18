@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material';
 import { Spatial } from "../layers/spatial.model";
 import { SearchItem } from "./searchItem.model";
 import { ErrorService } from "../errors/error.service";
+import { Router } from '@angular/router';
 
 @Component({
     selector: "search",
@@ -131,11 +132,21 @@ export class SearchComponent {
     public foundList: SearchItem[] = [];
     public elementRef;
     public isLoading: Boolean = false;
+
+    hideSearch: Boolean = true;
+
     @ViewChild('searchResults') results:ElementRef;
 
-    constructor(private searchService: SearchService, myElement: ElementRef,private layerService: LayerService, private mapService: MapService, private errorService: ErrorService) {
+    constructor(private searchService: SearchService, myElement: ElementRef,private layerService: LayerService, private mapService: MapService, private errorService: ErrorService, private router: Router) {
         this.search = "";
         this.elementRef = myElement;
+        this.router.events.subscribe(ev => {
+          if (ev.url  && ev.url !== '/map') {
+            this.hideSearch = true;
+          } else {
+            this.hideSearch = false;
+          }
+        })
     }
 
     find() {

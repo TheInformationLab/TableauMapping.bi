@@ -1,4 +1,4 @@
-<div class="navContainer">
+<div class="navContainer" [hidden]="hideSearch">
   <div class="input-field col s12 on-map">
     <mat-icon id="iconSearch">search</mat-icon><input id="search-input" class="searchBox on-map" type="search" placeholder="Search"
      [(ngModel)]="search" (keyup)="find()" (click)="showResults()">
