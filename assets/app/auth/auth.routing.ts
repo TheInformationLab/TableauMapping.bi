@@ -8,6 +8,7 @@ import { LogoutComponent } from "./logout.component";
 const routes: Routes = [
   {path: '', redirectTo: 'signin', pathMatch: 'full'},
   {path: 'signin', component: SigninComponent},
+  {path: 'signin/:redirect', component: SigninComponent},
 //  {path: 'signup', component: SignupComponent},
   {path: 'logout', component: LogoutComponent}
 ];

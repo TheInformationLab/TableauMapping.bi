@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatCardModule } from '@angular/material';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 import { AuthService } from "./auth.service";
 import { User } from "./user.model";
@@ -13,8 +13,11 @@ import { User } from "./user.model";
 
 export class SigninComponent {
   myForm: FormGroup;
+  redirect: String;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {
+    this.route.params.subscribe( params => this.redirect = params.redirect);
+  }
 
   onSubmit() {
     const user = new User(
@@ -26,7 +29,11 @@ export class SigninComponent {
             data => {
               localStorage.setItem('token', data.token);
               localStorage.setItem('userId', data.userId);
-              this.router.navigateByUrl('/upload');
+              if (this.redirect) {
+                this.router.navigateByUrl('/'+this.redirect);
+              } else {
+                this.router.navigateByUrl('/map');
+              }
             },
             error => console.error(error)
         );
