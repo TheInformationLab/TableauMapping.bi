@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Spatial = require('../models/spatial');
+var User = require('../models/user');
 var SearchIndex = require('../models/index');
 var mapbox = require('./mapbox');
 var async = require('async');
@@ -86,9 +87,16 @@ query.exec(function (err, spatials) {
 
 var getData = function(id, callback) {
   writeLog("Getting " +id);
-  Spatial.findById(mongoose.Types.ObjectId(id), function (err, resp) {
-    mapbox.getDataset(resp.mapboxid, function(geojson) {
-      callback(null, geojson);
-    });
-  });
+  Spatial.findById(mongoose.Types.ObjectId(id))
+         .populate('owner')
+         .exec(function (err, resp) {
+           if (err != null && err!= {}) {
+             writeLog(JSON.stringify(err));
+             mongoose.connection.close()
+             return;
+           }
+            mapbox.getDataset(resp.mapboxid, resp.owner.mapboxUsername, resp.owner.mapboxAccessToken, function(geojson) {
+              callback(null, geojson);
+            });
+          });
 }
