@@ -8,6 +8,8 @@ import { ErrorService } from "../errors/error.service";
 
 @Injectable()
 export class AuthService {
+  jwtHelper: JwtHelper = new JwtHelper();
+
   constructor(private http: Http, private errorService: ErrorService) {}
 
   signup(user: User) {
@@ -46,7 +48,12 @@ export class AuthService {
 
   isLoggedIn() {
     var token = localStorage.getItem('token');
-    return token !== null && !this.jwtHelper.isTokenExpired(token);
+    if (token !== "undefined") {
+      return token !== null && !this.jwtHelper.isTokenExpired(token);
+    } else {
+      return false;
+    }
+
   }
 
 }
