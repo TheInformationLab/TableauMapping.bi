@@ -2,8 +2,6 @@ var request = require("request");
 var crypto = require("crypto");
 var async = require("async");
 
-const token = 'sk.eyJ1IjoiaW5mb2xhYnVrLWRldiIsImEiOiJjamFrNTRib3YzeTJ3MzNudTI3aGxwZ3NhIn0.IaM2xZHEGks5cMXIvb8USA';
-
 var mapbox = {}
 
 mapbox.upload = function(name, country, geojson, callback) {
@@ -28,15 +26,15 @@ mapbox.upload = function(name, country, geojson, callback) {
   });
 }
 
-mapbox.getDataset = function(id, callback, paged, next) {
+mapbox.getDataset = function(id, username, accessToken, callback, paged, next) {
   if (next) {
     var url = next;
   } else {
-    var url = 'https://api.mapbox.com/datasets/v1/infolabuk-dev/'+id+'/features'
+    var url = 'https://api.mapbox.com/datasets/v1/'+username+'/'+id+'/features'
   }
   var options = { method: 'GET',
     url: url,
-    qs: { access_token: token } };
+    qs: { access_token: accessToken } };
   request(options, function (error, response, body) {
     if (error) console.log(error);
     var resp = JSON.parse(body);
@@ -47,10 +45,16 @@ mapbox.getDataset = function(id, callback, paged, next) {
     var tstReg = /(?:<)([\s\S]+)(?:>; rel="next")/g;
     var nextUrl = tstReg.exec(headerLink);
     if (nextUrl && nextUrl[1].length > 0) {
-      mapbox.getDataset(id, callback, resp.features, nextUrl[1]);
+      mapbox.getDataset(id, username, accessToken, callback, resp.features, nextUrl[1]);
     } else {
       callback(resp);
     }
+  });
+}
+
+mapbox.getDatasets = function(username, accessToken, callback) {
+  retrieveDatasets(username, accessToken, function(datasets) {
+    callback(datasets);
   });
 }
 
@@ -65,6 +69,27 @@ mapbox.delete = function(id, callback) {
 }
 
 module.exports = mapbox;
+
+var retrieveDatasets = function(username, accessToken, callback, paged, next) {
+  var options = { method: 'GET',
+    url: 'https://api.mapbox.com/datasets/v1/'+username+'/',
+    qs: { access_token: accessToken } };
+  request(options, function (error, response, body) {
+    if (error) console.log(error);
+    var resp = JSON.parse(body);
+    if (paged) {
+      resp = paged.concat(resp);
+    }
+    var headerLink = response.headers.link;
+    var tstReg = /(?:<)([\s\S]+)(?:>; rel="next")/g;
+    var nextUrl = tstReg.exec(headerLink);
+    if (nextUrl && nextUrl[1].length > 0) {
+      retrieveDatasets(username, accessToken, callback, resp, nextUrl[1]);
+    } else {
+      callback(resp);
+    }
+  });
+}
 
 var createDataset = function(callback) {
   var options = { method: 'POST',
