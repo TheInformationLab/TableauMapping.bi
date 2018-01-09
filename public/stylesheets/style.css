@@ -29,10 +29,6 @@ a.danger {
   margin-bottom: 20px;
 }
 
-input.ng-invalid.ng-touched {
-  border: 1px solid red;
-}
-
 .mat-menu-panel {
   max-width: none !important;
   max-height: 80vh !important;
