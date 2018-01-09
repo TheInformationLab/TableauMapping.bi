@@ -31,6 +31,7 @@ if (dbuser && dbpass) {
 } else {
   dburi = dburi + dbhost;
 }
+mongoose.set('debug', false);
 mongoose.connect(dburi, options);
 
 var appRoutes = require('./routes/app');
