@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { UploadService } from "./upload.service";
 import { Upload } from "./upload.model";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   selector: 'shape-upload',
@@ -13,13 +14,13 @@ import { Upload } from "./upload.model";
 export class UploadComponent implements OnInit {
   myForm: FormGroup;
 
-  constructor(private router: Router, private uploadService: UploadService) {
+  constructor(private router: Router, private uploadService: UploadService, private authService: AuthService) {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigateByUrl('/auth/signin/upload');
+    }
   }
 
   ngOnInit() {
-    if (localStorage.getItem('token') == null) {
-      this.router.navigateByUrl('/map');
-    }
     this.myForm = new FormGroup({
         name: new FormControl(null, Validators.required),
         type: new FormControl(null, Validators.required),
