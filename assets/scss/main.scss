@@ -10,3 +10,12 @@
 .cdk-overlay-pane {
   z-index: 1002;
 }
+app-header {
+  z-index: 2;
+}
+#agreement .mat-input-underline {
+  display: none;
+}
+#agreement .mat-form-field-underline {
+  display: none;
+}

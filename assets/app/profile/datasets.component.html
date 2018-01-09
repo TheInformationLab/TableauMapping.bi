@@ -1,0 +1,56 @@
+<mat-toolbar class="profile-header">Mapbox Datasets</mat-toolbar>
+<div class="container" style="">
+  <div class="col-mat-8 col-mat-offset-2">
+    <div class="table-container mat-elevation-z8">
+      <div class="table-header">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+      <mat-table #table [dataSource]="dataSource" class="table"
+      matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <!-- Features Column -->
+        <ng-container matColumnDef="features">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Features </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.features}} </mat-cell>
+        </ng-container>
+
+        <!-- Created Column -->
+        <ng-container matColumnDef="created">
+          <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.created}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="publicID">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"><a *ngIf="element.publicID" href="/map/{{element.publicID}}" target="_blank">View Preview</a></mat-cell>
+        </ng-container>
+        <!-- Is Public Column -->
+        <ng-container matColumnDef="isPublic">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Public </mat-header-cell>
+          <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+            <mat-slide-toggle
+              color="primary"
+              checked={{element.isPublic}}
+              disabled={{!element.publicID}}
+              (click)="makePublic(element.id)">
+            </mat-slide-toggle>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"
+            matRipple
+            class="element-row"
+            (click)="editMeta(row)" ></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>

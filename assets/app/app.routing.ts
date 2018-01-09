@@ -2,6 +2,7 @@ import { Routes, RouterModule } from "@angular/router"
 
 import { MapComponent } from "./mapping/map.component";
 import { HelpComponent } from "./help/help.component";
+import { ProfileComponent } from "./profile/profile.component";
 
 const APP_ROUTES : Routes = [
   {path: '', redirectTo: '/map', pathMatch: 'full'},
@@ -11,7 +12,7 @@ const APP_ROUTES : Routes = [
   {path: 'upload', loadChildren: './upload/upload.module#UploadModule'},
   {path: 'map', component: MapComponent},
   {path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
-  {path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
+  {path: 'profile', component: ProfileComponent, loadChildren: './profile/profile.module#ProfileModule' },
   {path: '**', redirectTo: '/map'}
 ];
 

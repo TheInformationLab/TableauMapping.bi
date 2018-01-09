@@ -1,0 +1,82 @@
+<h5>{{ DialogTitle }}</h5>
+<mat-dialog-content>
+  <form class="form-container" [formGroup]="metaForm">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Name" formControlName="name">
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.name.errors && metaForm.controls.name.errors.required">
+        Name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Type" formControlName="type">
+        <mat-option value="Administrative">Administrative</mat-option>
+        <mat-option value="Buildings">Buildings</mat-option>
+        <mat-option value="Ceremonial">Ceremonial</mat-option>
+        <mat-option value="Government">Government</mat-option>
+        <mat-option value="Infrastructure">Infrastructure</mat-option>
+        <mat-option value="Land Features">Land Features</mat-option>
+        <mat-option value="Postcode/Zip Code">Postcode/Zip Code</mat-option>
+        <mat-option value="Roads">Roads</mat-option>
+        <mat-option value="Transport">Transport</mat-option>
+      </mat-select>
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.type.errors && metaForm.controls.type.errors.required">
+        Type is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Country" formControlName="country">
+        <mat-option  *ngFor = "let country of countries" value="{{country.name}}">{{country.name}}</mat-option>
+      </mat-select>
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.country.errors && metaForm.controls.country.errors.required">
+        Country is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Continent" formControlName="continent">
+        <mat-option value="Africa">Africa</mat-option>
+        <mat-option value="Antarctica">Antarctica</mat-option>
+        <mat-option value="Asia">Asia</mat-option>
+        <mat-option value="Australia">Australia</mat-option>
+        <mat-option value="Europe">Europe</mat-option>
+        <mat-option value="North America">North America</mat-option>
+        <mat-option value="North America">South America</mat-option>
+      </mat-select>
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.continent.errors && metaForm.controls.continent.errors.required">
+        Continent is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Source URL" formControlName="sourceurl">
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.sourceurl.errors && metaForm.controls.sourceurl.errors.required">
+        Source URL is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="datepicker">
+      <input matInput [matDatepicker]="picker" placeholder="Source Date" formControlName="sourcedate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.sourcedate.errors && metaForm.controls.sourcedate.errors.required">
+        Source Date is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field id="agreement">
+      <input matInput placeholder="" style="display: none" formControlName="agreement">
+      <mat-checkbox color="primary" formControlName="agreement"><div class="agreement">I agree to the public distribution of this dataset and confirm that I have full rights to do so as I am the creator or have obtained permission from the creator.</div></mat-checkbox>
+      <mat-hint>Required</mat-hint>
+      <mat-error *ngIf="metaForm.controls.agreement.errors && metaForm.controls.agreement.errors.required">
+        You must agree with the above statement
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="saveMeta()" color="primary" *ngIf="DialogMode=='insert'" [disabled]="!this.metaForm.valid">Save</button>
+  <button mat-button (click)="updateMeta()" color="primary" *ngIf="DialogMode=='update'" [disabled]="!this.metaForm.valid">Update</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

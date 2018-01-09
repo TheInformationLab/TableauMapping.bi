@@ -22,11 +22,13 @@ var schema = new Schema({
   country: {type: String},
   continent: {type: String},
   mapboxid: {type: String},
+  agreement: {type: Boolean},
   tableSchema: {
     id: {type: String},
     alias: {type: String},
     columns: [columnSchema]
-  }
+  },
+  isPublic: {type: Boolean}
   /*,
   tabData: {type: String}*/
 });
