@@ -10,6 +10,7 @@ import { Spatial } from "../layers/spatial.model";
 import { SearchItem } from "./searchItem.model";
 import { ErrorService } from "../errors/error.service";
 import { Router } from '@angular/router';
+import { RouterEvent, NavigationEnd } from '@angular/router';
 
 @Component({
     selector: "search",
@@ -140,13 +141,14 @@ export class SearchComponent {
     constructor(private searchService: SearchService, myElement: ElementRef,private layerService: LayerService, private mapService: MapService, private errorService: ErrorService, private router: Router) {
         this.search = "";
         this.elementRef = myElement;
-        this.router.events.subscribe(ev => {
-          if (ev.url  && ev.url !== '/map') {
-            this.hideSearch = true;
-          } else {
-            this.hideSearch = false;
-          }
-        })
+        this.router.events.filter((evt: RouterEvent) => evt instanceof NavigationEnd).map((ev: any) => ev.url).subscribe(url =>
+          {
+            if (url  && url.indexOf('/map') == -1) {
+              this.hideSearch = true;
+            } else {
+              this.hideSearch = false;
+            }
+          });
     }
 
     find() {
