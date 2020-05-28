@@ -25,7 +25,7 @@ function haltOnTimedout(req, res, next){
 
 var options = { useNewUrlParser: true, useUnifiedTopology: true };
 
-var dbhost = 'tableaumapping-yi1n8.mongodb.net/tableaumappingmapbox?retryWrites=true&w=majority' || process.env.HOST || 'localhost:27017/tableau-mapping2';
+var dbhost = process.env.HOST || 'localhost:27017/tableau-mapping2';
 var dbuser = process.env.DBUSER || null;
 var dbpass = process.env.DBPASS || null;
 var dburi = 'mongodb+srv://';
