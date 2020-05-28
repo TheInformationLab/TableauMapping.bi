@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Spatial = require('../models/spatial');
 var User = require('../models/user');
-var SearchIndex = require('../models/index');
 var mapbox = require('./mapbox');
 var async = require('async');
 var fs = require('fs');
@@ -62,7 +61,7 @@ query.exec(function (err, spatials) {
         mongoose.connection.close()
         return;
       }
-      fs.writeFile('/tmp/data/' + task.id, JSON.stringify(data), 'utf8', function(err) {
+      fs.writeFile('/tmp/data/' + task.id, JSON.stringify(data), 'utf8', function() {
         writeLog( task.id + " cache written");
         callback();
       });

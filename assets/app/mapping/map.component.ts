@@ -6,6 +6,7 @@ import {MenuComponent} from "./toolbar/menu.component";
 import {IntroComponent} from "./intro/intro.component";
 import {MapService} from "./mapping.service";
 import {GeocodingService} from "./geocoding.service";
+import {LayerService} from "../layers/layer.service";
 import {Location} from "./location.class";
 import { ActivatedRoute } from '@angular/router';
 import { DialogService } from "ng2-bootstrap-modal";
@@ -47,12 +48,10 @@ import * as L from 'leaflet';
 export class MapComponent implements OnInit  {
   public isLoading: Boolean = true;
   sub: any;
+  viewId: string = '';
 
-    constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute, private dialogService:DialogService /*,private router: Router*/) {
-      // let userAgent = navigator.userAgent;
-      // if (userAgent.includes("Tableau") || userAgent.includes("Qt")) {
-      //   router.navigateByUrl('/wdc');
-      // }
+    constructor(private mapService: MapService, private geocoder: GeocodingService, private route: ActivatedRoute, private dialogService:DialogService, private layerService: LayerService) {
+      this.route.params.subscribe( params => this.viewId = params.id);
     }
 
     ngOnInit() {
@@ -83,20 +82,45 @@ export class MapComponent implements OnInit  {
             mapServ.mapMoved();
           });
           this.mapService.map = map;
-          this.geocoder.getCurrentLocation()
-              .subscribe(
-                  location => {
-                    map.panTo([location.latitude, location.longitude]);
-                    mapServ.recordStats('entry',null,location)
-                      .subscribe(
-                        data => console.log(data),
-                        error => console.error(error)
-                      );
-                    localStorage.setItem('userData', JSON.stringify(location));
-                  },
-                  err => console.error(err)
-              );
           this.mapService.showLoading(false);
+          if (this.viewId && this.viewId != '') {
+            this.showPolygon(this.viewId);
+          } else {
+            this.geocoder.getCurrentLocation()
+                .subscribe(
+                    location => {
+                      map.panTo([location.latitude, location.longitude]);
+                      mapServ.recordStats('entry',null,location)
+                        .subscribe(
+                          data => console.log(data),
+                          error => console.error(error)
+                        );
+                      localStorage.setItem('userData', JSON.stringify(location));
+                    },
+                    err => console.error(err)
+                );
+          }
        });
+    }
+
+    showPolygon(id) {
+      this.mapService.showLoading(true);
+      //this.mapService.populateInfo(this.menuItem);
+      var opt = { id: id};
+      this.mapService.recordStats('showPolygon',id,JSON.parse(localStorage.getItem('userData')))
+        .subscribe(
+          data => console.log(data),
+          error => console.error(error)
+        );
+      this.layerService.getData(opt)
+        .subscribe(
+          (resp) => {
+            var corner1 = L.latLng(resp.meta.bbox[1], resp.meta.bbox[0]),
+            corner2 = L.latLng(resp.meta.bbox[3], resp.meta.bbox[2]),
+            bounds = L.latLngBounds(corner1, corner2);
+            this.mapService.map.flyToBounds(bounds);
+            this.mapService.addPolygon(resp.data, null, null);
+            this.mapService.populateInfo(resp.meta);
+          });
     }
 }

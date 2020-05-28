@@ -29,6 +29,10 @@ import * as L from 'leaflet';
     padding-left: 10px;
     color: #999;
   }
+  mat-icon {
+    font-weight: 800;
+    margin-top: -2px;
+  }
 `]
 })
 export class MenuComponent {
@@ -86,6 +90,7 @@ export class MenuComponent {
         spatial.name,
         spatial.country,
         spatial._id,
+        spatial.owner,
         spatial.bbox,
         spatial.dateCreated,
         spatial.sourceUrl,

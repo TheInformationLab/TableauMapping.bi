@@ -50,7 +50,7 @@ export class LayerService {
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('/api/spatial/data',body,{headers: headers})
       .map((response: Response) => {
-        const geojson = response.json().data;
+        const geojson = response.json();
         return geojson;
     })
     .catch((error: Response) => {

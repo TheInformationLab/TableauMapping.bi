@@ -1,14 +1,18 @@
-<h3>{{ data.name }}</h3>
+<h3>{{ data.country }} - {{ data.name }}</h3>
 <mat-list>
-  <h3 mat-subheader class="header">Boundary</h3>
   <mat-list-item class="item">
     <mat-icon mat-list-icon>layers</mat-icon>
     <p mat-line class="subheader">Type</p>
     <h4 mat-line class="infoValue">{{ data.type }}</h4>
   </mat-list-item>
   <mat-list-item class="item">
+    <mat-icon mat-list-icon>person</mat-icon>
+    <p mat-line class="subheader">Contributed by</p>
+    <h4 mat-line class="infoValue">{{ data.owner.firstName }} {{ data.owner.lastName }}, {{ data.owner. company }}</h4>
+  </mat-list-item>
+  <mat-list-item class="item">
     <mat-icon mat-list-icon>file_upload</mat-icon>
-    <p mat-line class="subheader">Date Uploaded</p>
+    <p mat-line class="subheader">Date Added</p>
     <h4 mat-line class="infoValue">{{ strftime('%d %B %Y', data.dateCreated) }}</h4>
   </mat-list-item>
   <mat-divider class="divider"></mat-divider>

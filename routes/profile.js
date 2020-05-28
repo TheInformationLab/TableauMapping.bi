@@ -7,7 +7,7 @@ var User = require('../models/user');
 
 router.use('/', function(req, res, next) {
   var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
-  jwt.verify(req.headers.authorization, secret, function(err, decoded) {
+  jwt.verify(req.headers.authorization, secret, function(err) {
     if (err) {
       return res.status(401).json({
         message: "Not Authenticated",
@@ -18,7 +18,7 @@ router.use('/', function(req, res, next) {
   });
 });
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
   var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
   jwt.verify(req.headers.authorization, secret, function(err, decoded) {
     console.log(decoded);
@@ -38,7 +38,7 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.patch('/', function (req, res, next) {
+router.patch('/', function (req, res) {
   var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
   jwt.verify(req.headers.authorization, secret, function(err, decoded) {
     User.findOne({_id: decoded.user._id}, function(err, user) {
@@ -72,5 +72,53 @@ router.patch('/', function (req, res, next) {
     });
   });
 });
+
+router.put('/password', function (req, res) {
+  var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
+  jwt.verify(req.headers.authorization, secret, function(err, decoded) {
+    User.findOne({_id: decoded.user._id}, function(err, user) {
+      if (err) {
+        return res.status(500).json({
+          message: 'Error finding user',
+          error: err
+        });
+      }
+      if (!user) {
+        return res.status(401).json({
+          message: 'Login failed',
+          error: {message: 'Invalid login credentials'}
+        });
+      }
+      if (!bcrypt.compareSync(req.body.oldPassword, user.password)) {
+        return res.status(401).json({
+          message: 'Login failed',
+          error: {message: 'Invalid login credentials'}
+        });
+      }
+      if (user) {
+        user.password = bcrypt.hashSync(req.body.newPassword, 10) || user.password;
+        user.save(function(err, result) {
+          if (err) {
+            return res.status(500).json({
+              message: 'Error updating user',
+              error: err
+            });
+          }
+          var secret = process.env.JWTSECRET || '+t{zTdd_WDfq *UEs15r{_FY|J 8#t&wj+FL},UUX-{Vs>+=`+SV#+nr RaJh+w}';
+          var token = jwt.sign({user: result}, secret, {expiresIn: 72000});
+          res.status(200).json({
+            message: "Password updated",
+            token: token
+          });
+        });
+      } else {
+        return res.status(404).json({
+          message: 'User not found',
+          user: decoded.user._id
+        });
+      }
+    });
+  });
+})
 
 module.exports = router;

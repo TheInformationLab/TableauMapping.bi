@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MappingModule } from './mapping/mapping.module';
 import { ResponsiveModule } from 'ng2-responsive';
-import { MatListModule, MatIconModule, MatToolbarModule, MatProgressSpinnerModule, MatCardModule, MatSidenavModule } from '@angular/material';
+import { MatListModule, MatIconModule, MatToolbarModule, MatProgressSpinnerModule, MatCardModule, MatSidenavModule, MatTooltipModule, MatMenuModule } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from "./app.component";
@@ -69,7 +69,9 @@ import { ErrorService } from './errors/error.service';
               MatProgressSpinnerModule,
               MatCardModule,
               MatDialogModule,
-              MatSidenavModule],
+              MatSidenavModule,
+              MatTooltipModule,
+              MatMenuModule],
     bootstrap: [AppComponent]
 })
 export class AppModule {

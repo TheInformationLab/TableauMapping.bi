@@ -1,0 +1,67 @@
+<mat-toolbar class="profile-header">Profile Help</mat-toolbar>
+<div class="container" style="">
+  <div class="verticalScroll">
+    <div class="help-cards">
+      <mat-card>
+        <mat-card-title>Integrating your Mapbox Account</mat-card-title>
+        <mat-card-content>
+          <p>TableauMapping.bi uses Mapbox's Datasets API to host its spatial data. There are many benefits to this, the most important of which is Mapbox has a global, scalable platform specifically designed to host spatial data. Datasets not only hosts your own existing spatial data but also allows you to create spatial data on-the-fly using its in-browser editor.</p>
+          <h5>Getting Started</h5>
+          <p>To start sharing your own spatial data on TableauMapping.bi you need a Mapbox account. This can be a free or a paid account, <a href="https://www.mapbox.com/signup/" target="_blank">signup here</a>.</p>
+          <p>Now you've got your account you'll need to generate an access token and save it to your TableauMapping.bi account.</p>
+          <h5>Generate an Access Token</h5>
+          <img [src]="mapboxToken" width="240px" class="imageRight"/>
+          <ol>
+            <li>Go to the <a href="https://www.mapbox.com/account" target="_blank">'Account'</a> section of your Mapbox account.</li>
+            <li>Click the '+ Create a Token button.</li>
+            <li>Give the token a name meaningful to you.</li>
+            <li>Clear all token scope ticks and select DATASETS:READ and DATASETS:LIST</li>
+            <li>Click 'Create Token'</li>
+            <li>Copy the newly generated token and paste it into the Mapbox section of the 'Modify Profile' page in your TableauMapping.bi account along with your Mapbox username</li>
+          </ol>
+          <p>Your TableauMapping.bi profile will now be able to see any existing datasets in your Mapbox account (don't worry they're not made public unless you choose to share them).</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Saving Spatial Data to Mapbox Datasets</mat-card-title>
+        <mat-card-content>
+          <p>If you'd like to create yourself a spatial dataset or upload your own <b>geojson</b>, <b>json</b> or <b>csv</b> files, go to <a href="https://www.mapbox.com/studio/datasets/" target="_blank">Mabox Studio Datasets</a>, click the 'New Dataset' button and follow instructions.</p>
+          <p>If your spatial data is in the form of a <b>shapefile</b> (.shp) you can use a dedicated <a href="https://gallery.alteryx.com/#!app/Mapbox-Dataset-Uploader/5a4bb01ceffc2a091073c4e4" target="_blank">Alteryx Gallery app</a> we've created for you to push your data to Mapbox datasets</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Making your Dataset Public</mat-card-title>
+        <mat-card-content>
+          <p>Once you've created a Mapbox Dataset you're ready to share it with the world! Check the Datasets section of your TableauMapping.bi profile and if your access token is correctly configured you should see your datasets listed.</p>
+          <p>The 'Public' switch of each dataset can take one of three forms:</p>
+          <img [src]="dsMeta" class="publicSwitch"/>
+          <h5 class="expandedLine">Disabled - Needs Metadata</h5>
+          <p>Your data may be in your Mapbox account but TableauMapping.bi doesn't know it exists until you tell us about it. We need some metadata including the Country the data is covering primarily (for multiple countried choose the 'Many' value), the source URL where you found the original spatial data and the date it was created (approximately) by that site. You're also required to confirm that you have permission to share the dataset with the wider world</p>
+          <p>To add this metadata simply click on the name of your dataset and complete all fields in the dialog. Click 'Save' to store the metadata in TableauMapping.bi's repository</p>
+          <img [src]="dsReady" class="publicSwitch"/>
+          <h5 class="expandedLine">Not Public - Ready to Share</h5>
+          <p>Your dataset is ready to share with the Tableua Community!</p>
+          <p>If you'd like to first take a look at your creation to make sure it's perfect hit the 'View Preview' link. Otherswise click the switch to share your dataset</p>
+          <img [src]="dsPublic" class="publicSwitch"/>
+          <h5 class="expandedLine">Public - Sharing with the World</h5>
+          <p>Your dataset is available for use by the Tableau Community! Thank you!</p>
+          <p>You have the option to disable sharing at any time by clicking the switch and removing the dataset from public view.</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Adding Metadata</mat-card-title>
+        <mat-card-content>
+          <p>To add or edit your dataset meta data simply click on the row in the table.</p>
+          <img [src]="editMeta" class="imageRight" width="320px">
+          <p><b>Name</b> - Give your dataset a meaningful name that others will regonise and know what your dataset is about.</p>
+          <p><b>Type</b> - Classify your dataset from the drop down. If nothing describes what you're publishing select 'Other'</p>
+          <p><b>Country</b> - Which country does your dataset cover? If there's more than one just select 'Many' from the top of the list</p>
+          <p><b>Continent</b> - In which continent is your dataset located?</p>
+          <p><b>Source URL</b> - We want to promote transparancy at TableauMapping.bi and give users of your dataset the info they need to trust its source. If you found the dataset on a public website please drop in the source URL. If it's something your company created but you're still happy to share then give your company's website. If you've just created it on the fly using Mapbox Studio then just use https://www.mapbox.com/studio/</p>
+          <p><b>Source Date</b> - When was this dataset originally created? Not the date you're uploading it (we add that automatically), but the date it was created. That way we can watch for datasets getting a bit old and find some newer versions.</p>
+          <p><b>Consent</b> - We all get really excited when we find something awesome and want to share it around. But are you sure it's legel? Does a copyright exist on the dataset and if so does it allow sharing? Remember you're responsible for this, so please, play it safe!</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,10 @@ import { MetaDialogueComponent } from "./meta.component";
       box-shadow: inset 0 3px 5px -1px rgba(0,0,0,.2), inset 0 6px 10px 0 rgba(0,0,0,.14);
     }
 
+    .container {
+      display: table-cell;
+    }
+
     .table-container {
       display: flex;
       flex-direction: column;
@@ -85,7 +89,7 @@ export class DatasetComponent implements AfterViewInit {
 
   constructor(private router: Router, private profileService: ProfileService, private authService: AuthService, public snackBar: MatSnackBar, public dialog: MatDialog) {
     if (!this.authService.isLoggedIn()) {
-      this.router.navigateByUrl('/auth/signin/profile');
+      this.router.navigateByUrl('/auth/signin/profile%2Fdatasets');
       return;
     }
     this.getMeta();

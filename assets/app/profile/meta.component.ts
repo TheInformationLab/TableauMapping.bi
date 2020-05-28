@@ -33,15 +33,14 @@ export class MetaDialogueComponent implements OnInit  {
   metaForm: FormGroup;
   DialogTitle: string = "Add to TableauMapping Database";
   DialogMode: string = "insert";
+  isLoading: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<MetaDialogueComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private profileService: ProfileService) {
     this.itemMeta = this.profileService.getItemMeta(data.id);
     if (!this.itemMeta.name) {
       this.DialogTitle = "Add " + data.name + " to TableauMapping Database";
       this.DialogMode = "insert";
-      this.IndexStatus = "None";
     } else {
-      //this.getIndexStatus(this.itemMeta._id);
       this.DialogTitle = "Update " + data.name + " record in TableauMapping Database";
       this.DialogMode = "update";
     }
@@ -63,11 +62,11 @@ export class MetaDialogueComponent implements OnInit  {
       ]),
       sourcedate: new FormControl(this.itemMeta.sourceDate ? this.itemMeta.sourceDate : '',[Validators.required]),
       agreement: new FormControl(this.itemMeta.agreement ? this.itemMeta.agreement : '',[Validators.required])
-    })
-    console.log("Status", this.IndexStatus);
+    });
   }
 
   saveMeta() {
+    this.isLoading = true;
     let diag = this.dialogRef;
     let res = this.metaForm.value;
     this.itemMeta.continent = res.continent;
@@ -79,6 +78,7 @@ export class MetaDialogueComponent implements OnInit  {
     this.itemMeta.agreement = res.agreement;
     this.profileService.saveMeta(this.itemMeta)
       .subscribe(function(resp) {
+        this.loading = false;
         diag.close(resp);
         },
         error => console.error(error)
@@ -86,6 +86,7 @@ export class MetaDialogueComponent implements OnInit  {
   }
 
   updateMeta() {
+    this.isLoading = true;
     let diag = this.dialogRef;
     let res = this.metaForm.value;
     this.itemMeta.continent = res.continent;
@@ -97,6 +98,7 @@ export class MetaDialogueComponent implements OnInit  {
     this.itemMeta.agreement = res.agreement;
     this.profileService.updateMeta(this.itemMeta)
       .subscribe(function(resp) {
+        this.loading = false;
         diag.close(resp);
         },
         error => console.error(error)
@@ -104,6 +106,7 @@ export class MetaDialogueComponent implements OnInit  {
   }
 
   countries: any[] = [
+    {name: 'Multiple', code:''},
     {name: 'Afghanistan', code: 'AF'},
     {name: 'Åland Islands', code: 'AX'},
     {name: 'Albania', code: 'AL'},

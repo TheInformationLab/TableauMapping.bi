@@ -1,4 +1,4 @@
-<div class="container" style="margin-top:100px;">
+<div class="container" style="margin-top:40px;">
   <div class="col-mat-8 col-mat-offset-2">
     <div class="demo-card-container" layout="row" layout-align="center">
       <mat-card>
@@ -7,28 +7,33 @@
           <mat-card-title class="help-card-title">Login</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-              <div class="form-group">
-                  <label for="email">Email</label>
-                  <input
-                          type="email"
-                          id="email"
-                          class="form-control"
-                          formControlName="email">
-              </div>
-              <div class="form-group">
-                  <label for="password">Password</label>
-                  <input
-                          type="password"
-                          id="password"
-                          class="form-control"
-                          formControlName="password">
-              </div>
-              <button
-                      class="btn btn-primary"
-                      type="submit"
-                      [disabled]="!myForm.valid">Submit</button>
+          <form class="form" [formGroup]="signinForm">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Email" id="email" formControlName="email">
+              <mat-hint *ngIf="signinForm.controls.email.value==''">Required</mat-hint>
+              <mat-error *ngIf="signinForm.controls.email.errors && signinForm.controls.email.errors.required">
+                Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Password" id="password" type="password" formControlName="password">
+              <mat-hint *ngIf="signinForm.controls.password.value==''">Required</mat-hint>
+              <mat-error *ngIf="signinForm.controls.password.errors && signinForm.controls.password.errors.required">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!signinForm.valid">Login</button>
           </form>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>supervisor_account</mat-icon>
+          <mat-card-title class="help-card-title">Create Account</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          Do you have some great spatial data you can't wait to share with the world? All you'll need is a free <a href="https://www.mapbox.com/signup/" target="_blank">Mapbox</a> account to store your data and a TableauMapping.bi account.
+          <a [routerLink]="['/auth/signup']"><button mat-raised-button color="primary">Signup</button></a>
         </mat-card-content>
       </mat-card>
     </div>

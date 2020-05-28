@@ -1,6 +1,6 @@
 <mat-toolbar class="profile-header">Your Profile</mat-toolbar>
 <div class="container" style="">
-  <div class="col-mat-8 col-mat-offset-2">
+  <div class="col-mat-8 col-mat-offset-2 verticalScroll">
     <mat-accordion class="headers-align">
       <mat-expansion-panel [expanded]="true" hideToggle="false">
         <mat-expansion-panel-header>
@@ -12,28 +12,28 @@
         <form class="form" [formGroup]="profileForm">
           <mat-form-field class="full-width">
             <input matInput placeholder="First Name" id="firstName" formControlName="firstName">
-            <mat-hint>Required</mat-hint>
+            <mat-hint *ngIf="profileForm.controls.firstName.value==''">Required</mat-hint>
             <mat-error *ngIf="profileForm.controls.firstName.errors && profileForm.controls.firstName.errors.required">
               First Name is <strong>required</strong>
             </mat-error>
           </mat-form-field>
           <mat-form-field class="full-width">
             <input matInput placeholder="Last Name" id="lastName" formControlName="lastName">
-            <mat-hint>Required</mat-hint>
+            <mat-hint *ngIf="profileForm.controls.lastName.value==''">Required</mat-hint>
             <mat-error *ngIf="profileForm.controls.lastName.errors && profileForm.controls.lastName.errors.required">
               Last Name is <strong>required</strong>
             </mat-error>
           </mat-form-field>
           <mat-form-field class="full-width">
             <input matInput placeholder="Company" id="company" formControlName="company">
-            <mat-hint>Required</mat-hint>
+            <mat-hint *ngIf="profileForm.controls.company.value==''">Required</mat-hint>
             <mat-error *ngIf="profileForm.controls.company.errors && profileForm.controls.company.errors.required">
               Company is <strong>required</strong>
             </mat-error>
           </mat-form-field>
           <mat-form-field class="full-width">
             <input matInput placeholder="Email" id="email" formControlName="email" >
-            <mat-hint>Required</mat-hint>
+            <mat-hint *ngIf="profileForm.controls.email.value==''">Required</mat-hint>
             <mat-error *ngIf="profileForm.controls.email.errors && profileForm.controls.email.errors.pattern">
               This is not a valid email address
             </mat-error>
@@ -56,14 +56,14 @@
           <form class="form" [formGroup]="passwordForm">
             <mat-form-field class="full-width">
               <input matInput placeholder="Existing Password" id="password" formControlName="password" type="password">
-              <mat-hint>Required</mat-hint>
+              <mat-hint *ngIf="passwordForm.controls.password.value==''">Required</mat-hint>
               <mat-error *ngIf="passwordForm.controls.password.errors && passwordForm.controls.password.errors.required">
                 Existing password is <strong>required</strong>
               </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
               <input matInput placeholder="New Password" [errorStateMatcher]="matcher" id="newPassword" formControlName="newPassword" type="password">
-              <mat-hint>Required</mat-hint>
+              <mat-hint *ngIf="passwordForm.controls.newPassword.value==''">Required</mat-hint>
               <mat-error *ngIf="passwordForm.controls.newPassword.errors && passwordForm.controls.newPassword.errors.required">
                 New password is <strong>required</strong>
               </mat-error>
@@ -73,7 +73,7 @@
             </mat-form-field>
             <mat-form-field class="full-width">
               <input matInput placeholder="Confirm Password" [errorStateMatcher]="matcher" id="confirmPassword" formControlName="confirmPassword" type="password">
-              <mat-hint>Required</mat-hint>
+              <mat-hint *ngIf="passwordForm.controls.confirmPassword.value==''">Required</mat-hint>
               <mat-error *ngIf="passwordForm.controls.confirmPassword.errors && passwordForm.controls.confirmPassword.errors.required">
                 Password confirmation is <strong>required</strong>
               </mat-error>
@@ -99,14 +99,14 @@
           <form class="form" [formGroup]="mapboxForm">
             <mat-form-field class="full-width">
               <input matInput placeholder="Username" id="username" formControlName="username" type="text">
-              <mat-hint>Required</mat-hint>
+              <mat-hint *ngIf="mapboxForm.controls.username.value==''">Required</mat-hint>
               <mat-error *ngIf="mapboxForm.controls.username.errors && mapboxForm.controls.username.errors.required">
                 Mapbox Username is <strong>required</strong>
               </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
               <input matInput placeholder="Access Token" id="accessToken" formControlName="accessToken" type="password">
-              <mat-hint>Required</mat-hint>
+              <mat-hint *ngIf="mapboxForm.controls.accessToken.value==''">Required</mat-hint>
               <mat-error *ngIf="mapboxForm.controls.accessToken.errors && mapboxForm.controls.accessToken.errors.required">
                 Access Token is <strong>required</strong>
               </mat-error>

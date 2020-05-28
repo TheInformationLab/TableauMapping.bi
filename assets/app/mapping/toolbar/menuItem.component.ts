@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+import { Router } from '@angular/router';
 import { LayerService } from "../../layers/layer.service";
 import { MapService } from "../mapping.service";
 
@@ -12,7 +13,7 @@ import { MenuItem } from "./menuItem.model";
 export class MenuItemComponent {
     @Input() menuItem: MenuItem;
 
-    constructor(private layerService: LayerService, private mapService: MapService) {
+    constructor(private layerService: LayerService, private mapService: MapService, private router: Router) {
     }
 
     showPolygon() {
@@ -26,9 +27,10 @@ export class MenuItemComponent {
         );
       this.layerService.getData(opt)
         .subscribe(
-          (geojson) => {
-            this.mapService.addPolygon(geojson, null, null);
+          (resp) => {
+            this.mapService.addPolygon(resp.data, null, null);
           });
+      //this.router.navigateByUrl('/map/'+this.menuItem.id);
     }
 
 }

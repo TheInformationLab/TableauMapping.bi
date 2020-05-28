@@ -10,10 +10,14 @@ var timeout = require('connect-timeout');
 
 var app = express();
 
-app.use(compression());
+if (process.env.NOW) {
+  app.use(compression());
+}
 
 app.use(timeout(600000));
 app.use(haltOnTimedout);
+
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 function haltOnTimedout(req, res, next){
   if (!req.timedout) next();
@@ -83,11 +87,11 @@ app.use('/api', apiRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (req, res) {
     return res.render('index');
 });
 
 module.exports = app;
 
 const { spawn } = require('child_process');
-const ls = spawn('node', [path.join(__dirname, './func/', 'cache.js')]);
+spawn('node', [path.join(__dirname, './func/', 'cache.js')]);

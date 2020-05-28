@@ -40,7 +40,8 @@ import { RouterEvent, NavigationEnd } from '@angular/router';
     input {
       color: rgba(255, 255, 255, 0.3);
       padding: 20px 20px 20px 45px;
-      width: 600px;
+      max-width: 600px;
+      width: 100%;
       height: 35px;
       font-size: 16px;
       background-color: rgba(255, 255, 255, 0.1);
@@ -79,7 +80,7 @@ import { RouterEvent, NavigationEnd } from '@angular/router';
     	border:solid 1px #f1f1f1;
     	position:absolute;
       margin-left: 24px;
-    	width:600px;
+    	width: 57%;
     	background: white;
       border-radius: 0;
       -moz-border-radius: 0;
@@ -97,9 +98,17 @@ import { RouterEvent, NavigationEnd } from '@angular/router';
       overflow-x: auto;
     }
 
+    @media (min-width: 850px) {
+      .suggestions {
+        max-width:600px;
+        width: 39%;
+      }
+    }
+
     .navContainer{
       margin: 0 0 0 20px;
-    	width:600px;
+    	max-width:600px;
+      width: 100%;
     }
 
     a{
@@ -221,8 +230,8 @@ export class SearchComponent {
       }
       this.layerService.getData(opt)
         .subscribe(
-          geojson => {
-            this.mapService.addPolygon(geojson, key, value);
+          resp => {
+            this.mapService.addPolygon(resp.data, key, value);
             this.mapService.map.flyTo(centroid, zoom);
           },
           //error => this.errorService.error(error)

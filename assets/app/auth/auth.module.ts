@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule, MatIconModule } from '@angular/material';
+import { MatCardModule, MatIconModule, MatFormFieldModule,  MatInputModule, MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { authRoutes } from "./auth.routing";
@@ -8,13 +8,15 @@ import { AuthComponent } from "./auth.component";
 import { LogoutComponent } from "./logout.component";
 import { SigninComponent } from "./signin.component";
 import { SignupComponent } from "./signup.component";
+import { ResetComponent } from './reset.component';
 
 @NgModule({
   declarations: [
     AuthComponent,
     LogoutComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    ResetComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,11 @@ import { SignupComponent } from "./signup.component";
     ReactiveFormsModule,
     authRoutes,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule
   ]
 })
 

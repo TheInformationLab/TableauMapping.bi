@@ -13,7 +13,7 @@ export class TMMeta {
   agreement: boolean;
   isPublic: boolean;
 
-  constructor(id?: string, bbox?: number[], dateCreated?: string, mapboxid?: string, name?: string, owner?: string, type?: string, country?: string, continent?: string, sourceUrl?: string, sourceDate?: string, agreement: boolean, isPublic?: boolean) {
+  constructor(id?: string, bbox?: number[], dateCreated?: string, mapboxid?: string, name?: string, owner?: string, type?: string, country?: string, continent?: string, sourceUrl?: string, sourceDate?: string, agreement?: boolean, isPublic?: boolean) {
     this._id = id;
     this.bbox = bbox;
     this.dateCreated = dateCreated;

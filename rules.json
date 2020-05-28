@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {"pathname": "/wdc**", "dest": "wdc.tableaumapping.bi"},
+    {"pathname": "/api", "dest": "app.tableaumapping.bi"},
+    {"pathname": "/index/**", "method": ["GET", "POST","DELETE"], "dest": "index.tableaumapping.bi"},
+    {"pathname": "/**", "dest": "app.tableaumapping.bi"}
+  ]
+}

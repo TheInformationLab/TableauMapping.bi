@@ -1,11 +1,23 @@
 
-<mat-toolbar color="primary">
-  <span>TableauMapping.bi</span>
+<mat-toolbar color="primary" class="mat-elevation-z8">
+  <span class="full-title">TableauMapping.bi</span>
+  <span class="compact-title">Tableau<br/>Mapping.bi</span>
   <search></search>
   <span class="example-spacer"></span>
-  <mat-list class="menu-list">
-   <mat-list-item><a [routerLink]="['/map']">Map</a></mat-list-item>
-   <mat-list-item><a [routerLink]="['/wdc']">WDC</a></mat-list-item>
-   <mat-list-item><a [routerLink]="['/help']"><mat-icon>help</mat-icon></a></mat-list-item>
+  <mat-list class="menu-icons">
+   <mat-list-item><span matTooltip="View Map"><a [routerLink]="['/map']"><mat-icon>map</mat-icon></a></span></mat-list-item>
+   <mat-list-item><span matTooltip="Tableau Web Data Connector"><a [routerLink]="['/wdc']"><mat-icon>cloud_download</mat-icon></a></span></mat-list-item>
+   <mat-list-item><span matTooltip="Account"><a [routerLink]="['/profile']"><mat-icon>account_circle</mat-icon></a></span></mat-list-item>
+   <mat-list-item><span matTooltip="Help"><a [routerLink]="['/help']"><mat-icon>help</mat-icon></a></span></mat-list-item>
   </mat-list>
+  <button mat-icon-button [matMenuTriggerFor]="appMenu" class="compact-menu">
+     <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #appMenu="matMenu" class="compact-menu">
+    <button mat-menu-item class="compact-item"><a [routerLink]="['/map']"><mat-icon>map</mat-icon>View Map</a></button>
+    <button mat-menu-item class="compact-item"><a [routerLink]="['/wdc']"><mat-icon>cloud_download</mat-icon>Web Data Connector</a></button>
+    <button mat-menu-item class="compact-item"><a [routerLink]="['/profile']"><mat-icon>account_circle</mat-icon>Account</a></button>
+    <button mat-menu-item class="compact-item"><a [routerLink]="['/help']"><mat-icon>help</mat-icon>Help</a></button>
+  </mat-menu>
+
 </mat-toolbar>

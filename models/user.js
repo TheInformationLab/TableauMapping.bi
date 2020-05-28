@@ -10,7 +10,9 @@ var schema = new Schema({
   email: {type: String, required: true, unique: true},
   spatials: [{type: Schema.Types.ObjectId, ref: 'Spatial'}],
   mapboxAccessToken: {type: String},
-  mapboxUsername: {type: String}
+  mapboxUsername: {type: String},
+  resetPasswordToken: {type: String, unique: false},
+  resetPasswordExpires: {type: Date, default: Date.now }
 });
 
 schema.plugin(mongooseUniqueValidator);

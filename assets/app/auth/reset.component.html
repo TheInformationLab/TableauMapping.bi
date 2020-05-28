@@ -1,0 +1,58 @@
+<div class="container" style="margin-top:40px;">
+  <div class="col-mat-8 col-mat-offset-2">
+    <div class="demo-card-container" layout="row" layout-align="center">
+      <mat-card *ngIf="!token">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>help</mat-icon>
+          <mat-card-title class="help-card-title">Forgotten your Password?</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="form" [formGroup]="resetForm">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Email" id="email" formControlName="email">
+              <mat-hint *ngIf="resetForm.controls.email.value==''">Required</mat-hint>
+              <mat-error *ngIf="resetForm.controls.email.errors && resetForm.controls.email.errors.required">
+                Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="resetPassword()" [disabled]="!resetForm.valid">Reset Password</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="token">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>help</mat-icon>
+          <mat-card-title class="help-card-title">Reset your Password?</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="form" [formGroup]="updateForm">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Password" [errorStateMatcher]="matcher" id="password" formControlName="password" type="password">
+              <mat-hint *ngIf="updateForm.controls.password.value==''">Required</mat-hint>
+              <mat-error *ngIf="updateForm.controls.password.errors && updateForm.controls.password.errors.required">
+                New password is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="updateForm.controls.password.errors && updateForm.controls.password.errors.minlength">
+                Password must be at least <strong>{{updateForm.controls.password.errors.minlength.requiredLength}} characters</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Confirm Password" [errorStateMatcher]="matcher" id="confirmPassword" formControlName="confirmPassword" type="password">
+              <mat-hint *ngIf="updateForm.controls.confirmPassword.value==''">Required</mat-hint>
+              <mat-error *ngIf="updateForm.controls.confirmPassword.errors && updateForm.controls.confirmPassword.errors.required">
+                Password confirmation is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="updateForm.errors && updateForm.errors.mismatch">
+                Passwords do not match
+              </mat-error>
+              <mat-error *ngIf="updateForm.controls.confirmPassword.errors && updateForm.controls.confirmPassword.errors.minlength">
+                Password must be at least <strong>{{updateForm.controls.confirmPassword.errors.minlength.requiredLength}} characters</strong>
+              </mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="updatePassword()" [disabled]="!updateForm.valid">Update Password</button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

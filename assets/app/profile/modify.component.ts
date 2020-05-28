@@ -7,6 +7,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ProfileService } from "./profile.service";
 import { AuthService } from "../auth/auth.service";
 import { User } from "../auth/user.model";
+import { Password } from "./password.model";
 import { JwtHelper } from 'angular2-jwt';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -29,26 +30,28 @@ function passwordMatchValidator(g: FormGroup) {
       box-shadow: inset 0 3px 5px -1px rgba(0,0,0,.2), inset 0 6px 10px 0 rgba(0,0,0,.14);
     }
     .container {
-      min-height: calc(100vh - 300px);
-      padding-top: 10px;
-      padding-bottom: 10px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 148px);
+      min-width: 300px;
+      position: relative;
+      margin-bottom: 10px;
+      margin-top: 10px;
     }
     .headers-align .mat-expansion-panel-header-title,
     .headers-align .mat-expansion-panel-header-description {
       flex-basis: 0;
     }
-
     .headers-align .mat-expansion-panel-header-description {
       justify-content: space-between;
       align-items: center;
     }
-
     .profile-form {
       min-width: 150px;
       max-width: 500px;
       width: 100%;
     }
-
     .full-width {
       width: 100%;
     }
@@ -61,6 +64,10 @@ function passwordMatchValidator(g: FormGroup) {
     .mat-raised-button[disabled] {
       color: rgba(0,0,0,.38);
       background-color: rgba(0,0,0,.12);
+    }
+    .verticalScroll {
+      overflow-y: auto;
+      padding: 10px;
     }
     `]
 })
@@ -127,7 +134,28 @@ export class ModifyComponent implements OnInit {
   }
 
   updatePassword() {
-    console.log(this.passwordForm);
+    const password = new Password(
+      this.passwordForm.value.password,
+      this.passwordForm.value.newPassword
+    );
+    let snack = this.snackBar;
+    this.profileService.updatePassword(password)
+        .subscribe(function(data) {
+              if (data.message == "Password updated") {
+                localStorage.setItem('token', data.token);
+                snack.open("Password Updated", null, {
+                  duration: 3000,
+                });
+              }
+            },
+            error =>  {
+              if (error.message && error.message == "Login failed") {
+                snack.open("Existing password incorrect", null, {
+                  duration: 3000,
+                });
+              }
+            }
+        );
   }
 
   updateMapbox() {
@@ -154,13 +182,24 @@ export class ModifyComponent implements OnInit {
     let snack = this.snackBar;
     this.profileService.getDatasets()
         .subscribe(function(datasets) {
-            if (datasets.message = "Datasets found") {
+            if (datasets.message == "Datasets found") {
               snack.open("Mapbox Account Valid", null, {
+                duration: 3000,
+              });
+            } else {
+              snack.open(datasets.message, null, {
                 duration: 3000,
               });
             }
             },
-            error => console.error(error)
+            error => {
+              if (error.message && error.message == "No datasets found") {
+                snack.open("No datasets found. Either no datasets in Mapbox account or username and/or access token is invalid", null, {
+                  duration: 3000,
+                });
+              }
+              console.error(error)
+            }
         );
   }
 

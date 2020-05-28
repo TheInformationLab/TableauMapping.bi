@@ -41,6 +41,24 @@ export class ProfileService {
       });
   }
 
+  updatePassword(password) {
+    const body = JSON.stringify(password);
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+      });
+    return this.http.put('/api/profile/password', body, {headers: headers})
+      .map((response: Response) => response.json())
+      .catch((error: Response) => {
+        if(error.status == 0) {
+          this.errorService.error("PUT /api/profile/password net::ERR_CONNECTION_REFUSED","Lost connection to TableauMapping.bi. Check your internet connection.")
+          return Observable.throw(error.json());
+        } else {
+          return Observable.throw(error.json());
+        }
+      });
+  }
+
   getDatasets() {
     const headers = new Headers({
       'Content-Type': 'application/json',

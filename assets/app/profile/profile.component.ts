@@ -19,6 +19,16 @@ import { Component } from '@angular/core';
                 Datasets
               </a>
             </li>
+            <li>
+              <a [routerLink]="['help']">
+                Help
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['../auth/logout']">
+                Logout
+              </a>
+            </li>
           </ul>
         </nav>
         </mat-sidenav>
@@ -30,8 +40,7 @@ import { Component } from '@angular/core';
   `,
   styles: [`
     mat-sidenav-content {
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow-x: auto;
     }
 
     .profile-header {

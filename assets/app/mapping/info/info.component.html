@@ -1,1 +1,1 @@
-<button class="on-map infoBtn mat-button " (click)="openInfo()" [disabled]="!infoAvailable"><mat-icon>info</mat-icon></button>
+<div class="on-map tooltip" *ngIf="infoAvailable">{{ infoTooltip }}</div><button class="on-map infoBtn mat-button " (click)="openInfo()" [disabled]="!infoAvailable" ><mat-icon>info</mat-icon></button>
