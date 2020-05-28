@@ -3,6 +3,7 @@
     "version" : 1,
     "alias": "tableaumapping.bi",
     "env": {
+        "HOST": "@tableaumapping_dbhost",
         "DBUSER": "@tableaumapping_dbuser",
         "DBPASS": "@tableaumapping_dbpass",
         "JWTSECRET": "@tableaumapping_jwtsecret"
