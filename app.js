@@ -23,7 +23,7 @@ function haltOnTimedout(req, res, next){
   if (!req.timedout) next();
 }
 
-var options = { useMongoClient : true };
+var options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 var dbhost = 'tableaumapping-yi1n8.mongodb.net/tableaumappingmapbox?retryWrites=true&w=majority' || process.env.HOST || 'localhost:27017/tableau-mapping2';
 var dbuser = process.env.DBUSER || null;
