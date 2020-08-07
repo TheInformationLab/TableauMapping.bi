@@ -33,7 +33,7 @@ var dburi = 'mongodb+srv://';
 console.log('[app.js] dbuser', process.env.DBUSER);
 console.log('[app.js] dbpass', process.env.DBPASS);
 console.log('[app.js] host', process.env.HOST);
-console.log('[app.js] jwtsecret', process.env.JSTSECRET);
+console.log('[app.js] jwtsecret', process.env.JWTSECRET);
 
 if (dbuser && dbpass) {
   dburi = dburi + dbuser + ":" + dbpass + '@' + dbhost;
