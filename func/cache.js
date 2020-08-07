@@ -24,12 +24,12 @@ var writeLog = function(message) {
   logger.write(","+JSON.stringify(log));
 }
 
-var options = { useMongoClient : true };
+var options = { useNewUrlParser: true, useUnifiedTopology: true };
 
-var dbhost = process.env.HOST || 'localhost:27017/tableau-mapping2';
+var dbhost = 'tableaumapping-yi1n8.mongodb.net/tableaumappingmapbox?retryWrites=true&w=majority';
 var dbuser = process.env.DBUSER || null;
 var dbpass = process.env.DBPASS || null;
-var dburi = 'mongodb://';
+var dburi = 'mongodb+srv://';
 
 if (dbuser && dbpass) {
   dburi = dburi + dbuser + ":" + dbpass + '@' + dbhost;
