@@ -17,6 +17,9 @@
         {"src": "/wdc(.*)", "dest": "wdc.tableaumapping.bi"},
         {"src": "/api", "dest": "app.tableaumapping.bi"},
         {"src": "/index/(.*)", "dest": "index.tableaumapping.bi"},
+        {"src": "/js/app/(.*)", "dest": "public/js/app/$1"},
+        {"src": "/img/(.*)", "dest": "public/img/$1"},
+        {"src": "/stylesheets/(.*)", "dest": "public/stylesheets/$1"},
         {"src": "/(.*)", "dest": "bin/www"}
     ]
 }
