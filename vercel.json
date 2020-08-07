@@ -9,7 +9,7 @@
     },
     "builds": [
         {   
-            "src" : "app.js",
+            "src" : "bin/www",
             "use": "@now/node-server"
         }
     ],
@@ -17,6 +17,6 @@
         {"src": "/wdc(.*)", "dest": "wdc.tableaumapping.bi"},
         {"src": "/api", "dest": "app.tableaumapping.bi"},
         {"src": "/index/(.*)", "dest": "index.tableaumapping.bi"},
-        {"src": "/(.*)", "dest": "app.js"}
+        {"src": "/(.*)", "dest": "bin/www"}
     ]
 }
