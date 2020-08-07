@@ -1,11 +1,22 @@
 {
     "public": false,
-    "version" : 1,
+    "version" : 2,
     "alias": "tableaumapping.bi",
     "env": {
-        "HOST": "@tableaumapping_dbhost",
         "DBUSER": "@tableaumapping_dbuser",
         "DBPASS": "@tableaumapping_dbpass",
         "JWTSECRET": "@tableaumapping_jwtsecret"
-    }
+    },
+    "builds": [
+        {   
+            "src" : "app.js",
+            "use": "@now/node-server"
+        }
+    ],
+    "routes" : [ 
+        {"src": "/wdc(.*)", "dest": "wdc.tableaumapping.bi"},
+        {"src": "/api", "dest": "app.tableaumapping.bi"},
+        {"src": "/index/(.*)", "dest": "index.tableaumapping.bi"},
+        {"src": "/(.*)", "dest": "app.js"}
+    ]
 }
