@@ -84,7 +84,7 @@ export class GeocodingService {
 
     getCurrentLocation() {
         return this.http
-            .get("//ipv4.myexternalip.com/json")
+            .get("//myexternalip.com/json")
             .map(res => res.json().ip)
             .flatMap(ip => this.http.get("//api.ipstack.com/" + ip + "?access_key=67d90f241ff91d334ffff340a7cdc469"))
             .map((res: Response) => res.json())
