@@ -50,7 +50,6 @@
     "morgan": "^1.9.0",
     "ng2-bootstrap-modal": "^1.0.1",
     "ng2-responsive": "^0.8.4",
-    "node-sass": "^4.7.2",
     "node-unique-array": "0.0.6",
     "nodemailer": "^4.4.1",
     "primeng": "^5.0.2",
