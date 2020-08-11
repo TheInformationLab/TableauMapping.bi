@@ -78,7 +78,7 @@ app.use(function (req, res, next) {
 
 app.get("/wdc", (req, res) => {
 
-  res.status(301).redirect("https://wdc.theinformationlab.co.uk/wdc")
+  res.status(301).redirect("https://wdc.tableaumapping.bi/wdc")
 
 })
 
