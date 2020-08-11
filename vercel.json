@@ -22,6 +22,12 @@
         }
 
     ],
+    "functions" : {
+        "bin/www" : {
+            "memory": 3008,
+            "maxDuration": 60
+        }
+    },
     "routes" : [ 
         {"src": "/wdc(.*)", "dest": "wdc.tableaumapping.bi"},
         {"src": "/api", "dest": "app.tableaumapping.bi"},
