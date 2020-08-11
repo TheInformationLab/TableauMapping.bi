@@ -30,11 +30,6 @@ var dbuser = process.env.DBUSER || null;
 var dbpass = process.env.DBPASS || null;
 var dburi = 'mongodb+srv://';
 
-console.log('[app.js] dbuser', process.env.DBUSER);
-console.log('[app.js] dbpass', process.env.DBPASS);
-console.log('[app.js] host', process.env.HOST);
-console.log('[app.js] jwtsecret', process.env.JWTSECRET);
-
 if (dbuser && dbpass) {
   dburi = dburi + dbuser + ":" + dbpass + '@' + dbhost;
 } else {
@@ -80,6 +75,12 @@ app.use(function (req, res, next) {
 // };
 //
 // app.get("*.js", encodeResToGzip('text/javascript'));
+
+app.get("/wdc", (req, res) => {
+
+  res.status(301).redirect("https://wdc.theinformationlab.co.uk/wdc")
+
+})
 
 app.use('/healthcheck', require('express-healthcheck')());
 app.use('/api/err', errorRoutes);
