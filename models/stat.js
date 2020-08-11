@@ -4,16 +4,14 @@ var mongooseUniqueValidator = require('mongoose-unique-validator');
 
 var location = new Schema({
   ip: {type: String},
-  country_code: {type: String},
+  country_code2: {type: String},
   country_name: {type: String},
-  region_code: {type: String},
-  region_name: {type: String},
+  continent_code: {type: String},
+  continent_name: {type: String},
   city: {type: String},
-  zip_code: {type: String},
-  time_zone: {type: String},
+  zipcode: {type: String},
   latitude: {type: Number},
-  longitude: {type: Number},
-  metro_code: {type: Number}
+  longitude: {type: Number}
 });
 
 var schema = new Schema({

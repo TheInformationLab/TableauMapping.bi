@@ -86,7 +86,7 @@ export class GeocodingService {
         return this.http
             .get("//myexternalip.com/json")
             .map(res => res.json().ip)
-            .flatMap(ip => this.http.get("//api.ipstack.com/" + ip + "?access_key=67d90f241ff91d334ffff340a7cdc469"))
+            .flatMap(ip => this.http.get("https://api.ipgeolocation.io/ipgeo?apiKey=6c567247edfa4d329f15cccba64ecd4b&ip=" + ip))
             .map((res: Response) => res.json())
             .map(result => {
                 // let location = new Location();
